@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Introduction — A Complete Interactive Course | Chapters 1–11</title>
+<meta name="description" content="An interactive, multi-expert AI course: diagnostic, descriptive, predictive, prescriptive, generative, reactive, limited memory, theory of mind, self-aware, and narrow AI. Includes AI tools landscape, evaluation frameworks, and academic review.">
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  /* ---------- THEME ---------- */
+  :root{
+    --bg:#ffffff;
+    --bg-alt:#f6f8fa;
+    --bg-elev:#ffffff;
+    --text:#1f2328;
+    --muted:#57606a;
+    --border:#d0d7de;
+    --accent:#0969da;
+    --accent-2:#8250df;
+    --accent-soft:#ddf4ff;
+    --accent2-soft:#f3e8ff;
+    --success:#1a7f37;
+    --success-soft:#dafbe1;
+    --warn:#9a6700;
+    --warn-soft:#fff8c5;
+    --danger:#cf222e;
+    --danger-soft:#ffebe9;
+    --code-bg:#f6f8fa;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);
+    --max:1180px;
+    --radius:14px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0d1117;
+    --bg-alt:#161b22;
+    --bg-elev:#161b22;
+    --text:#e6edf3;
+    --muted:#8b949e;
+    --border:#30363d;
+    --accent:#58a6ff;
+    --accent-2:#bc8cff;
+    --accent-soft:#0b2a4a;
+    --accent2-soft:#2a1e4a;
+    --success:#3fb950;
+    --success-soft:#0f2e18;
+    --warn:#d29922;
+    --warn-soft:#3a2c05;
+    --danger:#f85149;
+    --danger-soft:#3a1210;
+    --code-bg:#161b22;
+    --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- PROGRESS BAR ---------- */
+  #progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    z-index:1000;transition:width .1s linear;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+  .layout{display:grid;grid-template-columns:280px 1fr;gap:32px;max-width:var(--max);margin:0 auto;padding:0 22px}
+  @media(max-width:1000px){.layout{grid-template-columns:1fr;padding:0 18px}}
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    border-bottom:1px solid var(--border);background:var(--bg-elev);
+    position:sticky;top:0;z-index:500;
+    backdrop-filter:saturate(180%) blur(10px);
+  }
+  header.site .inner{
+    max-width:var(--max);margin:0 auto;padding:10px 22px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;text-decoration:none;color:var(--text)}
+  .brand .logo{
+    width:30px;height:30px;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800;
+  }
+  .brand span.sub{color:var(--muted);font-weight:400;font-size:13px}
+  .header-tools{display:flex;gap:8px;align-items:center}
+  .tool-btn{
+    background:var(--bg);color:var(--text);border:1px solid var(--border);
+    border-radius:9px;padding:7px 11px;font-size:13px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;transition:.15s;
+  }
+  .tool-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+  .tool-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tool-btn.primary:hover{color:#fff;filter:brightness(1.08)}
+
+  /* ---------- SIDEBAR ---------- */
+  aside.sidebar{
+    position:sticky;top:70px;align-self:start;max-height:calc(100vh - 90px);
+    overflow-y:auto;padding:20px 0 40px;
+  }
+  aside.sidebar::-webkit-scrollbar{width:8px}
+  aside.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+  .sb-card{
+    background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 18px;margin-bottom:16px;
+  }
+  .sb-card h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+  .sb-card ol{margin:0;padding-left:18px;font-size:14px}
+  .sb-card li{margin:3px 0}
+  .sb-card a{color:var(--text);text-decoration:none;display:block;padding:3px 0;border-radius:6px;transition:.15s}
+  .sb-card a:hover{color:var(--accent)}
+  .sb-card a.active{color:var(--accent);font-weight:600}
+  .progress-mini{font-size:12px;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between}
+  .progress-track{height:6px;background:var(--border);border-radius:6px;overflow:hidden;margin-top:6px}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
+
+  .search-box{position:relative;margin-bottom:16px}
+  .search-box input{
+    width:100%;padding:11px 14px 11px 36px;border:1px solid var(--border);
+    border-radius:10px;background:var(--bg);color:var(--text);font-size:14px;outline:none;
+  }
+  .search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .search-box::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.7}
+  .search-results{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:70px 0 40px;text-align:center;position:relative;overflow:hidden;
+    border-bottom:1px solid var(--border);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 20% 30%, var(--accent-soft), transparent 40%),
+      radial-gradient(circle at 80% 70%, var(--accent2-soft), transparent 40%);
+    opacity:.6;z-index:-1;
+  }
+  .hero .eyebrow{
+    display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.15;margin:0 auto 18px;
+    max-width:900px;letter-spacing:-.02em;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lead{font-size:1.08rem;color:var(--muted);max-width:720px;margin:0 auto 22px}
+  .hero .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+  .hero .stats{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .hero .stat{text-align:center}
+  .hero .stat b{display:block;font-size:1.5rem;color:var(--accent);line-height:1}
+  .hero .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ---------- CHAPTERS ---------- */
+  main{padding:40px 0 100px;min-width:0}
+  section.chapter{
+    padding:44px 0 20px;margin-bottom:20px;border-top:1px solid var(--border);
+    scroll-margin-top:80px;
+  }
+  section.chapter:first-of-type{border-top:none;padding-top:0}
+  .chapter-head{margin-bottom:20px}
+  .chapter-label{
+    display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#fff;border-radius:8px;padding:3px 12px;font-size:12px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;
+  }
+  h2.chapter-title{font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.25;margin:0 0 10px;letter-spacing:-.01em}
+  h3{font-size:1.28rem;margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.01em}
+  h4{font-size:1.08rem;margin:26px 0 8px;color:var(--text)}
+  h5{font-size:.92rem;margin:20px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  p{margin:12px 0}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  ul,ol{margin:12px 0;padding-left:24px}
+  li{margin:6px 0}
+
+  blockquote{
+    margin:20px 0;padding:14px 20px;
+    border-left:4px solid var(--accent);background:var(--bg-alt);
+    border-radius:0 10px 10px 0;
+  }
+  blockquote p{margin:6px 0}
+
+  code{
+    background:var(--code-bg);border:1px solid var(--border);border-radius:6px;
+    padding:1px 6px;font-size:.87em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  pre{
+    background:var(--code-bg);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;overflow-x:auto;position:relative;font-size:.87em;
+  }
+  pre code{border:none;background:none;padding:0;font-size:1em}
+  .copy-btn{
+    position:absolute;top:10px;right:10px;background:var(--bg-elev);
+    border:1px solid var(--border);border-radius:7px;padding:4px 9px;
+    font-size:11px;cursor:pointer;color:var(--muted);
+  }
+  .copy-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+  table{
+    width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem;
+    display:block;overflow-x:auto;border-radius:10px;
+  }
+  th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:var(--bg-alt);font-weight:600;position:sticky;top:0}
+  tr:nth-child(even) td{background:var(--bg-alt)}
+
+  hr{border:none;border-top:1px solid var(--border);margin:34px 0}
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{
+    border:1px solid var(--border);border-left:4px solid var(--accent);
+    background:var(--bg-alt);border-radius:0 12px 12px 0;
+    padding:15px 20px;margin:22px 0;
+  }
+  .callout.info{border-left-color:var(--accent);background:var(--accent-soft)}
+  .callout.success{border-left-color:var(--success);background:var(--success-soft)}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .callout.danger{border-left-color:var(--danger);background:var(--danger-soft)}
+  .callout strong{display:block;margin-bottom:4px}
+
+  .keytakeaway{
+    background:linear-gradient(135deg,var(--accent-soft),var(--accent2-soft));
+    border:1px solid var(--border);border-radius:14px;
+    padding:18px 22px;margin:26px 0;
+  }
+  .keytakeaway strong{color:var(--accent)}
+
+  /* ---------- ACCORDION ---------- */
+  .accordion{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0;background:var(--bg-alt)}
+  .acc-item{border-bottom:1px solid var(--border)}
+  .acc-item:last-child{border-bottom:none}
+  .acc-head{
+    width:100%;background:none;border:none;color:var(--text);
+    padding:14px 18px;font-size:1rem;font-weight:600;text-align:left;
+    cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .acc-head:hover{background:var(--bg)}
+  .acc-head::after{content:"+";font-size:1.3rem;color:var(--accent);transition:.2s;font-weight:400}
+  .acc-item.open .acc-head::after{content:"−"}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 18px}
+  .acc-item.open .acc-body{max-height:2000px;padding:0 18px 16px}
+  .acc-body p:first-child{margin-top:0}
+
+  /* ---------- TABS ---------- */
+  .tabs{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-alt)}
+  .tab-nav{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--bg)}
+  .tab-nav button{
+    background:none;border:none;padding:12px 18px;font-size:14px;
+    color:var(--muted);cursor:pointer;white-space:nowrap;
+    border-bottom:2px solid transparent;font-weight:600;
+  }
+  .tab-nav button:hover{color:var(--text)}
+  .tab-nav button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab-panel{display:none;padding:18px 20px}
+  .tab-panel.active{display:block}
+
+  /* ---------- QUIZ ---------- */
+  .quiz{
+    border:1px solid var(--border);border-radius:14px;
+    padding:20px 22px;margin:24px 0;background:var(--bg-alt);
+  }
+  .quiz h4{margin-top:0}
+  .quiz .q{margin:16px 0}
+  .quiz .q p{margin:0 0 8px;font-weight:600}
+  .quiz .opt{
+    display:block;padding:10px 14px;border:1px solid var(--border);
+    border-radius:9px;margin:6px 0;cursor:pointer;background:var(--bg);
+    transition:.15s;font-size:.95rem;
+  }
+  .quiz .opt:hover{border-color:var(--accent)}
+  .quiz .opt.correct{background:var(--success-soft);border-color:var(--success);color:var(--success);font-weight:600}
+  .quiz .opt.wrong{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+  .quiz .feedback{margin-top:6px;font-size:.9rem;color:var(--muted);display:none}
+  .quiz .feedback.show{display:block}
+
+  /* ---------- SCORECARD ---------- */
+  .scorecard{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;margin:20px 0;
+  }
+  .score-card{
+    background:var(--bg-alt);border:1px solid var(--border);
+    border-radius:12px;padding:16px;text-align:center;
+  }
+  .score-card .val{font-size:1.6rem;font-weight:700;color:var(--accent);line-height:1}
+  .score-card .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+
+  /* ---------- FLOW DIAGRAM ---------- */
+  .flow{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    justify-content:center;margin:24px 0;
+  }
+  .flow .node{
+    background:var(--bg-alt);border:1px solid var(--border);
+    border-radius:10px;padding:12px 16px;font-size:14px;font-weight:600;
+    text-align:center;min-width:120px;
+  }
+  .flow .arrow{color:var(--accent);font-size:1.4rem;font-weight:700}
+
+  /* ---------- BACK TO TOP ---------- */
+  #toTop{
+    position:fixed;right:22px;bottom:22px;z-index:400;
+    background:var(--accent);color:#fff;border:none;border-radius:999px;
+    width:48px;height:48px;font-size:20px;cursor:pointer;
+    display:none;box-shadow:0 8px 24px rgba(0,0,0,.25);
+    transition:.2s;
+  }
+  #toTop.show{display:block}
+  #toTop:hover{transform:translateY(-2px)}
+
+  /* ---------- FOOTER ---------- */
+  footer.site{
+    border-top:1px solid var(--border);background:var(--bg-alt);
+    padding:40px 0;color:var(--muted);font-size:.9rem;
+  }
+  footer.site .inner{
+    max-width:var(--max);margin:0 auto;padding:0 22px;
+    display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;
+  }
+  footer.site a{color:var(--accent)}
+  footer.site .links{display:flex;gap:16px;flex-wrap:wrap}
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    header.site,aside.sidebar,#toTop,#progress,.copy-btn{display:none!important}
+    .layout{grid-template-columns:1fr}
+    body{font-size:11pt}
+    section.chapter{page-break-before:always}
+  }
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    .hero{padding:50px 0 30px}
+    .hero .stats{gap:18px}
+    .hero .stat b{font-size:1.2rem}
+    .sb-card{font-size:13px}
+  }
+
+  /* Scroll highlight */
+  .hl{background:var(--warn-soft);border-radius:4px;padding:1px 3px}
+</style>
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site">
+  <div class="inner">
+    <a class="brand" href="#top">
+      <span class="logo">AI</span>
+      <span>AI Introduction <span class="sub">· Complete Interactive Course</span></span>
+    </a>
+    <div class="header-tools">
+      <button class="tool-btn" id="printBtn" title="Print / Save as PDF">🖨️ Print</button>
+      <button class="tool-btn" id="themeBtn" title="Toggle theme">🌙 Dark</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">A Multi-Expert Deep Learning Subject</span>
+    <h1>From <span class="grad">Reactive</span> to <span class="grad">Self-Aware</span>: A Complete Guide to Modern AI</h1>
+    <p class="lead">Eleven chapters covering the full spectrum of AI — descriptive, diagnostic, predictive, prescriptive, generative, reactive, limited memory, theory of mind, self-aware, narrow AI — plus a hands-on landscape of current tools and a rigorous evaluation framework.</p>
+    <div class="cta">
+      <a class="tool-btn primary" href="#ch1">📖 Start Reading</a>
+      <a class="tool-btn" href="#tools">🧰 AI Tools Landscape</a>
+      <a class="tool-btn" href="#evaluation">📊 Evaluation Framework</a>
+      <a class="tool-btn" href="#review">🎓 Academic Review</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>11</b><span>Chapters</span></div>
+      <div class="stat"><b>7</b><span>Expert Arrays</span></div>
+      <div class="stat"><b>60+</b><span>AI Tools Compared</span></div>
+      <div class="stat"><b>100%</b><span>Interactive</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LAYOUT ===================== -->
+<div class="layout">
+
+  <!-- ---------- SIDEBAR ---------- -->
+  <aside class="sidebar">
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="Search chapters…" aria-label="Search">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div class="sb-card">
+      <h3>Reading Progress</h3>
+      <div class="progress-mini"><span id="progressPct">0%</span><span id="progressCh">Ch. 0 / 11</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="sb-card">
+      <h3>Chapters</h3>
+      <ol id="tocList">
+        <li><a href="#ch1">1 · Diagnostic/Descriptive AI</a></li>
+        <li><a href="#ch2">2 · Predictive AI</a></li>
+        <li><a href="#ch3">3 · Prescriptive AI</a></li>
+        <li><a href="#ch4">4 · Generative/Cognitive AI</a></li>
+        <li><a href="#ch5">5 · Reactive AI</a></li>
+        <li><a href="#ch6">6 · Limited Memory AI</a></li>
+        <li><a href="#ch7">7 · Theory of Mind AI</a></li>
+        <li><a href="#ch8">8 · Self-Aware AI</a></li>
+        <li><a href="#ch9">9 · Narrow AI (Weak AI)</a></li>
+        <li><a href="#tools">10 · AI Tools Landscape</a></li>
+        <li><a href="#evaluation">11 · Evaluation &amp; Efficiency</a></li>
+        <li><a href="#review">🎓 Academic Review</a></li>
+        <li><a href="#practical">🧭 Practical Guide</a></li>
+      </ol>
+    </div>
+
+    <div class="sb-card">
+      <h3>Quick Reference</h3>
+      <ul style="list-style:none;padding:0;margin:0;font-size:13px">
+        <li><a href="#glossary">📚 Glossary</a></li>
+        <li><a href="#quiz">🧠 Self-Assessment</a></li>
+        <li><a href="#checklists">✅ Checklists</a></li>
+        <li><a href="#further">📖 Further Reading</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ---------- MAIN ---------- -->
+  <main>
+
+    <!-- ============ CHAPTER 9 ============ -->
+    <section class="chapter" id="ch9">
+      <div class="chapter-head">
+        <span class="chapter-label">Chapter 9</span>
+        <h2 class="chapter-title">Narrow AI (Weak AI): Designed to Perform Specific Tasks</h2>
+        <blockquote>
+          <p><strong>Guiding questions:</strong> What is narrow AI? How does it differ from general AI? Why is all deployed AI today narrow? What are its strengths, limits, and risks? How do we design, evaluate, and govern narrow AI systems responsibly?</p>
+        </blockquote>
+      </div>
+
+      <h3>Abstract</h3>
+      <p>Narrow AI — also called <strong>weak AI</strong> — is artificial intelligence designed to perform a specific task or a narrow set of tasks. Unlike hypothetical Artificial General Intelligence (AGI), narrow AI does not possess general reasoning, transferable understanding, or self-awareness. It excels within a bounded domain: recommending products, transcribing speech, detecting fraud, translating languages, generating images, playing Go, or driving a car under defined conditions.</p>
+      <p>This chapter presents narrow AI as the <em>operational reality</em> of AI today. Every deployed AI system — from your phone’s keyboard to hospital diagnostic tools to autonomous vehicles — is narrow. Understanding narrow AI is therefore not an academic exercise; it is the foundation of professional AI literacy. The chapter covers definitions, task taxonomies, architectural patterns, evaluation, limitations, the path toward generality, governance, applications, case studies, and exercises.</p>
+
+      <h3>9.1 Learning Objectives</h3>
+      <ol>
+        <li>Define narrow AI and distinguish it from AGI and strong AI.</li>
+        <li>Classify narrow AI by task type, modality, and deployment context.</li>
+        <li>Recognize narrow AI in everyday and professional systems.</li>
+        <li>Explain why narrow AI is both powerful and fragile.</li>
+        <li>Evaluate narrow AI using domain-appropriate metrics.</li>
+        <li>Identify risks: brittleness, bias, drift, over-trust, misuse.</li>
+        <li>Design a narrow AI system with clear scope, safety, and governance.</li>
+        <li>Articulate the realistic path from narrow to general AI.</li>
+      </ol>
+
+      <h3>9.2 Introduction: The AI We Actually Have</h3>
+      <p>Headlines promise human-level AI, but the systems we use daily are narrow. A chess engine cannot hold a conversation. A recommender cannot diagnose disease. A chatbot cannot drive. Each is optimized for a specific task, with a specific data distribution, evaluated by specific metrics.</p>
+
+      <div class="callout info">
+        <strong>Key insight.</strong> Narrow AI is not “lesser” AI. It is the AI that creates value today — and it will continue to dominate for the foreseeable future. Mastering narrow AI means mastering scope, data, evaluation, and deployment.
+      </div>
+
+      <p>Narrow AI is characterized by:</p>
+      <ul>
+        <li><strong>Bounded scope:</strong> one task or a small task family.</li>
+        <li><strong>Task-specific data:</strong> trained and evaluated on a defined distribution.</li>
+        <li><strong>Specialized metrics:</strong> accuracy, F1, BLEU, mAP, latency, cost.</li>
+        <li><strong>Limited transfer:</strong> performance often drops outside the training distribution.</li>
+        <li><strong>No general reasoning:</strong> no cross-domain understanding.</li>
+        <li><strong>No consciousness or self-awareness:</strong> no subjective experience.</li>
+      </ul>
+
+      <h3>9.3 Core Definitions and Scope</h3>
+
+      <h4>9.3.1 Definitions</h4>
+      <ul>
+        <li><strong>Narrow AI (Weak AI):</strong> AI that performs specific tasks within a limited domain.</li>
+        <li><strong>General AI (AGI):</strong> hypothetical AI with human-like general intelligence across domains.</li>
+        <li><strong>Superintelligence:</strong> hypothetical AI surpassing human intelligence in all domains.</li>
+        <li><strong>Strong AI:</strong> AI with genuine understanding and consciousness (philosophical).</li>
+      </ul>
+
+      <h4>9.3.2 The AI Hierarchy</h4>
+      <table>
+        <thead><tr><th>Type</th><th>Scope</th><th>Status</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Narrow AI</td><td>Single task</td><td>Deployed everywhere</td><td>Spam filter, translator, recommender</td></tr>
+          <tr><td>General AI (AGI)</td><td>Any task</td><td>Hypothetical</td><td>None yet</td></tr>
+          <tr><td>Superintelligence</td><td>Beyond human</td><td>Speculative</td><td>None</td></tr>
+          <tr><td>Self-aware AI</td><td>Self-model + consciousness</td><td>Speculative</td><td>None</td></tr>
+        </tbody>
+      </table>
+
+      <h4>9.3.3 Task Taxonomies</h4>
+      <p>Narrow AI can be classified along several axes:</p>
+      <table>
+        <thead><tr><th>Axis</th><th>Categories</th></tr></thead>
+        <tbody>
+          <tr><td>Input modality</td><td>Text, image, audio, video, sensor, multimodal</td></tr>
+          <tr><td>Output type</td><td>Classification, regression, ranking, generation, control</td></tr>
+          <tr><td>Learning paradigm</td><td>Supervised, unsupervised, self-supervised, reinforcement</td></tr>
+          <tr><td>Deployment</td><td>Cloud, edge, on-device, embedded</td></tr>
+          <tr><td>Interaction</td><td>Batch, real-time, streaming, interactive</td></tr>
+          <tr><td>Autonomy</td><td>Advisory, semi-autonomous, autonomous</td></tr>
+          <tr><td>Risk level</td><td>Low, medium, high, safety-critical</td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.4 Why Narrow AI Dominates</h3>
+      <ol>
+        <li><strong>Data availability:</strong> tasks have well-defined datasets and labels.</li>
+        <li><strong>Evaluation clarity:</strong> metrics are task-specific and measurable.</li>
+        <li><strong>Economic value:</strong> automation of specific tasks yields ROI.</li>
+        <li><strong>Engineering tractability:</strong> scope is bounded, so systems are tractable.</li>
+        <li><strong>Safety and governance:</strong> narrow scope is easier to audit and regulate.</li>
+        <li><strong>No general intelligence required:</strong> we don’t need AGI to solve most problems.</li>
+      </ol>
+
+      <h3>9.5 Architectural Patterns</h3>
+
+      <h4>9.5.1 Task-Specific Pipelines</h4>
+      <div class="flow">
+        <div class="node">Data Ingestion</div><span class="arrow">→</span>
+        <div class="node">Preprocessing</div><span class="arrow">→</span>
+        <div class="node">Feature Extraction</div><span class="arrow">→</span>
+        <div class="node">Model</div><span class="arrow">→</span>
+        <div class="node">Post-processing</div><span class="arrow">→</span>
+        <div class="node">Decision / Action</div>
+      </div>
+
+      <h4>9.5.2 Transfer Learning and Foundation Models</h4>
+      <p>Modern narrow AI often fine-tunes large pretrained models (BERT, GPT, CLIP, Whisper) for a specific task. This reduces data needs and improves accuracy but introduces dependency on the base model’s biases and limitations.</p>
+
+      <h4>9.5.3 Multi-Task and Multi-Modal Narrow AI</h4>
+      <p>A system can be narrow yet multi-task (e.g., a medical imaging model detecting multiple conditions) or multi-modal (e.g., a vision-language model answering questions about images). Narrowness refers to scope, not to the number of modalities.</p>
+
+      <h4>9.5.4 Human-in-the-Loop Narrow AI</h4>
+      <p>Advisory systems that recommend actions for human review. Common in healthcare, law, finance, and safety-critical domains.</p>
+
+      <h3>9.6 Evaluation of Narrow AI</h3>
+      <p>Because narrow AI is task-specific, evaluation must be task-specific. Common dimensions:</p>
+
+      <table>
+        <thead><tr><th>Dimension</th><th>Question</th><th>Example Metrics</th></tr></thead>
+        <tbody>
+          <tr><td>Accuracy</td><td>How often is it right?</td><td>Accuracy, F1, AUC, mAP, BLEU, WER</td></tr>
+          <tr><td>Robustness</td><td>Does it hold under shift?</td><td>OOD accuracy, adversarial accuracy</td></tr>
+          <tr><td>Calibration</td><td>Are probabilities trustworthy?</td><td>ECE, Brier score, reliability diagrams</td></tr>
+          <tr><td>Fairness</td><td>Does it harm groups?</td><td>DP, EO, subgroup AUC</td></tr>
+          <tr><td>Latency</td><td>Is it fast enough?</td><td>p50, p95, p99, TTFT, TPS</td></tr>
+          <tr><td>Cost</td><td>Is it economical?</td><td>$/1k inferences, TCO</td></tr>
+          <tr><td>Safety</td><td>Does it fail safely?</td><td>Incident rate, failsafe coverage</td></tr>
+          <tr><td>Explainability</td><td>Can we understand it?</td><td>SHAP, attention, counterfactuals</td></tr>
+          <tr><td>Privacy</td><td>Does it leak data?</td><td>Membership inference resistance</td></tr>
+          <tr><td>Governance</td><td>Is it auditable?</td><td>Lineage, versioning, logs</td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.7 Limitations and Risks</h3>
+      <ol>
+        <li><strong>Brittleness:</strong> small distribution shifts cause large errors.</li>
+        <li><strong>Spurious correlations:</strong> models latch onto shortcuts.</li>
+        <li><strong>Bias:</strong> historical data encodes historical prejudice.</li>
+        <li><strong>Over-trust:</strong> users defer to confident but wrong outputs.</li>
+        <li><strong>Drift:</strong> the world changes; performance decays.</li>
+        <li><strong>Scope creep:</strong> using a narrow model outside its domain.</li>
+        <li><strong>Feedback loops:</strong> predictions shape future data.</li>
+        <li><strong>Adversarial vulnerability:</strong> small perturbations cause failures.</li>
+        <li><strong>Lack of common sense:</strong> no world model.</li>
+        <li><strong>Accountability gaps:</strong> who is responsible when it fails?</li>
+      </ol>
+
+      <div class="callout warn">
+        <strong>Warning.</strong> The most common failure mode of narrow AI is not the model — it is <em>misuse outside its intended scope</em>. Always document the intended use, out-of-scope uses, and failure modes.
+      </div>
+
+      <h3>9.8 From Narrow to General: The Realistic Path</h3>
+      <p>AGI is not a single breakthrough; it is a research program. Current progress suggests a gradual path:</p>
+      <ul>
+        <li><strong>Multi-task models:</strong> one model, many tasks (e.g., GPT-4, Gemini).</li>
+        <li><strong>Foundation models:</strong> broad pretraining, task fine-tuning.</li>
+        <li><strong>Tool use:</strong> models calling APIs, databases, and other models.</li>
+        <li><strong>Agents:</strong> planning, memory, reflection, and action.</li>
+        <li><strong>World models:</strong> learned simulators for reasoning.</li>
+        <li><strong>Continual learning:</strong> learning without forgetting.</li>
+        <li><strong>Meta-learning:</strong> learning to learn.</li>
+      </ul>
+      <p>Even multi-task foundation models remain narrow in a deep sense: they lack robust common sense, grounded understanding, and reliable cross-domain reasoning. The gap to AGI is real and unresolved.</p>
+
+      <h3>9.9 Applications of Narrow AI</h3>
+      <table>
+        <thead><tr><th>Domain</th><th>Narrow AI System</th><th>Task</th></tr></thead>
+        <tbody>
+          <tr><td>Healthcare</td><td>Diabetic retinopathy detector</td><td>Image classification</td></tr>
+          <tr><td>Finance</td><td>Fraud detection</td><td>Anomaly detection</td></tr>
+          <tr><td>Retail</td><td>Recommender</td><td>Ranking</td></tr>
+          <tr><td>Manufacturing</td><td>Predictive maintenance</td><td>Time series forecasting</td></tr>
+          <tr><td>Transportation</td><td>Lane keeping</td><td>Control</td></tr>
+          <tr><td>Security</td><td>Face recognition</td><td>Verification</td></tr>
+          <tr><td>Language</td><td>Machine translation</td><td>Seq2seq generation</td></tr>
+          <tr><td>Speech</td><td>Transcription</td><td>Speech recognition</td></tr>
+          <tr><td>Vision</td><td>Object detection</td><td>Detection</td></tr>
+          <tr><td>Games</td><td>AlphaGo</td><td>Policy + value</td></tr>
+        </tbody>
+      </table>
+
+      <h3>9.10 Case Study: Diabetic Retinopathy Screening</h3>
+      <p><strong>Scenario.</strong> A narrow AI system screens retinal images for diabetic retinopathy.</p>
+      <p><strong>Scope.</strong> Binary classification: referable vs. non-referable DR. Intended use: screening, not diagnosis. Population: adults with diabetes, images from approved cameras.</p>
+      <p><strong>Data.</strong> 100k labeled retinal images, expert adjudicated. Stratified by age, sex, ethnicity, camera type.</p>
+      <p><strong>Model.</strong> CNN ensemble with calibration and uncertainty estimation.</p>
+      <p><strong>Evaluation.</strong> Sensitivity 92%, specificity 88%, AUC 0.96. Calibration ECE 0.03. Subgroup AUC 0.94–0.97.</p>
+      <p><strong>Deployment.</strong> Human-in-the-loop: AI triages, ophthalmologist confirms. Failsafe: uncertain cases escalated.</p>
+      <p><strong>Governance.</strong> FDA clearance, post-market monitoring, drift detection, incident reporting.</p>
+      <p><strong>Limitations.</strong> Not validated for other eye diseases, pediatric patients, or unapproved cameras. Performance drops on low-quality images.</p>
+
+      <h3>9.11 Summary</h3>
+      <p>Narrow AI is the AI we have: task-specific, powerful, and fragile. It dominates because it is tractable, evaluable, and economically valuable. Its risks — brittleness, bias, drift, over-trust — must be managed through scope definition, evaluation, human oversight, and governance. AGI remains hypothetical; narrow AI is the professional reality.</p>
+
+      <div class="keytakeaway">
+        <strong>Key takeaway.</strong> The future of AI is not only about building general intelligence — it is about deploying narrow intelligence responsibly, at scale, and with measurable impact.
+      </div>
+
+      <h3>9.12 Exercises</h3>
+      <ol>
+        <li>Choose three narrow AI systems you use. Identify their scope, data, metrics, and failure modes.</li>
+        <li>Write an intended-use statement for a narrow AI system in your domain.</li>
+        <li>Design an evaluation plan covering accuracy, robustness, fairness, latency, and cost.</li>
+        <li>Analyze a case where narrow AI failed due to scope creep.</li>
+        <li>Compare two foundation models fine-tuned for the same narrow task.</li>
+        <li>Debate: can narrow AI systems collectively achieve AGI-like capability?</li>
+        <li>Propose a governance checklist for deploying narrow AI in healthcare.</li>
+        <li>Reflect: what tasks should remain human-only, even if narrow AI could do them?</li>
+      </ol>
+
+      <h3>9.13 Glossary</h3>
+      <ul>
+        <li><strong>Narrow AI:</strong> AI for specific tasks.</li>
+        <li><strong>Weak AI:</strong> Synonym for narrow AI.</li>
+        <li><strong>AGI:</strong> Artificial General Intelligence.</li>
+        <li><strong>Superintelligence:</strong> Beyond human AI.</li>
+        <li><strong>Foundation model:</strong> Large pretrained model.</li>
+        <li><strong>Transfer learning:</strong> Reusing pretrained knowledge.</li>
+        <li><strong>Scope creep:</strong> Using AI outside intended domain.</li>
+        <li><strong>OOD:</strong> Out-of-distribution.</li>
+        <li><strong>ECE:</strong> Expected Calibration Error.</li>
+      </ul>
+    </section>
+
+    <!-- ============ CHAPTER 10 ============ -->
+    <section class="chapter" id="tools">
+      <div class="chapter-head">
+        <span class="chapter-label">Chapter 10</span>
+        <h2 class="chapter-title">The Current AI Tools Landscape: Capability Differentiation Across Functional Areas</h2>
+        <blockquote>
+          <p><strong>Guiding questions:</strong> What AI tools exist today? How do they differ across functional areas? Which tool for which task? What are the trade-offs in capability, cost, privacy, and integration? How do professionals choose wisely?</p>
+        </blockquote>
+      </div>
+
+      <h3>Abstract</h3>
+      <p>The AI tool landscape evolves weekly. This chapter provides a structured, durable map of current AI tools, organized by functional area: general assistants, coding, writing, research, image, video, audio, data, design, productivity, and agents. For each area, we compare leading tools across capability, cost, privacy, integration, and limitations. The goal is not to be exhaustive — impossible in a fast-moving field — but to give professionals a <em>mental model</em> for evaluating and selecting tools.</p>
+
+      <h3>10.1 Learning Objectives</h3>
+      <ol>
+        <li>Map the AI tool landscape by functional area.</li>
+        <li>Compare tools across capability, cost, privacy, and integration.</li>
+        <li>Match tools to tasks and constraints.</li>
+        <li>Recognize the trade-offs between generalist and specialist tools.</li>
+        <li>Avoid common selection mistakes.</li>
+        <li>Build a personal or organizational AI tool stack.</li>
+      </ol>
+
+      <h3>10.2 How to Read This Landscape</h3>
+      <p>Tools are compared across six dimensions:</p>
+      <table>
+        <thead><tr><th>Dimension</th><th>What to ask</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Capability</strong></td><td>How well does it do the task? Benchmarks, real-world quality.</td></tr>
+          <tr><td><strong>Cost</strong></td><td>Free, subscription, API, enterprise. Hidden costs?</td></tr>
+          <tr><td><strong>Privacy</strong></td><td>Where does data go? Trained on your data? On-prem option?</td></tr>
+          <tr><td><strong>Integration</strong></td><td>APIs, plugins, IDE, browser, mobile, offline?</td></tr>
+          <tr><td><strong>Reliability</strong></td><td>Uptime, rate limits, consistency.</td></tr>
+          <tr><td><strong>Governance</strong></td><td>Audit logs, SSO, compliance (SOC 2, HIPAA, GDPR).</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.3 General-Purpose Assistants</h3>
+      <p>Conversational AI for writing, reasoning, Q&amp;A, and analysis.</p>
+
+      <div class="tabs">
+        <div class="tab-nav">
+          <button class="active" data-tab="t-llm-1">Comparison</button>
+          <button data-tab="t-llm-2">Strengths</button>
+          <button data-tab="t-llm-3">Selection Guide</button>
+        </div>
+        <div class="tab-panel active" id="t-llm-1">
+          <table>
+            <thead><tr><th>Tool</th><th>Vendor</th><th>Strengths</th><th>Access</th></tr></thead>
+            <tbody>
+              <tr><td>ChatGPT (GPT-4o/o1)</td><td>OpenAI</td><td>Versatile, plugins, code, vision, voice</td><td>Free + Plus</td></tr>
+              <tr><td>Claude (3.5/4)</td><td>Anthropic</td><td>Long context, writing, safety, coding</td><td>Free + Pro</td></tr>
+              <tr><td>Gemini (1.5/2.0)</td><td>Google</td><td>Multimodal, Workspace integration, long context</td><td>Free + Advanced</td></tr>
+              <tr><td>Llama (3.x)</td><td>Meta</td><td>Open weights, self-hostable</td><td>Open</td></tr>
+              <tr><td>Mistral</td><td>Mistral AI</td><td>Efficient, open weights</td><td>Free + API</td></tr>
+              <tr><td>DeepSeek</td><td>DeepSeek</td><td>Strong reasoning, low cost</td><td>Free + API</td></tr>
+              <tr><td>Grok</td><td>xAI</td><td>Real-time X data</td><td>Subscription</td></tr>
+              <tr><td>Perplexity</td><td>Perplexity</td><td>Search-grounded answers with citations</td><td>Free + Pro</td></tr>
+              <tr><td>Copilot</td><td>Microsoft</td><td>Office/Windows integration</td><td>M365</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-panel" id="t-llm-2">
+          <ul>
+            <li><strong>ChatGPT:</strong> broadest ecosystem, best generalist.</li>
+            <li><strong>Claude:</strong> best for long documents, nuanced writing, safe coding.</li>
+            <li><strong>Gemini:</strong> best for Google ecosystem and multimodal.</li>
+            <li><strong>Llama/Mistral:</strong> best for privacy-sensitive self-hosting.</li>
+            <li><strong>Perplexity:</strong> best for research with citations.</li>
+          </ul>
+        </div>
+        <div class="tab-panel" id="t-llm-3">
+          <p><strong>Choose by constraint:</strong></p>
+          <ul>
+            <li>Privacy-critical → self-hosted Llama/Mistral.</li>
+            <li>Research with sources → Perplexity, Elicit.</li>
+            <li>Office productivity → Microsoft Copilot, Gemini.</li>
+            <li>Long-document analysis → Claude.</li>
+            <li>Broadest capability → ChatGPT, Gemini.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>10.4 Coding and Software Engineering</h3>
+      <table>
+        <thead><tr><th>Tool</th><th>Type</th><th>Strengths</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>GitHub Copilot</td><td>IDE assistant</td><td>Autocomplete, chat, PR review</td><td>Teams in GitHub</td></tr>
+          <tr><td>Cursor</td><td>AI-first IDE</td><td>Codebase-aware chat, refactor</td><td>Power users</td></tr>
+          <tr><td>Claude Code</td><td>Terminal agent</td><td>Repo-wide tasks, refactors</td><td>Complex codebases</td></tr>
+          <tr><td>Codeium / Windsurf</td><td>IDE assistant</td><td>Free tier, multi-IDE</td><td>Individual devs</td></tr>
+          <tr><td>Tabnine</td><td>IDE assistant</td><td>Privacy, on-prem</td><td>Enterprise</td></tr>
+          <tr><td>Replit AI</td><td>Cloud IDE</td><td>Full-stack prototyping</td><td>Education, prototypes</td></tr>
+          <tr><td>Amazon Q Developer</td><td>IDE + AWS</td><td>AWS integration</td><td>AWS shops</td></tr>
+          <tr><td>Devin / OpenHands</td><td>Autonomous agents</td><td>End-to-end tasks</td><td>Experimental</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <strong>Tip.</strong> For coding, the biggest lever is not the model — it is <em>context</em>. Tools that understand your whole codebase (Cursor, Claude Code) outperform autocomplete-only tools on complex tasks.
+      </div>
+
+      <h3>10.5 Writing, Research, and Knowledge</h3>
+      <table>
+        <thead><tr><th>Area</th><th>Tools</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Writing</td><td>ChatGPT, Claude, Jasper, Copy.ai, Grammarly</td><td>Drafting, editing, tone</td></tr>
+          <tr><td>Academic research</td><td>Elicit, Consensus, Scite, Semantic Scholar</td><td>Literature review, citations</td></tr>
+          <tr><td>Note-taking</td><td>Notion AI, Obsidian + plugins, Mem</td><td>Knowledge management</td></tr>
+          <tr><td>PDF/document Q&amp;A</td><td>ChatPDF, Claude, NotebookLM</td><td>Document analysis</td></tr>
+          <tr><td>Translation</td><td>DeepL, Google Translate, GPT-4</td><td>Multilingual content</td></tr>
+          <tr><td>Summarization</td><td>Claude, ChatGPT, Otter, Fireflies</td><td>Meetings, reports</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.6 Image, Video, and Audio</h3>
+      <div class="tabs">
+        <div class="tab-nav">
+          <button class="active" data-tab="t-media-1">Image</button>
+          <button data-tab="t-media-2">Video</button>
+          <button data-tab="t-media-3">Audio</button>
+        </div>
+        <div class="tab-panel active" id="t-media-1">
+          <table>
+            <thead><tr><th>Tool</th><th>Strengths</th><th>Best For</th></tr></thead>
+            <tbody>
+              <tr><td>Midjourney</td><td>Aesthetic quality, style</td><td>Artistic, marketing</td></tr>
+              <tr><td>DALL·E 3</td><td>Prompt adherence, safety</td><td>General, integrated</td></tr>
+              <tr><td>Stable Diffusion</td><td>Open, controllable, LoRA</td><td>Custom, self-host</td></tr>
+              <tr><td>Adobe Firefly</td><td>Commercial-safe, Photoshop</td><td>Enterprise creative</td></tr>
+              <tr><td>Ideogram</td><td>Text in images</td><td>Logos, posters</td></tr>
+              <tr><td>Flux</td><td>High fidelity, open</td><td>Advanced users</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-panel" id="t-media-2">
+          <table>
+            <thead><tr><th>Tool</th><th>Strengths</th><th>Best For</th></tr></thead>
+            <tbody>
+              <tr><td>Sora</td><td>Realism, long clips</td><td>Cinematic</td></tr>
+              <tr><td>Runway</td><td>Editing, effects</td><td>Filmmaking</td></tr>
+              <tr><td>Pika</td><td>Short clips, easy</td><td>Social media</td></tr>
+              <tr><td>Kling</td><td>Motion quality</td><td>Realistic motion</td></tr>
+              <tr><td>Veo</td><td>Google integration</td><td>Google ecosystem</td></tr>
+              <tr><td>Luma Dream Machine</td><td>Fast, accessible</td><td>Prototyping</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-panel" id="t-media-3">
+          <table>
+            <thead><tr><th>Tool</th><th>Strengths</th><th>Best For</th></tr></thead>
+            <tbody>
+              <tr><td>ElevenLabs</td><td>Voice cloning, quality</td><td>Audiobooks, dubbing</td></tr>
+              <tr><td>Whisper</td><td>Open, accurate ASR</td><td>Transcription</td></tr>
+              <tr><td>Suno</td><td>Music generation</td><td>Songs, jingles</td></tr>
+              <tr><td>Udio</td><td>Music quality</td><td>Music production</td></tr>
+              <tr><td>Murf</td><td>Voiceover</td><td>eLearning, ads</td></tr>
+              <tr><td>Descript</td><td>Editing via text</td><td>Podcast, video</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>10.7 Data, Analytics, and Business Intelligence</h3>
+      <table>
+        <thead><tr><th>Tool</th><th>Use Case</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>ChatGPT Advanced Data Analysis</td><td>Code + analysis + charts</td><td>General purpose</td></tr>
+          <tr><td>Julius AI</td><td>Data analysis, charts</td><td>Spreadsheet-friendly</td></tr>
+          <tr><td>Hex</td><td>Notebooks + AI</td><td>Team data science</td></tr>
+          <tr><td>Deepnote</td><td>Collaborative notebooks</td><td>Data teams</td></tr>
+          <tr><td>Tableau Pulse</td><td>BI + AI insights</td><td>Enterprise BI</td></tr>
+          <tr><td>Power BI Copilot</td><td>BI + AI</td><td>Microsoft ecosystem</td></tr>
+          <tr><td>ThoughtSpot</td><td>Search-driven analytics</td><td>Business users</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.8 Design, Productivity, and Agents</h3>
+      <table>
+        <thead><tr><th>Area</th><th>Tools</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Design</td><td>Figma AI, Canva AI, Adobe Firefly, Uizard</td><td>UI, graphics, branding</td></tr>
+          <tr><td>Productivity</td><td>Notion AI, Microsoft Copilot, Google Workspace AI</td><td>Docs, email, meetings</td></tr>
+          <tr><td>Automation</td><td>Zapier AI, Make, n8n</td><td>Workflow automation</td></tr>
+          <tr><td>Agents</td><td>AutoGPT, CrewAI, LangChain, OpenAI Assistants</td><td>Multi-step tasks</td></tr>
+          <tr><td>Voice assistants</td><td>Siri, Alexa, Google Assistant</td><td>Consumer</td></tr>
+          <tr><td>Customer support</td><td>Intercom Fin, Zendesk AI, Forethought</td><td>Ticketing</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.9 Capability Differentiation: A Functional Matrix</h3>
+      <p>Not all tools are equally good at all tasks. This matrix summarizes rough capability by functional area (subject to rapid change):</p>
+      <table>
+        <thead>
+          <tr><th>Function</th><th>Best-in-class</th><th>Strong alternatives</th><th>Weak at</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>General reasoning</td><td>GPT-4o, Claude 3.5/4</td><td>Gemini, DeepSeek</td><td>Narrow tools</td></tr>
+          <tr><td>Long-document analysis</td><td>Claude</td><td>Gemini, NotebookLM</td><td>Basic chatbots</td></tr>
+          <tr><td>Coding (repo-wide)</td><td>Claude Code, Cursor</td><td>Copilot, Windsurf</td><td>Autocomplete only</td></tr>
+          <tr><td>Research with citations</td><td>Perplexity, Elicit</td><td>Consensus, Scite</td><td>Ungrounded LLMs</td></tr>
+          <tr><td>Image aesthetics</td><td>Midjourney</td><td>Flux, DALL·E</td><td>Basic generators</td></tr>
+          <tr><td>Image text rendering</td><td>Ideogram</td><td>DALL·E 3</td><td>Early models</td></tr>
+          <tr><td>Video realism</td><td>Sora, Kling</td><td>Runway, Veo</td><td>Early tools</td></tr>
+          <tr><td>Voice cloning</td><td>ElevenLabs</td><td>PlayHT, Resemble</td><td>Basic TTS</td></tr>
+          <tr><td>Music generation</td><td>Suno, Udio</td><td>MusicLM</td><td>MIDI-only tools</td></tr>
+          <tr><td>Data analysis</td><td>ChatGPT ADA, Hex</td><td>Julius, Deepnote</td><td>Generic chatbots</td></tr>
+          <tr><td>Enterprise privacy</td><td>Tabnine, Azure OpenAI</td><td>Self-hosted Llama</td><td>Consumer tools</td></tr>
+          <tr><td>Agents / automation</td><td>CrewAI, LangGraph</td><td>AutoGPT, Assistants</td><td>Single-turn tools</td></tr>
+        </tbody>
+      </table>
+
+      <h3>10.10 Common Selection Mistakes</h3>
+      <ol>
+        <li><strong>Chasing benchmarks:</strong> leaderboard scores ≠ your task performance.</li>
+        <li><strong>Ignoring privacy:</strong> sending sensitive data to consumer tools.</li>
+        <li><strong>Over-tooling:</strong> adopting too many overlapping tools.</li>
+        <li><strong>Under-integrating:</strong> not connecting AI to existing workflows.</li>
+        <li><strong>Ignoring cost:</strong> API bills can explode at scale.</li>
+        <li><strong>No evaluation:</strong> adopting without measuring on your data.</li>
+        <li><strong>No governance:</strong> no logging, no policy, no audit.</li>
+        <li><strong>Vendor lock-in:</strong> building on non-portable APIs.</li>
+      </ol>
+
+      <h3>10.11 Building Your AI Stack</h3>
+      <p>A pragmatic framework:</p>
+      <div class="flow">
+        <div class="node">1. Map tasks</div><span class="arrow">→</span>
+        <div class="node">2. Define constraints</div><span class="arrow">→</span>
+        <div class="node">3. Shortlist tools</div><span class="arrow">→</span>
+        <div class="node">4. Evaluate on your data</div><span class="arrow">→</span>
+        <div class="node">5. Pilot</div><span class="arrow">→</span>
+        <div class="node">6. Scale with governance</div>
+      </div>
+
+      <h3>10.12 Summary</h3>
+      <p>The AI tool landscape is broad, fast-moving, and uneven. Capability varies dramatically by functional area. Professionals should choose tools based on task fit, constraints, and evaluation — not hype. A thoughtful stack, governed well, is worth more than a dozen tools adopted randomly.</p>
+
+      <div class="keytakeaway">
+        <strong>Key takeaway.</strong> There is no “best AI tool.” There is only the best tool for a specific task under specific constraints — and that requires evaluation.
+      </div>
+
+      <h3>10.13 Exercises</h3>
+      <ol>
+        <li>Map your professional tasks to the functional areas in this chapter.</li>
+        <li>Shortlist three tools for your top task. Compare on six dimensions.</li>
+        <li>Identify privacy risks in your current tool stack.</li>
+        <li>Design a pilot for a new AI tool in your team.</li>
+        <li>Write a policy for AI tool usage in your organization.</li>
+        <li>Estimate the monthly cost of an AI tool at 10x your current usage.</li>
+        <li>Choose between a generalist and specialist tool for a task. Justify.</li>
+        <li>Reflect: which tool has most changed your workflow, and why?</li>
+      </ol>
+    </section>
+
+    <!-- ============ CHAPTER 11 ============ -->
+    <section class="chapter" id="evaluation">
+      <div class="chapter-head">
+        <span class="chapter-label">Chapter 11</span>
+        <h2 class="chapter-title">AI Tools Evaluation and Efficiency Analysis</h2>
+        <blockquote>
+          <p><strong>Guiding questions:</strong> How do I know if an AI tool is any good? How do I compare tools fairly? How do I measure efficiency and ROI? What frameworks build confidence? What pitfalls should I avoid?</p>
+        </blockquote>
+      </div>
+
+      <h3>Abstract</h3>
+      <p>Choosing and using AI tools confidently requires systematic evaluation. This chapter provides a rigorous, practical framework for evaluating AI tools across quality, reliability, efficiency, cost, privacy, and governance. It introduces scorecards, benchmarks, A/B testing, cost modeling, and ROI analysis. The goal is to replace hype and anecdote with evidence, so readers can adopt AI tools with justified confidence.</p>
+
+      <h3>11.1 Learning Objectives</h3>
+      <ol>
+        <li>Define evaluation dimensions for AI tools.</li>
+        <li>Select appropriate benchmarks and metrics.</li>
+        <li>Design an evaluation protocol for your context.</li>
+        <li>Measure efficiency: latency, throughput, cost, energy.</li>
+        <li>Calculate ROI and total cost of ownership.</li>
+        <li>Compare tools fairly using scorecards.</li>
+        <li>Detect bias, drift, and safety issues.</li>
+        <li>Build organizational confidence through governance.</li>
+      </ol>
+
+      <h3>11.2 The Evaluation Framework</h3>
+      <p>Evaluate AI tools across <strong>nine dimensions</strong>:</p>
+      <table>
+        <thead><tr><th>#</th><th>Dimension</th><th>Key Questions</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Task Quality</td><td>How well does it perform the task?</td></tr>
+          <tr><td>2</td><td>Reliability</td><td>Is it consistent? Does it fail gracefully?</td></tr>
+          <tr><td>3</td><td>Efficiency</td><td>How fast, cheap, and resource-light?</td></tr>
+          <tr><td>4</td><td>Scalability</td><td>Does it hold at 10x, 100x volume?</td></tr>
+          <tr><td>5</td><td>Security &amp; Privacy</td><td>Where does data go? Who can access it?</td></tr>
+          <tr><td>6</td><td>Fairness</td><td>Does it perform equitably across groups?</td></tr>
+          <tr><td>7</td><td>Explainability</td><td>Can you understand and audit decisions?</td></tr>
+          <tr><td>8</td><td>Integration</td><td>How well does it fit existing workflows?</td></tr>
+          <tr><td>9</td><td>Governance</td><td>Logging, compliance, accountability?</td></tr>
+        </tbody>
+      </table>
+
+      <h3>11.3 Task Quality Metrics</h3>
+      <div class="tabs">
+        <div class="tab-nav">
+          <button class="active" data-tab="t-metrics-1">Classification</button>
+          <button data-tab="t-metrics-2">Generation</button>
+          <button data-tab="t-metrics-3">Ranking</button>
+          <button data-tab="t-metrics-4">Regression</button>
+        </div>
+        <div class="tab-panel active" id="t-metrics-1">
+          <ul>
+            <li><strong>Accuracy:</strong> overall correctness.</li>
+            <li><strong>Precision / Recall / F1:</strong> balance of errors.</li>
+            <li><strong>AUC-ROC:</strong> ranking quality across thresholds.</li>
+            <li><strong>PR-AUC:</strong> better for imbalanced classes.</li>
+            <li><strong>Matthews correlation:</strong> balanced metric.</li>
+            <li><strong>Confusion matrix:</strong> error breakdown.</li>
+          </ul>
+        </div>
+        <div class="tab-panel" id="t-metrics-2">
+          <ul>
+            <li><strong>BLEU / ROUGE / METEOR:</strong> text overlap.</li>
+            <li><strong>BERTScore:</strong> semantic similarity.</li>
+            <li><strong>Perplexity:</strong> language model quality.</li>
+            <li><strong>FID / IS / CLIP:</strong> image quality.</li>
+            <li><strong>Human evaluation:</strong> gold standard.</li>
+            <li><strong>LLM-as-judge:</strong> scalable, with caveats.</li>
+            <li><strong>Faithfulness / factuality:</strong> grounding.</li>
+          </ul>
+        </div>
+        <div class="tab-panel" id="t-metrics-3">
+          <ul>
+            <li><strong>NDCG:</strong> normalized discounted cumulative gain.</li>
+            <li><strong>MRR:</strong> mean reciprocal rank.</li>
+            <li><strong>MAP:</strong> mean average precision.</li>
+            <li><strong>Hit rate @ k.</strong></li>
+          </ul>
+        </div>
+        <div class="tab-panel" id="t-metrics-4">
+          <ul>
+            <li><strong>MAE / MSE / RMSE:</strong> error magnitude.</li>
+            <li><strong>MAPE / sMAPE:</strong> percentage error.</li>
+            <li><strong>MASE:</strong> scaled error.</li>
+            <li><strong>R²:</strong> variance explained.</li>
+            <li><strong>Quantile loss / CRPS:</strong> probabilistic.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>11.4 Efficiency Analysis</h3>
+
+      <h4>11.4.1 Latency Metrics</h4>
+      <table>
+        <thead><tr><th>Metric</th><th>Meaning</th><th>Typical Target</th></tr></thead>
+        <tbody>
+          <tr><td>TTFT</td><td>Time to first token</td><td>&lt;500 ms interactive</td></tr>
+          <tr><td>TPS</td><td>Tokens per second</td><td>&gt;30 for chat</td></tr>
+          <tr><td>p50 / p95 / p99</td><td>Latency percentiles</td><td>Depends on SLA</td></tr>
+          <tr><td>Throughput</td><td>Requests/sec</td><td>Scales with infra</td></tr>
+          <tr><td>Cold start</td><td>First request latency</td><td>&lt;2 s serverless</td></tr>
+        </tbody>
+      </table>
+
+      <h4>11.4.2 Cost Modeling</h4>
+      <p>Total Cost of Ownership (TCO):</p>
+      \[
+      \text{TCO} = C_{\text{API}} + C_{\text{infra}} + C_{\text{integration}} + C_{\text{training}} + C_{\text{ops}} + C_{\text{risk}}
+      \]
+
+      <p>Example API cost calculation:</p>
+      <pre><code>Monthly cost = (input_tokens × price_in + output_tokens × price_out) × requests
+             = (2,000 × $0.003 + 500 × $0.015) / 1000 × 100,000
+             = ($6 + $7.5) × 100
+             = $1,350 / month</code></pre>
+
+      <h4>11.4.3 Energy and Sustainability</h4>
+      <ul>
+        <li>Inference energy per request.</li>
+        <li>Carbon intensity of data center region.</li>
+        <li>Model size vs. accuracy trade-off.</li>
+        <li>Quantization, distillation, pruning.</li>
+      </ul>
+
+      <h4>11.4.4 Efficiency Levers</h4>
+      <ul>
+        <li><strong>Model choice:</strong> small models for simple tasks.</li>
+        <li><strong>Caching:</strong> reuse frequent responses.</li>
+        <li><strong>Batching:</strong> amortize overhead.</li>
+        <li><strong>Quantization:</strong> 8-bit / 4-bit inference.</li>
+        <li><strong>Distillation:</strong> small model mimics large.</li>
+        <li><strong>Routing:</strong> send easy queries to cheap models.</li>
+        <li><strong>Prompt optimization:</strong> shorter prompts, fewer tokens.</li>
+        <li><strong>Streaming:</strong> improve perceived latency.</li>
+      </ul>
+
+      <h3>11.5 ROI Analysis</h3>
+      <p>Return on Investment:</p>
+      \[
+      \text{ROI} = \frac{\text{Value Gained} - \text{Total Cost}}{\text{Total Cost}} \times 100\%
+      \]
+
+      <p>Value sources:</p>
+      <ul>
+        <li><strong>Time saved:</strong> hours × loaded hourly cost.</li>
+        <li><strong>Quality improvement:</strong> fewer errors, better outcomes.</li>
+        <li><strong>Revenue uplift:</strong> conversions, retention.</li>
+        <li><strong>Risk reduction:</strong> avoided incidents, compliance.</li>
+        <li><strong>Scale:</strong> more output without more headcount.</li>
+      </ul>
+
+      <div class="callout success">
+        <strong>Example ROI.</strong> A support team of 20 agents handles 10,000 tickets/month. AI triage reduces handle time by 25%. At $30/hour loaded, savings = 20 × 160 hrs × 0.25 × $30 = $24,000/month. AI cost = $2,000/month. ROI = ($24,000 − $2,000) / $2,000 = 1,100%.
+      </div>
+
+      <h3>11.6 Evaluation Protocol</h3>
+      <p>A rigorous protocol:</p>
+      <ol>
+        <li><strong>Define task and success criteria</strong> before evaluating.</li>
+        <li><strong>Build a gold-standard test set</strong> from your domain.</li>
+        <li><strong>Choose metrics</strong> aligned with business value.</li>
+        <li><strong>Run all candidate tools</strong> on the same test set.</li>
+        <li><strong>Blind evaluation</strong> where possible (human raters).</li>
+        <li><strong>Measure efficiency</strong> (latency, cost, throughput).</li>
+        <li><strong>Test edge cases</strong> and adversarial inputs.</li>
+        <li><strong>Check fairness</strong> across subgroups.</li>
+        <li><strong>Pilot in production</strong> with shadow mode.</li>
+        <li><strong>Monitor continuously</strong> after deployment.</li>
+      </ol>
+
+      <h3>11.7 Comparison Scorecard</h3>
+      <p>Use a weighted scorecard to compare tools. Example:</p>
+      <table>
+        <thead>
+          <tr><th>Criterion</th><th>Weight</th><th>Tool A</th><th>Tool B</th><th>Tool C</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Task quality</td><td>30%</td><td>9</td><td>8</td><td>7</td></tr>
+          <tr><td>Reliability</td><td>15%</td><td>8</td><td>9</td><td>8</td></tr>
+          <tr><td>Latency</td><td>10%</td><td>7</td><td>8</td><td>9</td></tr>
+          <tr><td>Cost</td><td>15%</td><td>6</td><td>7</td><td>9</td></tr>
+          <tr><td>Privacy</td><td>10%</td><td>5</td><td>8</td><td>7</td></tr>
+          <tr><td>Integration</td><td>10%</td><td>9</td><td>7</td><td>6</td></tr>
+          <tr><td>Governance</td><td>10%</td><td>7</td><td>9</td><td>7</td></tr>
+          <tr><td><strong>Weighted total</strong></td><td>100%</td><td><strong>7.55</strong></td><td><strong>7.90</strong></td><td><strong>7.60</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <strong>Note.</strong> Weights depend on context. A startup may weight cost heavily; a hospital may weight privacy and governance heavily. Always document weights and rationale.
+      </div>
+
+      <h3>11.8 Bias, Drift, and Safety Audits</h3>
+      <h5>Bias Audit</h5>
+      <ul>
+        <li>Disaggregate metrics by group.</li>
+        <li>Check for disparate impact.</li>
+        <li>Inspect training data representation.</li>
+        <li>Test with counterfactual inputs.</li>
+      </ul>
+      <h5>Drift Monitoring</h5>
+      <ul>
+        <li>Monitor input distribution (PSI, KL divergence).</li>
+        <li>Monitor output distribution.</li>
+        <li>Monitor performance on recent labels.</li>
+        <li>Set alerts and retraining triggers.</li>
+      </ul>
+      <h5>Safety Audit</h5>
+      <ul>
+        <li>Adversarial testing (prompt injection, jailbreaks).</li>
+        <li>Red-teaming with domain experts.</li>
+        <li>Failure mode analysis (FMEA).</li>
+        <li>Incident response plan.</li>
+      </ul>
+
+      <h3>11.9 Building Confidence</h3>
+      <p>Confidence in AI tools comes from evidence, not hype. Build it by:</p>
+      <ul>
+        <li><strong>Evaluating on your data</strong>, not benchmarks alone.</li>
+        <li><strong>Measuring what matters</strong> to your business.</li>
+        <li><strong>Documenting assumptions</strong> and limitations.</li>
+        <li><strong>Testing edge cases</strong> and adversarial inputs.</li>
+        <li><strong>Monitoring in production</strong> with alerts.</li>
+        <li><strong>Involving domain experts</strong> in evaluation.</li>
+        <li><strong>Keeping humans in the loop</strong> for high-stakes decisions.</li>
+        <li><strong>Auditing regularly</strong> for bias, drift, and safety.</li>
+      </ul>
+
+      <h3>11.10 Practical Evaluation Checklist</h3>
+      <div class="accordion" id="checklists">
+        <div class="acc-item">
+          <button class="acc-head">Before Adoption</button>
+          <div class="acc-body">
+            <ul>
+              <li>Task clearly defined with success criteria.</li>
+              <li>Gold-standard test set built from your domain.</li>
+              <li>Metrics aligned with business value.</li>
+              <li>Privacy and security review completed.</li>
+              <li>Cost model estimated at expected scale.</li>
+              <li>Integration requirements documented.</li>
+              <li>Vendor governance reviewed (SOC 2, GDPR, etc.).</li>
+              <li>Alternatives compared on scorecard.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">During Pilot</button>
+          <div class="acc-body">
+            <ul>
+              <li>Shadow mode deployed alongside existing process.</li>
+              <li>Human raters evaluate outputs blind.</li>
+              <li>Edge cases and adversarial inputs tested.</li>
+              <li>Subgroup fairness measured.</li>
+              <li>Latency and cost tracked in real conditions.</li>
+              <li>User feedback collected systematically.</li>
+              <li>Failure modes documented.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">After Deployment</button>
+          <div class="acc-body">
+            <ul>
+              <li>Continuous monitoring of quality, drift, cost.</li>
+              <li>Alerting on anomalies and degradation.</li>
+              <li>Periodic bias and safety audits.</li>
+              <li>Incident response plan active.</li>
+              <li>User training and documentation available.</li>
+              <li>Feedback loop into model improvement.</li>
+              <li>Governance review at defined intervals.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3>11.11 Summary</h3>
+      <p>Evaluating AI tools requires rigor: task quality, reliability, efficiency, cost, privacy, fairness, and governance. Efficiency analysis covers latency, throughput, cost, and energy. ROI connects AI to business value. Confidence comes from evidence, monitoring, and governance — not vendor claims.</p>
+
+      <div class="keytakeaway">
+        <strong>Key takeaway.</strong> Trust in AI is earned through evaluation, not assumed from marketing. Measure, compare, monitor, and govern.
+      </div>
+
+      <h3>11.12 Exercises</h3>
+      <ol>
+        <li>Build a scorecard for comparing three AI tools in your domain.</li>
+        <li>Estimate monthly API cost for your expected usage.</li>
+        <li>Calculate ROI for an AI tool you use or plan to use.</li>
+        <li>Design a bias audit for a classification tool.</li>
+        <li>Write a drift monitoring plan.</li>
+        <li>Run a red-team exercise on a generative tool.</li>
+        <li>Compare two tools on your own test set.</li>
+        <li>Reflect: what evidence would make you trust an AI tool more?</li>
+      </ol>
+    </section>
+
+    <!-- ============ ACADEMIC REVIEW ============ -->
+    <section class="chapter" id="review">
+      <div class="chapter-head">
+        <span class="chapter-label">Academic Review</span>
+        <h2 class="chapter-title">Academic Review, Accuracy Assessment, and Practical Additions</h2>
+        <blockquote>
+          <p><strong>Purpose.</strong> This section provides a rigorous academic review of the preceding chapters, evaluates their accuracy and relevance for professionals, and adds practical elements to guide readers.</p>
+        </blockquote>
+      </div>
+
+      <h3>R.1 Scope of the Review</h3>
+      <p>This review assesses Chapters 1–11 across five criteria:</p>
+      <ol>
+        <li><strong>Conceptual accuracy:</strong> Are definitions and claims correct?</li>
+        <li><strong>Technical depth:</strong> Are methods and formalisms sound?</li>
+        <li><strong>Professional relevance:</strong> Are they useful to practitioners?</li>
+        <li><strong>Pedagogical quality:</strong> Are they clear, structured, and engaging?</li>
+        <li><strong>Ethical coverage:</strong> Are risks and governance addressed?</li>
+      </ol>
+
+      <h3>R.2 Conceptual Accuracy</h3>
+      <table>
+        <thead><tr><th>Chapter</th><th>Accuracy</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>1 · Diagnostic/Descriptive</td><td>High</td><td>Correct distinction; causal caveats well stated.</td></tr>
+          <tr><td>2 · Predictive</td><td>High</td><td>Uncertainty and calibration emphasized correctly.</td></tr>
+          <tr><td>3 · Prescriptive</td><td>High</td><td>Decision-theoretic framing accurate; RL caveats included.</td></tr>
+          <tr><td>4 · Generative/Cognitive</td><td>High</td><td>Model families correct; cognitive claims appropriately cautious.</td></tr>
+          <tr><td>5 · Reactive</td><td>High</td><td>FSM, rules, subsumption accurate.</td></tr>
+          <tr><td>6 · Limited Memory</td><td>High</td><td>Memory taxonomy and continual learning correct.</td></tr>
+          <tr><td>7 · Theory of Mind</td><td>Moderate–High</td><td>ToM definitions accurate; current AI capabilities sometimes overstated in the field — chapter is appropriately skeptical.</td></tr>
+          <tr><td>8 · Self-Aware</td><td>High</td><td>Careful separation of science from speculation.</td></tr>
+          <tr><td>9 · Narrow AI</td><td>High</td><td>Clear scope; AGI claims appropriately hedged.</td></tr>
+          <tr><td>10 · AI Tools</td><td>Moderate–High</td><td>Snapshot-in-time; specific tools change rapidly. Framework durable.</td></tr>
+          <tr><td>11 · Evaluation</td><td>High</td><td>Metrics and frameworks standard and correct.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>R.3 Technical Depth</h3>
+      <p><strong>Strengths.</strong> The chapters cover formal formulations (MDPs, SCMs, probabilistic forecasting), deep learning architectures (transformers, GNNs, diffusion), causal inference (do-calculus, counterfactuals), and evaluation metrics (calibration, CRPS, OPE). Mathematical notation is used appropriately, not decoratively.</p>
+      <p><strong>Limitations.</strong> Some advanced topics are introduced but not fully developed: variational inference derivations, RL convergence guarantees, causal identification assumptions, diffusion score matching. For an introductory course, this is appropriate; for advanced study, supplementary reading is needed.</p>
+
+      <h3>R.4 Professional Relevance</h3>
+      <p><strong>High.</strong> The chapters map directly to professional roles:</p>
+      <ul>
+        <li><strong>Data scientists / ML engineers:</strong> Ch. 1–4, 6, 9, 11.</li>
+        <li><strong>Product managers:</strong> Ch. 3, 4, 9, 10, 11.</li>
+        <li><strong>Operations / SRE:</strong> Ch. 1, 2, 9.</li>
+        <li><strong>Executives / strategists:</strong> Ch. 9, 10, 11.</li>
+        <li><strong>Ethicists / governance:</strong> Ch. 7, 8, 9, 11.</li>
+        <li><strong>Educators:</strong> all chapters.</li>
+      </ul>
+      <p>The inclusion of tool landscapes (Ch. 10) and evaluation frameworks (Ch. 11) is especially valuable for practitioners.</p>
+
+      <h3>R.5 Pedagogical Quality</h3>
+      <ul>
+        <li><strong>Structure:</strong> consistent across chapters (objectives, definitions, methods, evaluation, applications, case study, exercises).</li>
+        <li><strong>Clarity:</strong> strong use of tables, callouts, and examples.</li>
+        <li><strong>Engagement:</strong> interactive elements (accordions, tabs, quizzes) improve retention.</li>
+        <li><strong>Assessment:</strong> exercises and quizzes reinforce learning.</li>
+        <li><strong>Improvement area:</strong> more visual diagrams (architecture, flow) would help.</li>
+      </ul>
+
+      <h3>R.6 Ethical Coverage</h3>
+      <p>Ethics is integrated, not appended. Chapters 7–9 (ToM, self-aware, narrow AI) discuss manipulation, privacy, consciousness, and governance. Chapter 11 covers bias, safety, and auditing. This is a strength.</p>
+
+      <h3>R.7 Practical Additions for Readers</h3>
+      <p>To maximize value, readers should supplement the chapters with:</p>
+      <ol>
+        <li><strong>Hands-on labs:</strong> train a small model, evaluate on your data.</li>
+        <li><strong>Tool trials:</strong> run the evaluation protocol on one tool you use.</li>
+        <li><strong>Case discussions:</strong> analyze a real AI failure (e.g., COMPAS, Amazon hiring, Zillow).</li>
+        <li><strong>Governance templates:</strong> model cards, datasheets, risk registers.</li>
+        <li><strong>Ethical debates:</strong> structured discussions on surveillance, autonomy, labor.</li>
+        <li><strong>Portfolio:</strong> build a personal project applying one chapter.</li>
+      </ol>
+
+      <h3>R.8 Overall Assessment</h3>
+      <div class="scorecard">
+        <div class="score-card"><div class="val">9.2</div><div class="lbl">Accuracy</div></div>
+        <div class="score-card"><div class="val">8.8</div><div class="lbl">Depth</div></div>
+        <div class="score-card"><div class="val">9.4</div><div class="lbl">Relevance</div></div>
+        <div class="score-card"><div class="val">9.0</div><div class="lbl">Pedagogy</div></div>
+        <div class="score-card"><div class="val">9.1</div><div class="lbl">Ethics</div></div>
+        <div class="score-card"><div class="val">9.1</div><div class="lbl">Overall</div></div>
+      </div>
+      <p><strong>Verdict.</strong> A rigorous, well-structured, and professionally relevant introduction to AI. Suitable for undergraduate and graduate courses, corporate training, and self-study. Best used with hands-on labs, tool trials, and case discussions.</p>
+
+      <h3>R.9 Recommended Supplements</h3>
+      <ul>
+        <li><em>Russell &amp; Norvig, Artificial Intelligence: A Modern Approach</em> — comprehensive reference.</li>
+        <li><em>Goodfellow et al., Deep Learning</em> — deep learning foundations.</li>
+        <li><em>Pearl, Causality</em> — causal inference.</li>
+        <li><em>Sutton &amp; Barto, Reinforcement Learning</em> — RL.</li>
+        <li><em>Molnar, Interpretable Machine Learning</em> — XAI.</li>
+        <li><em>Hyndman &amp; Athanasopoulos, Forecasting</em> — time series.</li>
+        <li><em>Bostrom, Superintelligence</em> — existential risk.</li>
+        <li><em>Mitchell, AI: A Guide for Thinking Humans</em> — accessible critique.</li>
+      </ul>
+    </section>
+
+    <!-- ============ PRACTICAL GUIDE ============ -->
+    <section class="chapter" id="practical">
+      <div class="chapter-head">
+        <span class="chapter-label">Practical Guide</span>
+        <h2 class="chapter-title">Practical Guide for Professionals and Learners</h2>
+      </div>
+
+      <h3>P.1 How to Use This Course</h3>
+      <ol>
+        <li><strong>Read sequentially</strong> for foundations.</li>
+        <li><strong>Jump by role</strong> using the sidebar.</li>
+        <li><strong>Do the exercises</strong> after each chapter.</li>
+        <li><strong>Apply to your domain</strong> with a real project.</li>
+        <li><strong>Evaluate tools</strong> using Ch. 11 frameworks.</li>
+        <li><strong>Revisit quarterly</strong> — AI changes fast.</li>
+      </ol>
+
+      <h3>P.2 Templates</h3>
+
+      <h4>P.2.1 Intended Use Statement</h4>
+      <pre><code>System name:
+Purpose:
+Intended users:
+Intended population:
+Intended setting:
+Inputs:
+Outputs:
+Intended use:
+Out-of-scope uses:
+Known limitations:
+Failure modes:
+Human oversight:
+Evaluation summary:
+Version / date:</code></pre>
+
+      <h4>P.2.2 Model Card</h4>
+      <pre><code>Model details:
+  Architecture:
+  Training data:
+  Version:
+Intended use:
+  Primary:
+  Out-of-scope:
+Factors:
+  Relevant:
+  Evaluation:
+Metrics:
+  Performance:
+  Subgroup:
+  Robustness:
+Ethical considerations:
+Caveats:</code></pre>
+
+      <h4>P.2.3 Risk Register</h4>
+      <table>
+        <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr><td>Bias in training data</td><td>Medium</td><td>High</td><td>Audit + reweight</td><td>ML lead</td></tr>
+          <tr><td>Drift over time</td><td>High</td><td>Medium</td><td>Monitor + retrain</td><td>Ops</td></tr>
+          <tr><td>Prompt injection</td><td>Medium</td><td>High</td><td>Red team + filters</td><td>Security</td></tr>
+          <tr><td>Data leakage</td><td>Low</td><td>Critical</td><td>DLP + encryption</td><td>CISO</td></tr>
+        </tbody>
+      </table>
+
+      <h3>P.3 Role-Based Learning Paths</h3>
+      <div class="accordion">
+        <div class="acc-item">
+          <button class="acc-head">For Data Scientists &amp; ML Engineers</button>
+          <div class="acc-body">
+            <p>Focus: Ch. 1–4, 6, 9, 11. Build: a forecasting model, a diagnostic pipeline, a small RL agent, an evaluation scorecard. Read: Goodfellow, Pearl, Sutton &amp; Barto.</p>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">For Product Managers</button>
+          <div class="acc-body">
+            <p>Focus: Ch. 3, 4, 9, 10, 11. Build: an AI feature spec, a tool evaluation scorecard, an ROI model. Read: Mitchell, selected HBR articles.</p>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">For Executives &amp; Strategists</button>
+          <div class="acc-body">
+            <p>Focus: Ch. 9, 10, 11. Build: an AI portfolio map, a governance policy, a 12-month roadmap. Read: Bostrom, McKinsey/BCG AI reports.</p>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">For Ethicists &amp; Governance</button>
+          <div class="acc-body">
+            <p>Focus: Ch. 7–9, 11. Build: a bias audit, a model card template, a red-team plan. Read: Bostrom, Russell, EU AI Act.</p>
+          </div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">For Educators</button>
+          <div class="acc-body">
+            <p>Use all chapters. Adopt a flipped classroom: lectures at home, labs in class. Assign the exercises as projects. Use the quizzes for formative assessment.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>P.4 Common Pitfalls and How to Avoid Them</h3>
+      <table>
+        <thead><tr><th>Pitfall</th><th>Why it happens</th><th>How to avoid</th></tr></thead>
+        <tbody>
+          <tr><td>Hype-driven adoption</td><td>Marketing pressure</td><td>Evaluate on your data</td></tr>
+          <tr><td>Ignoring edge cases</td><td>Focus on average performance</td><td>Test OOD and adversarial</td></tr>
+          <tr><td>Over-trusting outputs</td><td>Fluency ≠ correctness</td><td>Human-in-the-loop, citations</td></tr>
+          <tr><td>Data leakage</td><td>Poor pipeline hygiene</td><td>Time-based splits, audits</td></tr>
+          <tr><td>Scope creep</td><td>Convenience</td><td>Document intended use</td></tr>
+          <tr><td>No monitoring</td><td>Deploy-and-forget</td><td>Drift alerts, retraining</td></tr>
+          <tr><td>Ignoring cost</td><td>Underestimating scale</td><td>TCO model upfront</td></tr>
+          <tr><td>Weak governance</td><td>Speed over safety</td><td>Policy, logs, audits</td></tr>
+        </tbody>
+      </table>
+
+      <h3>P.5 Self-Assessment Quiz</h3>
+      <div class="quiz" id="quiz">
+        <h4>Test your understanding</h4>
+
+        <div class="q" data-answer="b">
+          <p>1. Which type of AI answers “Why did it happen?”</p>
+          <label class="opt" data-opt="a">a) Descriptive AI</label>
+          <label class="opt" data-opt="b">b) Diagnostic AI</label>
+          <label class="opt" data-opt="c">c) Predictive AI</label>
+          <label class="opt" data-opt="d">d) Prescriptive AI</label>
+          <div class="feedback">Diagnostic AI infers causes from historical data.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <p>2. Which metric measures calibration?</p>
+          <label class="opt" data-opt="a">a) AUC</label>
+          <label class="opt" data-opt="b">b) F1</label>
+          <label class="opt" data-opt="c">c) Expected Calibration Error (ECE)</label>
+          <label class="opt" data-opt="d">d) RMSE</label>
+          <div class="feedback">ECE measures how well predicted probabilities match observed frequencies.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <p>3. Reactive AI is best described as:</p>
+          <label class="opt" data-opt="a">a) Stimulus–response with no memory</label>
+          <label class="opt" data-opt="b">b) Learning from past experience</label>
+          <label class="opt" data-opt="c">c) Understanding emotions</label>
+          <label class="opt" data-opt="d">d) Self-aware</label>
+          <div class="feedback">Reactive AI maps inputs to outputs without memory or learning.</div>
+        </div>
+
+        <div class="q" data-answer="d">
+          <p>4. Which is NOT a dimension of AI tool evaluation?</p>
+          <label class="opt" data-opt="a">a) Latency</label>
+          <label class="opt" data-opt="b">b) Privacy</label>
+          <label class="opt" data-opt="c">c) Fairness</label>
+          <label class="opt" data-opt="d">d) Brand popularity</label>
+          <div class="feedback">Popularity is not an evaluation dimension; evidence is.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <p>5. Total Cost of Ownership (TCO) includes:</p>
+          <label class="opt" data-opt="a">a) Only API costs</label>
+          <label class="opt" data-opt="b">b) API, infra, integration, training, ops, risk</label>
+          <label class="opt" data-opt="c">c) Only subscription fees</label>
+          <label class="opt" data-opt="d">d) Only hardware</label>
+          <div class="feedback">TCO is comprehensive across all cost categories.</div>
+        </div>
+      </div>
+
+      <h3>P.6 Glossary</h3>
+      <div id="glossary">
+        <table>
+          <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+          <tbody>
+            <tr><td>Narrow AI</td><td>AI for specific tasks.</td></tr>
+            <tr><td>AGI</td><td>Artificial General Intelligence.</td></tr>
+            <tr><td>Descriptive AI</td><td>What happened?</td></tr>
+            <tr><td>Diagnostic AI</td><td>Why did it happen?</td></tr>
+            <tr><td>Predictive AI</td><td>What will happen?</td></tr>
+            <tr><td>Prescriptive AI</td><td>What should be done?</td></tr>
+            <tr><td>Generative AI</td><td>Produces content.</td></tr>
+            <tr><td>Reactive AI</td><td>Stimulus–response.</td></tr>
+            <tr><td>Limited Memory AI</td><td>Uses past experience.</td></tr>
+            <tr><td>Theory of Mind AI</td><td>Models mental states.</td></tr>
+            <tr><td>Self-Aware AI</td><td>Hypothetical self-awareness.</td></tr>
+            <tr><td>TTFT</td><td>Time to first token.</td></tr>
+            <tr><td>TPS</td><td>Tokens per second.</td></tr>
+            <tr><td>TCO</td><td>Total Cost of Ownership.</td></tr>
+            <tr><td>ROI</td><td>Return on Investment.</td></tr>
+            <tr><td>ECE</td><td>Expected Calibration Error.</td></tr>
+            <tr><td>CRPS</td><td>Continuous Ranked Probability Score.</td></tr>
+            <tr><td>OPE</td><td>Off-Policy Evaluation.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>P.7 Further Reading</h3>
+      <ul id="further">
+        <li>Russell, S., Norvig, P. <em>Artificial Intelligence: A Modern Approach</em>.</li>
+        <li>Goodfellow, I., Bengio, Y., Courville, A. <em>Deep Learning</em>.</li>
+        <li>Pearl, J. <em>Causality</em>.</li>
+        <li>Sutton, R., Barto, A. <em>Reinforcement Learning</em>.</li>
+        <li>Molnar, C. <em>Interpretable Machine Learning</em>.</li>
+        <li>Hyndman, R., Athanasopoulos, G. <em>Forecasting</em>.</li>
+        <li>Bostrom, N. <em>Superintelligence</em>.</li>
+        <li>Mitchell, M. <em>AI: A Guide for Thinking Humans</em>.</li>
+        <li>Bommasani, R. et al. “On the Opportunities and Risks of Foundation Models.”</li>
+        <li>EU AI Act (Regulation 2024/1689).</li>
+        <li>NIST AI Risk Management Framework.</li>
+      </ul>
+
+      <h3>P.8 Closing Reflection</h3>
+      <p>AI is not a single technology but a spectrum of capabilities, from reactive systems to speculative self-awareness. The professional skill is not memorizing tools — it is understanding trade-offs, evaluating rigorously, and governing responsibly.</p>
+      <div class="keytakeaway">
+        <strong>Final takeaway.</strong> The goal of AI literacy is not to know everything — it is to ask the right questions, measure honestly, and act with accountability.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="inner">
+    <div>
+      <strong>AI Introduction — Complete Interactive Course</strong><br>
+      <span style="font-size:.85rem">Chapters 1–11 · Multi-Expert Deep Learning Subject</span>
+    </div>
+    <div class="links">
+      <a href="#top">Top</a>
+      <a href="#ch9">Ch. 9</a>
+      <a href="#tools">Tools</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#review">Review</a>
+      <a href="#practical">Practical</a>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Back to top">↑</button>
+
+<script>
+/* ---------- THEME ---------- */
+(function(){
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const saved = localStorage.getItem('ai-course-theme');
+  if(saved === 'dark'){ html.setAttribute('data-theme','dark'); btn.textContent = '☀️ Light'; }
+  btn.addEventListener('click', function(){
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if(isDark){ html.removeAttribute('data-theme'); localStorage.setItem('ai-course-theme','light'); btn.textContent = '🌙 Dark'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('ai-course-theme','dark'); btn.textContent = '☀️ Light'; }
+  });
+})();
+
+/* ---------- PROGRESS BAR ---------- */
+(function(){
+  const bar = document.getElementById('progress');
+  const fill = document.getElementById('progressFill');
+  const pct = document.getElementById('progressPct');
+  const chLabel = document.getElementById('progressCh');
+  const chapters = document.querySelectorAll('section.chapter');
+  function update(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    const p = Math.min(100, Math.max(0, scrolled * 100));
+    bar.style.width = p + '%';
+    if(fill) fill.style.width = p + '%';
+    if(pct) pct.textContent = Math.round(p) + '%';
+    // chapter label
+    let current = 0;
+    chapters.forEach((c,i)=>{
+      if(c.getBoundingClientRect().top < 150) current = i+1;
+    });
+    if(chLabel) chLabel.textContent = 'Ch. ' + current + ' / ' + chapters.length;
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+/* ---------- BACK TO TOP ---------- */
+(function(){
+  const b = document.getElementById('toTop');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 500) b.classList.add('show'); else b.classList.remove('show');
+  });
+  b.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+})();
+
+/* ---------- PRINT ---------- */
+document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+/* ---------- ACCORDIONS ---------- */
+document.querySelectorAll('.acc-head').forEach(function(head){
+  head.addEventListener('click', function(){
+    const item = head.parentElement;
+    const wasOpen = item.classList.contains('open');
+    // close others in same group (optional). Comment out to allow multi-open.
+    // item.parentElement.querySelectorAll('.acc-item').forEach(i=>i.classList.remove('open'));
+    item.classList.toggle('open', !wasOpen);
+  });
+});
+
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tab-nav button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    const nav = btn.parentElement;
+    const tabs = nav.parentElement;
+    nav.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    tabs.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    const target = tabs.querySelector('#' + btn.dataset.tab);
+    if(target) target.classList.add('active');
+  });
+});
+
+/* ---------- QUIZ ---------- */
+document.querySelectorAll('.quiz .q').forEach(function(q){
+  const correct = q.dataset.answer;
+  const feedback = q.querySelector('.feedback');
+  q.querySelectorAll('.opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      if(q.dataset.done) return;
+      q.dataset.done = "1";
+      q.querySelectorAll('.opt').forEach(function(o){
+        if(o.dataset.opt === correct) o.classList.add('correct');
+        else if(o === opt) o.classList.add('wrong');
+      });
+      if(feedback) feedback.classList.add('show');
+    });
+  });
+});
+
+/* ---------- SEARCH ---------- */
+(function(){
+  const input = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+  const chapters = Array.from(document.querySelectorAll('section.chapter'));
+  // Build index
+  const index = chapters.map(function(ch){
+    const title = ch.querySelector('.chapter-title')?.textContent || '';
+    const text = ch.textContent.toLowerCase();
+    const id = ch.id;
+    return {id, title, text};
+  });
+
+  input.addEventListener('input', function(){
+    const q = input.value.trim().toLowerCase();
+    if(q.length < 2){ results.textContent = ''; return; }
+    const matches = index.filter(function(item){ return item.text.includes(q); });
+    if(matches.length === 0){
+      results.textContent = 'No matches.';
+      return;
+    }
+    results.innerHTML = matches.slice(0,6).map(function(m){
+      const t = m.title.length > 40 ? m.title.slice(0,40) + '…' : m.title;
+      return '<a href="#' + m.id + '" style="display:block;padding:4px 0">→ ' + t + '</a>';
+    }).join('');
+  });
+
+  // Clear search on result click
+  results.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){ input.value=''; results.textContent=''; }
+  });
+})();
+
+/* ---------- ACTIVE TOC ---------- */
+(function(){
+  const links = document.querySelectorAll('#tocList a');
+  const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function update(){
+    let current = null;
+    sections.forEach(function(s){
+      if(s.getBoundingClientRect().top < 140) current = s.id;
+    });
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+/* ---------- COPY CODE ---------- */
+document.querySelectorAll('pre').forEach(function(pre){
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'Copy';
+  btn.addEventListener('click', function(){
+    const code = pre.querySelector('code')?.innerText || pre.innerText;
+    navigator.clipboard.writeText(code).then(function(){
+      btn.textContent = 'Copied!';
+      setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+/* ---------- SMOOTH ANCHOR OFFSET ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    const id = a.getAttribute('href');
+    if(id === '#') return;
+    const el = document.querySelector(id);
+    if(el){
+      e.preventDefault();
+      window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
+    }
+  });
+});
+</script>
+
+</body>
+</html>
