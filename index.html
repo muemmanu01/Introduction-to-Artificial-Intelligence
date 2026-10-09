@@ -136,12 +136,13 @@
   .search-results{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
 
   /* ---------- HERO ---------- */
-  <section class="hero" id="top">
+ <section class="hero" id="top">
   <div class="wrap">
-    <span class="eyebrow">Multi-Expert AI Course · 11 Chapters</span>
-    <h1>From Thermostats to <span class="grad">Self-Awareness</span></h1>
+    <span class="eyebrow">✦ Multi-Expert AI Course · 11 Chapters</span>
+    <h1>From <span class="grad-warm">Thermostats</span> to <span class="grad">Self-Awareness</span></h1>
     <p class="lead">
-      A complete, interactive guide to modern AI — from reactive systems to generative models. 
+      A complete, interactive guide to modern AI — from <strong style="color:var(--accent)">reactive systems</strong> 
+      to <strong style="color:var(--accent-2)">generative models</strong>. 
       Built for students, professionals, and the curious.
     </p>
     <div class="cta">
@@ -152,13 +153,52 @@
       <div class="stat"><b>11</b><span>Chapters</span></div>
       <div class="stat"><b>7</b><span>Expert Arrays</span></div>
       <div class="stat"><b>60+</b><span>Tools Compared</span></div>
-      <div class="stat"><b>4</b><span>Languages</span></div>
+      <div class="stat"><b>8</b><span>Languages</span></div>
     </div>
-  <div class="scroll-cue">↓ Scroll to explore</div>
+    <div class="scroll-cue">↓ Scroll to explore</div>
+  /* ---------- HERO COLOUR ENHANCEMENTS ---------- */
+  .hero {
+    background:
+      radial-gradient(circle at 15% 20%, var(--accent-soft) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, var(--accent2-soft) 0%, transparent 45%),
+      var(--bg);
+    position: relative;
+  }
+  
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+  }
+  
+  .hero h1 .grad-warm {
+    background: linear-gradient(90deg, #ff6b6b, #feca57);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+  }
+  
+  .hero .eyebrow {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+  }
+  
+  .hero .stat b {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+  }
   </div>
 </section>
  
-
   /* ---------- CHAPTERS ---------- */
   main{padding:40px 0 100px;min-width:0}
   section.chapter{
@@ -4485,8 +4525,51 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 });
 </script>
-<!-- ===================== LANGUAGE SWITCHER ===================== -->
-  <div id="language-switcher">
+ <!-- ===================== LANGUAGE SWITCHER (SELF-CONTAINED) ===================== -->
+<style>
+  /* Style the switcher for the header */
+  #language-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 4px 8px;
+    height: 34px;
+    margin-right: 4px;
+  }
+  #language-switcher select {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    padding: 2px 4px;
+    max-width: 120px;
+  }
+  #language-switcher .globe { font-size: 14px; }
+  @media (max-width: 640px) {
+    #language-switcher select { max-width: 78px; font-size: 12px; }
+  }
+  /* Hide Google's default banner */
+  .goog-te-banner-frame { display: none !important; }
+  body { top: 0 !important; }
+  .skiptranslate { display: none !important; }
+  #google_translate_element { display: none; }
+  .goog-tooltip { display: none !important; }
+</style>
+
+<!-- Hidden element required by Google Translate -->
+<div id="google_translate_element" style="display:none"></div>
+
+<script type="text/javascript">
+(function () {
+  // 1. Build the dropdown
+  const switcher = document.createElement('div');
+  switcher.id = 'language-switcher';
+  switcher.innerHTML = `
     <span class="globe">🌐</span>
     <select id="langSelect" aria-label="Choose language">
       <option value="en">English</option>
@@ -4498,43 +4581,59 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
       <option value="hi">हिन्दी</option>
       <option value="sw">Kiswahili</option>
     </select>
-  </div>
+  `;
 
-  <div id="google_translate_element" style="display:none"></div>
-
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,fr,es,pt,ar,zh-CN,hi,sw',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
+  // 2. Wait for the DOM, then inject into the header (top-right)
+  document.addEventListener('DOMContentLoaded', function () {
+    const tools = document.querySelector('.header-tools');
+    if (tools) {
+      tools.insertBefore(switcher, tools.firstChild);
+    } else {
+      // Fallback: float it if header is missing
+      switcher.style.position = 'fixed';
+      switcher.style.top = '12px';
+      switcher.style.right = '22px';
+      switcher.style.zIndex = '500';
+      document.body.appendChild(switcher);
     }
 
-    document.getElementById('langSelect').addEventListener('change', function() {
+    // 3. Wire up the dropdown
+    const sel = document.getElementById('langSelect');
+
+    // Restore selection from cookie on load
+    const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z\-]+)/);
+    if (match) sel.value = match[1];
+
+    sel.addEventListener('change', function () {
       const lang = this.value;
-      const url = window.location.href.split('#')[0];
+      const cleanUrl = window.location.href.split('#')[0];
       if (lang === 'en') {
+        // Clear both cookies (with and without domain) to return to original
         document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname;
-        window.location.href = url;
+        window.location.href = cleanUrl;
       } else {
         document.cookie = 'googtrans=/en/' + lang + '; path=/;';
         document.cookie = 'googtrans=/en/' + lang + '; path=/; domain=' + window.location.hostname;
         window.location.reload();
       }
     });
+  });
 
-    window.addEventListener('load', function() {
-      const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z\-]+)/);
-      if (match) {
-        document.getElementById('langSelect').value = match[1];
-      }
-    });
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <!-- ===================== END LANGUAGE SWITCHER ===================== -->
+  // 4. Google Translate init callback
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,fr,es,pt,ar,zh-CN,hi,sw',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  };
+})();
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- ===================== END LANGUAGE SWITCHER ===================== -->
 </body>
 </html>  
 
