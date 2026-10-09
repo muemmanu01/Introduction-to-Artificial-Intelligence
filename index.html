@@ -326,16 +326,32 @@
   #toTop:hover{transform:translateY(-2px)}
 
   /* ---------- FOOTER ---------- */
-  footer.site{
+ footer.site{
     border-top:1px solid var(--border);background:var(--bg-alt);
     padding:40px 0;color:var(--muted);font-size:.9rem;
   }
   footer.site .inner{
     max-width:var(--max);margin:0 auto;padding:0 22px;
-    display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;
+    display:flex;flex-direction:column;gap:24px;
   }
-  footer.site a{color:var(--accent)}
-  footer.site .links{display:flex;gap:16px;flex-wrap:wrap}
+  footer.site a{color:var(--accent);text-decoration:none;}
+  footer.site a:hover{text-decoration:underline;}
+  
+  .coaching-box {
+    background: var(--accent-soft); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; width: 100%; box-sizing: border-box;
+  }
+  .coaching-box h3 { margin-top: 0; font-size: 1.2rem; color: var(--text); }
+  .coaching-box p { font-size: 0.95rem; margin-bottom: 18px; max-width: 600px; }
+  .coaching-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  
+  .footer-bottom {
+    display: flex; width: 100%; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 15px;
+    border-top: 1px solid var(--border); padding-top: 24px;
+  }
+  .footer-bottom strong { color: var(--text); font-size: 1rem; }
+  .footer-links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.9rem; }
 
   /* ---------- PRINT ---------- */
   @media print{
@@ -1532,22 +1548,41 @@ Caveats:</code></pre>
 </div>
 
 <!-- ===================== FOOTER ===================== -->
-<footer class="site">
-  <div class="inner">
-    <div>
-      <strong>AI Introduction — Complete Interactive Course</strong><br>
-      <span style="font-size:.85rem">Chapters 1–11 · Multi-Expert Deep Learning Subject</span>
+  <footer class="site">
+    <div class="inner">
+      
+      <!-- Coaching & Contact Section -->
+      <div class="coaching-box">
+        <h3>🚀 Want to Master AI Faster?</h3>
+        <p>
+          I offer personalised learning paths, 1-on-1 coaching, and corporate training for professionals and teams looking to build real AI capability. Let's connect!
+        </p>
+        <div class="coaching-actions">
+          <a href="mailto:muemmanu01@gmailcom" class="tool-btn primary">📧 Email Me</a>
+          <a href="https://linkedin.com/in/https://www.linkedin.com/in/dr-emmanuel-munyemana-phd-14866234/e" target="_blank" rel="noopener" class="tool-btn">🔗 LinkedIn</a>
+          <a href="https://calendly.com/yourlink" target="_blank" rel="noopener" class="tool-btn">📅 Book a Session</a>
+        </div>
+      </div>
+
+      <!-- Copyright & Links -->
+      <div class="footer-bottom">
+        <div>
+          <strong>Introduction to Artificial Intelligence</strong><br>
+          <span style="font-size: 0.85rem;">
+            &copy; 2026 muemmanu01. All rights reserved.<br>
+            This course material is the intellectual property of the author.<br>
+            Unauthorised reproduction or distribution is prohibited.
+          </span>
+        </div>
+        <div class="footer-links">
+          <a href="#top">Back to Top</a>
+          <a href="#ch1">Start Reading</a>
+          <a href="#tools">AI Tools</a>
+        </div>
+      </div>
+
     </div>
-    <div class="links">
-      <a href="#top">Top</a>
-      <a href="#ch9">Ch. 9</a>
-      <a href="#tools">Tools</a>
-      <a href="#evaluation">Evaluation</a>
-      <a href="#review">Review</a>
-      <a href="#practical">Practical</a>
-    </div>
-  </div>
-</footer>
+  </footer>
 
 <button id="toTop" aria-label="Back to top">↑</button>
 
