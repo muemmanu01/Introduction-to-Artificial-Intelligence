@@ -460,6 +460,2336 @@
 
   <!-- ---------- MAIN ---------- -->
   <main>
+    
+  <!-- ============================= CHAPTER 1 ============================= -->
+  <section class="chapter" id="ch1">
+    <span class="chapter-label">Chapter 1</span>
+    <h2 class="chapter-title">Diagnostic/Descriptive AI: Assessing the Correctness of Behavior from Historical Data</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What happened? Why did it happen? Was the observed behavior correct? What evidence supports that judgment? What should be done next?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Diagnostic/descriptive AI is the branch of artificial intelligence that analyzes historical data to reconstruct, summarize, and explain the behavior of systems, processes, organizations, and humans. Descriptive AI answers <em>what happened</em>. Diagnostic AI answers <em>why it happened</em>. When combined with specifications, norms, causal models, and domain knowledge, they also assess the <em>correctness of behavior</em>: whether an observed action, process, decision, or outcome conformed to expectations, rules, goals, or causal pathways.</p>
+    <p>This chapter presents diagnostic/descriptive AI as a general but deep learning–enabled subject for multiple expert arrays: machine learning engineers, data scientists, domain specialists, systems operators, causal inference researchers, human-factors experts, auditors, ethicists, and decision-makers. It covers formal definitions, data modalities, deep learning architectures, causal reasoning, evaluation, reference architectures, applications, case studies, challenges, and exercises.</p>
+
+    <hr>
+
+    <h3>1.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Distinguish descriptive, diagnostic, predictive, and prescriptive AI.</li>
+      <li>Define “correctness of behavior” across functional, procedural, causal, normative, operational, and decision dimensions.</li>
+      <li>Formulate descriptive and diagnostic problems over historical data.</li>
+      <li>Select deep learning methods for logs, traces, time series, graphs, text, images, and multimodal records.</li>
+      <li>Combine deep representation learning with causal inference and explainability.</li>
+      <li>Design a reference architecture for diagnostic/descriptive AI in high-stakes environments.</li>
+      <li>Evaluate diagnostic systems using technical, causal, human, and governance criteria.</li>
+      <li>Recognize pitfalls such as correlation–causation confusion, data drift, label scarcity, and LLM hallucination.</li>
+    </ol>
+
+    <h3>1.2 Introduction: Why Diagnostic/Descriptive AI Matters</h3>
+    <p>Modern digital and physical systems generate enormous historical records: application logs, metrics, distributed traces, sensor streams, transaction records, clinical notes, manufacturing events, process logs, images, audio, and human decisions. These records describe what happened, but raw data alone does not explain why it happened or whether it was correct.</p>
+    <p>Descriptive AI transforms historical data into summaries, patterns, anomalies, clusters, timelines, and process models. Diagnostic AI goes further by inferring causes, localizing faults, attributing responsibility, and generating counterfactual explanations. In high-stakes domains—healthcare, finance, cybersecurity, manufacturing, autonomous systems, IT operations, and public administration—the critical question is not only “What happened?” but “Was this behavior correct, and why or why not?”</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A microservice latency spike appears in metrics. Descriptive AI reports: latency increased 400% at 14:03. Diagnostic AI infers: a configuration change at 13:58 reduced the database connection pool, causing queue buildup in service A, which propagated to service B. Correctness assessment asks: Did the deployment follow policy? Was the SLO violated? Was the operator’s response correct? Was the root cause causal or merely correlated?</p>
+    </div>
+
+    <p>Thus, diagnostic/descriptive AI is not merely retrospective analytics. It is an evidence-based reasoning system for accountability, learning, and improvement.</p>
+
+    <h3>1.3 Core Definitions and Scope</h3>
+
+    <h4>1.3.1 Behavior</h4>
+    <p><strong>Behavior</strong> is the observable sequence of states, actions, events, and outcomes produced by a system, process, human, or organization over time.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>A microservice handling a request.</li>
+      <li>A clinician following a treatment pathway.</li>
+      <li>A financial trading algorithm executing orders.</li>
+      <li>A manufacturing robot assembling a component.</li>
+      <li>A business process approving a loan.</li>
+    </ul>
+
+    <h4>1.3.2 Historical Data</h4>
+    <p>Historical data includes:</p>
+    <ul>
+      <li><strong>Time series:</strong> metrics, sensor readings, KPIs.</li>
+      <li><strong>Event logs:</strong> system logs, audit trails, process logs.</li>
+      <li><strong>Traces:</strong> distributed request paths.</li>
+      <li><strong>Text:</strong> incident reports, clinical notes, tickets.</li>
+      <li><strong>Images/video/audio:</strong> visual inspection, surveillance, speech.</li>
+      <li><strong>Graphs:</strong> service topologies, social networks, supply chains, causal graphs.</li>
+      <li><strong>Human decisions:</strong> approvals, overrides, annotations.</li>
+    </ul>
+
+    <h4>1.3.3 Descriptive AI</h4>
+    <p>Descriptive AI answers: <strong>What happened?</strong></p>
+    <p>Tasks:</p>
+    <ul>
+      <li>Summarization and timeline reconstruction.</li>
+      <li>Clustering and segmentation.</li>
+      <li>Change-point and drift detection.</li>
+      <li>Process discovery and conformance checking.</li>
+      <li>Anomaly detection.</li>
+      <li>Pattern mining.</li>
+    </ul>
+
+    <h4>1.3.4 Diagnostic AI</h4>
+    <p>Diagnostic AI answers: <strong>Why did it happen?</strong></p>
+    <p>Tasks:</p>
+    <ul>
+      <li>Root cause analysis.</li>
+      <li>Fault localization.</li>
+      <li>Attribution and blame assignment.</li>
+      <li>Counterfactual reasoning.</li>
+      <li>Causal discovery and effect estimation.</li>
+      <li>Hypothesis generation and ranking.</li>
+    </ul>
+
+    <h4>1.3.5 Correctness of Behavior</h4>
+    <p>Correctness is the degree to which observed behavior conforms to:</p>
+    <ul>
+      <li><strong>Functional specifications:</strong> outputs meet requirements.</li>
+      <li><strong>Procedural rules:</strong> steps follow policies, protocols, or workflows.</li>
+      <li><strong>Causal expectations:</strong> actions produced intended effects through valid mechanisms.</li>
+      <li><strong>Normative standards:</strong> legal, ethical, safety, or fairness norms.</li>
+      <li><strong>Operational objectives:</strong> reliability, latency, cost, throughput, safety.</li>
+      <li><strong>Decision quality:</strong> expected utility under uncertainty.</li>
+    </ul>
+    <p>Correctness can be binary, graded, context-dependent, or contested. Diagnostic AI must represent uncertainty and multiple expert perspectives.</p>
+
+    <h4>1.3.6 Analytics Spectrum</h4>
+    <table>
+      <thead>
+        <tr><th>Mode</th><th>Question</th><th>Time Focus</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Descriptive</td><td>What happened?</td><td>Past</td><td>Latency spike at 14:03</td></tr>
+        <tr><td>Diagnostic</td><td>Why did it happen?</td><td>Past</td><td>Connection pool exhaustion after config change</td></tr>
+        <tr><td>Predictive</td><td>What will happen?</td><td>Future</td><td>Next-hour failure probability</td></tr>
+        <tr><td>Prescriptive</td><td>What should be done?</td><td>Future/action</td><td>Roll back deployment and increase pool size</td></tr>
+        <tr><td>Correctness</td><td>Was it right?</td><td>Past/present</td><td>SLO violation and policy nonconformance</td></tr>
+      </tbody>
+    </table>
+
+    <h3>1.4 A Multi-Expert Array Perspective</h3>
+    <p>Diagnostic/descriptive AI is inherently multidisciplinary. A single model cannot satisfy all expert arrays. The table below summarizes key contributions and risks.</p>
+    <table>
+      <thead>
+        <tr><th>Expert Array</th><th>Core Questions</th><th>Contributions</th><th>Risks if Absent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ML/Data Science</td><td>Which architectures? How to validate?</td><td>Representation learning, uncertainty, evaluation</td><td>Overfitting, leakage, brittle models</td></tr>
+        <tr><td>Domain Experts</td><td>What do signals mean? What is normal?</td><td>Semantics, constraints, labels, causal priors</td><td>Misinterpretation, invalid causes</td></tr>
+        <tr><td>Systems/Operations</td><td>How does the system work?</td><td>Telemetry, topology, SLOs, incident response</td><td>Poor localization, unrealistic alerts</td></tr>
+        <tr><td>Causal/Statistics</td><td>Is it causal or correlational?</td><td>Identification, confounding control, counterfactuals</td><td>Spurious diagnoses</td></tr>
+        <tr><td>Human Factors/HCI</td><td>Will humans trust and use it?</td><td>Explanation design, workload, trust calibration</td><td>Alert fatigue, misuse</td></tr>
+        <tr><td>Ethics/Governance/Law</td><td>Who is accountable? Is it fair?</td><td>Auditing, privacy, fairness, compliance</td><td>Harm, discrimination, liability</td></tr>
+        <tr><td>Business/Decision</td><td>What is the value?</td><td>KPIs, cost of errors, action thresholds</td><td>Misaligned optimization</td></tr>
+      </tbody>
+    </table>
+    <p>A successful diagnostic/descriptive AI system is a <strong>socio-technical ensemble</strong>, not just a model.</p>
+
+    <h3>1.5 Formal Problem Formulation</h3>
+    <p>Let historical data be represented as:</p>
+    \[
+    \mathcal{D} = \{(x_t, a_t, y_t, e_t, g_t)\}_{t=1}^{T}
+    \]
+    <p>where \(x_t\): observations at time \(t\), \(a_t\): actions or interventions, \(y_t\): outcomes, \(e_t\): events or logs, \(g_t\): contextual graph or relational structure.</p>
+
+    <h4>1.5.1 Descriptive Problem</h4>
+    <p>Learn a function:</p>
+    \[
+    f_{\text{desc}}: \mathcal{D} \rightarrow \mathcal{S}
+    \]
+    <p>where \(\mathcal{S}\) is a set of summaries, segments, anomalies, clusters, or process models.</p>
+
+    <h4>1.5.2 Diagnostic Problem</h4>
+    <p>Infer a posterior over causes:</p>
+    \[
+    P(c \mid \mathcal{D}, \mathcal{K})
+    \]
+    <p>where \(c\) is a cause or set of causes, and \(\mathcal{K}\) is background knowledge such as topology, policies, or causal graphs.</p>
+
+    <h4>1.5.3 Correctness Problem</h4>
+    <p>Given a specification or expectation model \(\mathcal{M}\), compute:</p>
+    \[
+    C(\mathcal{D}) = \text{score}(\text{observed behavior}, \text{expected behavior under } \mathcal{M})
+    \]
+    <p>This may involve conformance checking, anomaly scoring, causal attribution, counterfactual comparison, and normative evaluation.</p>
+
+    <h4>1.5.4 Levels of Diagnostic Output</h4>
+    <ol>
+      <li><strong>Detection:</strong> Something is wrong.</li>
+      <li><strong>Localization:</strong> Where is it wrong?</li>
+      <li><strong>Attribution:</strong> What caused it?</li>
+      <li><strong>Explanation:</strong> Why did it cause it?</li>
+      <li><strong>Counterfactual:</strong> What would have happened otherwise?</li>
+      <li><strong>Actionability:</strong> What should be done?</li>
+    </ol>
+
+    <h3>1.6 Data Modalities and Preparation</h3>
+    <p>Diagnostic/descriptive AI must handle heterogeneous data:</p>
+    <ul>
+      <li><strong>Time series:</strong> metrics, sensors, financial prices.</li>
+      <li><strong>Logs:</strong> unstructured or semi-structured text.</li>
+      <li><strong>Traces:</strong> distributed request graphs.</li>
+      <li><strong>Events:</strong> process logs, audit trails.</li>
+      <li><strong>Text:</strong> tickets, reports, clinical notes.</li>
+      <li><strong>Images/video:</strong> inspection, surveillance.</li>
+      <li><strong>Graphs:</strong> service dependencies, social networks, causal graphs.</li>
+      <li><strong>Human decisions:</strong> approvals, overrides, annotations.</li>
+    </ul>
+    <p>Key challenges:</p>
+    <ul>
+      <li>Missing data and irregular sampling.</li>
+      <li>Class imbalance and rare events.</li>
+      <li>Label scarcity and noisy labels.</li>
+      <li>Temporal leakage.</li>
+      <li>Concept drift and nonstationarity.</li>
+      <li>Privacy, security, and access control.</li>
+    </ul>
+    <p>Deep learning can learn representations directly from raw data, but preprocessing, alignment, and domain validation remain essential.</p>
+
+    <h3>1.7 Deep Learning Methods</h3>
+
+    <h4>1.7.1 Representation Learning</h4>
+    <p>Autoencoders, variational autoencoders (VAEs), and contrastive learning learn compact latent representations.</p>
+    <p>Autoencoder loss:</p>
+    \[
+    \mathcal{L} = \|x - \hat{x}\|^2 + \lambda \Omega(z)
+    \]
+    <p>where \(z\) is the latent code and \(\Omega\) is a regularizer.</p>
+    <p>Uses: dimensionality reduction, denoising, anomaly detection via reconstruction error, pretraining for downstream diagnosis.</p>
+
+    <h4>1.7.2 Sequence and Temporal Models</h4>
+    <ul>
+      <li><strong>RNNs/LSTMs/GRUs:</strong> sequential dependence, variable-length logs.</li>
+      <li><strong>Temporal Convolutional Networks (TCNs):</strong> long-range temporal patterns.</li>
+      <li><strong>Transformers:</strong> attention over long sequences, multimodal fusion.</li>
+    </ul>
+    <p>Self-supervised objectives: next-event prediction, masked token modeling, contrastive temporal prediction.</p>
+    <p>Applications: log anomaly detection, incident prediction, clinical pathway analysis, process deviation detection.</p>
+
+    <h4>1.7.3 Graph and Relational Models</h4>
+    <p>Graph Neural Networks (GNNs) model dependencies:</p>
+    \[
+    h_v^{(k+1)} = \text{AGG}\left(\{h_u^{(k)} : u \in \mathcal{N}(v)\}\right)
+    \]
+    <p>Uses: root cause localization in microservice graphs, fault propagation in supply chains, causal graph learning, social network diagnostics.</p>
+
+    <h4>1.7.4 Multimodal Fusion</h4>
+    <p>Fusion strategies: early fusion (concatenate raw features), late fusion (combine model outputs), cross-attention (align modalities).</p>
+    <p>Example: combine logs, metrics, traces, and deployment events for incident diagnosis.</p>
+
+    <h4>1.7.5 Anomaly and Correctness Detection</h4>
+    <p>Methods:</p>
+    <ul>
+      <li>Reconstruction-based: autoencoders, VAEs.</li>
+      <li>Forecasting-based: predict next values, measure residual.</li>
+      <li>Density-based: estimate \(p(x)\), flag low-probability points.</li>
+      <li>One-class classification: Deep SVDD.</li>
+      <li>Energy-based models.</li>
+    </ul>
+    <p>Anomaly score:</p>
+    \[
+    s(x) = -\log p_\theta(x)
+    \]
+    <p>Correctness extends anomaly detection by comparing against specifications and norms.</p>
+
+    <h4>1.7.6 Root Cause and Causal Diagnosis</h4>
+    <p>Causal reasoning is essential. Deep learning alone finds correlations. Causal inference provides identification, interventions, and counterfactuals.</p>
+    <p>Structural Causal Model (SCM):</p>
+    \[
+    \mathcal{M} = (U, V, F)
+    \]
+    <p>Intervention: \(do(X = x)\). Counterfactual: \(Y_x(u)\).</p>
+    <p>Methods: causal discovery, invariant learning, disentangled representations, counterfactual explanation, graph attention for root cause ranking.</p>
+    <p>Root cause ranking:</p>
+    \[
+    \hat{c} = \arg\max_c P(c \mid \mathcal{D}, G, \mathcal{K})
+    \]
+
+    <h4>1.7.7 Explanation and Human Interaction</h4>
+    <p>Explainability methods: SHAP, Integrated Gradients, attention visualization, concept bottleneck models, prototypes and counterfactual explanations, LLM-generated narratives with citations and uncertainty.</p>
+    <p>Human-in-the-loop: domain expert validation, active learning, feedback correction.</p>
+
+    <h4>1.7.8 LLMs and Agents</h4>
+    <p>Large language models can summarize incidents, generate hypotheses, query tools and logs, and draft reports.</p>
+    <p>Risks: hallucination, lack of grounding, overconfidence, privacy leakage.</p>
+    <p>Mitigations: retrieval-augmented generation, tool use and verification, uncertainty quantification, human review.</p>
+
+    <h3>1.8 Reference Architecture</h3>
+    <p>A general diagnostic/descriptive AI architecture includes:</p>
+    <ol>
+      <li><strong>Data ingestion:</strong> logs, metrics, traces, events, text, images.</li>
+      <li><strong>Storage and governance:</strong> data lake, access control, lineage.</li>
+      <li><strong>Representation layer:</strong> feature extraction, embeddings, multimodal fusion.</li>
+      <li><strong>Descriptive engine:</strong> summarization, clustering, anomaly detection, process mining.</li>
+      <li><strong>Diagnostic engine:</strong> root cause analysis, causal inference, counterfactuals.</li>
+      <li><strong>Correctness evaluator:</strong> conformance, norms, SLOs, policies.</li>
+      <li><strong>Explanation layer:</strong> visualizations, narratives, evidence.</li>
+      <li><strong>Human-in-the-loop:</strong> review, feedback, active learning.</li>
+      <li><strong>Action layer:</strong> alerts, recommendations, automation.</li>
+      <li><strong>Governance:</strong> auditing, fairness, privacy, security.</li>
+    </ol>
+
+    <h3>1.9 Evaluation</h3>
+    <p>Evaluation must be multi-dimensional.</p>
+    <h5>Descriptive</h5>
+    <ul>
+      <li>Coverage, fidelity, stability, compactness.</li>
+      <li>Process model quality: fitness, precision, generalization.</li>
+    </ul>
+    <h5>Diagnostic</h5>
+    <ul>
+      <li>Top-k root cause accuracy.</li>
+      <li>Mean reciprocal rank (MRR).</li>
+      <li>Time-to-diagnosis.</li>
+      <li>False alarm rate.</li>
+      <li>Causal validity.</li>
+      <li>Counterfactual faithfulness.</li>
+    </ul>
+    <h5>Correctness</h5>
+    <ul>
+      <li>Conformance rate.</li>
+      <li>Calibration and uncertainty.</li>
+      <li>Robustness under drift.</li>
+      <li>Fairness across groups.</li>
+      <li>Auditability.</li>
+    </ul>
+    <h5>Human</h5>
+    <ul>
+      <li>Trust calibration.</li>
+      <li>Actionability.</li>
+      <li>Cognitive load.</li>
+      <li>Decision quality.</li>
+    </ul>
+    <p>Offline metrics are insufficient. Use shadow mode, simulation, and online evaluation.</p>
+
+    <h3>1.10 Applications Across Domains</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Descriptive Task</th><th>Diagnostic Task</th><th>Correctness Question</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>IT Operations</td><td>Latency spike detection</td><td>Root cause of outage</td><td>Was SLO violated?</td></tr>
+        <tr><td>Healthcare</td><td>Pathway deviation</td><td>Cause of adverse event</td><td>Was care guideline followed?</td></tr>
+        <tr><td>Finance</td><td>Fraud pattern discovery</td><td>Cause of anomalous trade</td><td>Was regulation violated?</td></tr>
+        <tr><td>Manufacturing</td><td>Defect detection</td><td>Cause of production fault</td><td>Was process within tolerance?</td></tr>
+        <tr><td>Cybersecurity</td><td>Intrusion detection</td><td>Attack attribution</td><td>Was security policy breached?</td></tr>
+        <tr><td>Business Process</td><td>Process discovery</td><td>Cause of bottleneck</td><td>Was workflow compliant?</td></tr>
+        <tr><td>Energy</td><td>Grid anomaly detection</td><td>Cause of outage</td><td>Was safety standard met?</td></tr>
+        <tr><td>Autonomous Systems</td><td>Behavior summarization</td><td>Cause of disengagement</td><td>Was decision correct?</td></tr>
+      </tbody>
+    </table>
+
+    <h3>1.11 Case Study: Microservice Incident Diagnosis</h3>
+    <p><strong>Scenario.</strong> An e-commerce platform experiences a 400% latency increase.</p>
+    <p><strong>Data.</strong> Metrics (CPU, memory, latency, queue length); logs (application errors, config changes); traces (request paths across services); graph (service dependency topology); events (deployment, rollback, alerts).</p>
+    <p><strong>Descriptive AI.</strong></p>
+    <ul>
+      <li>Detects latency spike at 14:03.</li>
+      <li>Identifies affected services: A, B, C.</li>
+      <li>Reconstructs timeline: config change at 13:58 → connection pool reduction → queue buildup → latency propagation.</li>
+    </ul>
+    <p><strong>Diagnostic AI.</strong></p>
+    <ul>
+      <li>Transformer encodes logs and metrics.</li>
+      <li>GNN propagates anomalies over service graph.</li>
+      <li>Causal layer infers: config change caused connection pool exhaustion.</li>
+      <li>Counterfactual: without config change, latency would remain normal.</li>
+    </ul>
+    <p><strong>Correctness Assessment.</strong></p>
+    <ul>
+      <li>SLO violated: latency &gt; 200 ms for 10 minutes.</li>
+      <li>Policy nonconformance: config change lacked required review.</li>
+      <li>Operator response: rollback at 14:15 was correct but delayed.</li>
+    </ul>
+    <p><strong>Output.</strong> What happened: latency spike. Why: config change reduced connection pool. Was it correct: no; SLO and policy violated. Evidence: logs, metrics, traces, deployment records. Action: automate config validation and rollback.</p>
+
+    <h3>1.12 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Correlation vs. causation:</strong> Deep models find patterns, not causes.</li>
+      <li><strong>Nonstationarity:</strong> Behavior changes over time.</li>
+      <li><strong>Rare events:</strong> Few examples of failures.</li>
+      <li><strong>Label scarcity:</strong> Ground truth is expensive.</li>
+      <li><strong>Uncertainty:</strong> Models must know what they do not know.</li>
+      <li><strong>Explainability:</strong> Explanations must be faithful and actionable.</li>
+      <li><strong>Privacy and security:</strong> Sensitive historical data.</li>
+      <li><strong>Adversarial manipulation:</strong> Data poisoning and evasion.</li>
+      <li><strong>Human factors:</strong> Trust, alert fatigue, automation bias.</li>
+      <li><strong>Governance:</strong> Accountability, fairness, auditability.</li>
+      <li><strong>LLM hallucination:</strong> Grounding and verification.</li>
+      <li><strong>Multi-expert conflict:</strong> Different experts may disagree on correctness.</li>
+    </ol>
+
+    <h3>1.13 Summary</h3>
+    <p>Diagnostic/descriptive AI analyzes historical data to understand what happened and why. When combined with specifications, norms, and causal models, it assesses the correctness of behavior. Deep learning provides powerful representation, sequence, graph, multimodal, and generative tools. Causal inference provides identification and counterfactual reasoning. Human experts provide semantics, validation, and accountability. A successful system is multi-expert, multi-modal, causal, explainable, and governed.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Diagnostic/descriptive AI is not just retrospective reporting. It is an evidence-based reasoning infrastructure for correctness, accountability, and improvement.</p>
+    </div>
+
+    <h3>1.14 Exercises</h3>
+    <ol>
+      <li>Define “correctness of behavior” for a domain of your choice. List functional, procedural, causal, normative, operational, and decision dimensions.</li>
+      <li>Design a data schema for diagnostic/descriptive AI in a microservice system. Include logs, metrics, traces, events, and graphs.</li>
+      <li>Choose a deep learning architecture for root cause analysis in a supply chain. Justify your choice.</li>
+      <li>How would you distinguish correlation from causation in an incident diagnosis? Propose a causal graph and identification strategy.</li>
+      <li>Evaluate an LLM-based incident summarizer. What metrics would you use? How would you detect hallucination?</li>
+      <li>Build a multi-expert review checklist for deploying a diagnostic AI system in healthcare.</li>
+      <li>Write a counterfactual explanation for a loan denial. What are the ethical risks?</li>
+      <li>Design a human-in-the-loop workflow for correcting diagnostic errors.</li>
+    </ol>
+
+    <h3>1.15 Further Reading</h3>
+    <ul>
+      <li>Pearl, J. <em>Causality: Models, Reasoning, and Inference</em>.</li>
+      <li>Goodfellow, I., Bengio, Y., Courville, A. <em>Deep Learning</em>.</li>
+      <li>Van der Aalst, W. <em>Process Mining: Data Science in Action</em>.</li>
+      <li>Molnar, C. <em>Interpretable Machine Learning</em>.</li>
+      <li>Peters, J., Janzing, D., Schölkopf, B. <em>Elements of Causal Inference</em>.</li>
+      <li>Selected literature on AIOps, XAI, causal deep learning, and incident diagnosis.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Descriptive AI:</strong> Answers “What happened?”</li>
+      <li><strong>Diagnostic AI:</strong> Answers “Why did it happen?”</li>
+      <li><strong>Correctness:</strong> Conformance to specifications, norms, causality, or utility.</li>
+      <li><strong>Root Cause Analysis:</strong> Identification of underlying causes.</li>
+      <li><strong>Counterfactual:</strong> What would have happened under different conditions.</li>
+      <li><strong>Conformance Checking:</strong> Comparing observed behavior to a process model.</li>
+      <li><strong>SCM:</strong> Structural Causal Model.</li>
+      <li><strong>GNN:</strong> Graph Neural Network.</li>
+      <li><strong>XAI:</strong> Explainable AI.</li>
+      <li><strong>AIOps:</strong> AI for IT operations.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 2 ============================= -->
+  <section class="chapter" id="ch2">
+    <span class="chapter-label">Chapter 2</span>
+    <h2 class="chapter-title">Predictive AI: Forecasting Future Outcomes from Historical and Current Data</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What will happen? When will it happen? How likely is it? Under what conditions? How confident is the forecast? What decisions should it inform? How do we know the prediction is correct?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Predictive AI is the branch of artificial intelligence concerned with forecasting future outcomes based on historical and current data. If descriptive AI asks <em>what happened</em> and diagnostic AI asks <em>why it happened</em>, predictive AI asks <em>what is likely to happen next</em>. It produces point forecasts, probability distributions, event probabilities, risk scores, trajectories, and scenario-dependent predictions.</p>
+    <p>This chapter presents predictive AI as a general but deep learning–enabled subject for multiple expert arrays: machine learning engineers, data scientists, statisticians, causal inference researchers, domain specialists, systems operators, human-factors experts, ethicists, auditors, and decision-makers. It covers definitions, formal problem formulations, data modalities, deep learning architectures, probabilistic forecasting, uncertainty quantification, causal prediction, evaluation, reference architectures, applications, case studies, challenges, and exercises.</p>
+
+    <hr>
+
+    <h3>2.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Distinguish predictive AI from descriptive, diagnostic, and prescriptive AI.</li>
+      <li>Define forecasting problems across horizons, targets, and uncertainty types.</li>
+      <li>Formulate point, probabilistic, event-based, and decision-theoretic predictions.</li>
+      <li>Select deep learning architectures for time series, events, graphs, text, images, and multimodal data.</li>
+      <li>Quantify aleatoric and epistemic uncertainty using Bayesian, ensemble, quantile, and conformal methods.</li>
+      <li>Integrate causal reasoning into forecasting under interventions and counterfactuals.</li>
+      <li>Design a reference architecture for predictive AI in high-stakes environments.</li>
+      <li>Evaluate predictions using accuracy, calibration, sharpness, decision utility, fairness, and robustness.</li>
+      <li>Recognize pitfalls such as leakage, nonstationarity, feedback loops, and LLM hallucination.</li>
+    </ol>
+
+    <h3>2.2 Introduction: Why Predictive AI Matters</h3>
+    <p>Organizations, systems, and individuals constantly need to anticipate the future. Demand must be forecast, machines must be maintained before failure, patients must be monitored before deterioration, fraud must be detected before loss, and resources must be allocated before scarcity. Predictive AI transforms historical and current data into forward-looking estimates.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A hospital wants to predict which patients will deteriorate within 24 hours. Descriptive AI reports current vital signs and historical trends. Diagnostic AI explains why a patient is currently unstable. Predictive AI estimates the probability of deterioration, the likely time window, and the uncertainty around that estimate. Prescriptive AI then recommends an intervention.</p>
+    </div>
+
+    <p>Predictive AI is not merely extrapolation. It must handle:</p>
+    <ul>
+      <li>Nonstationarity and distribution shift.</li>
+      <li>Rare and extreme events.</li>
+      <li>Long and short horizons.</li>
+      <li>Multiple interacting entities.</li>
+      <li>Feedback loops from decisions.</li>
+      <li>Uncertainty that is irreducible or knowledge-based.</li>
+      <li>Human trust and decision-making.</li>
+    </ul>
+    <p>A prediction is only useful if it is accurate, calibrated, timely, actionable, and trustworthy.</p>
+
+    <h3>2.3 Core Definitions and Scope</h3>
+
+    <h4>2.3.1 Prediction, Forecast, and Nowcast</h4>
+    <ul>
+      <li><strong>Prediction:</strong> A general statement about an unknown outcome, past, present, or future.</li>
+      <li><strong>Forecast:</strong> A prediction specifically about future values or events.</li>
+      <li><strong>Nowcast:</strong> Estimation of the present state when data are delayed or incomplete.</li>
+    </ul>
+
+    <h4>2.3.2 Forecasting Horizon</h4>
+    <ul>
+      <li><strong>Short-term:</strong> seconds to hours.</li>
+      <li><strong>Medium-term:</strong> days to weeks.</li>
+      <li><strong>Long-term:</strong> months to years.</li>
+    </ul>
+    <p>Horizon affects model choice, uncertainty, and feature availability.</p>
+
+    <h4>2.3.3 Prediction Targets</h4>
+    <ul>
+      <li><strong>Point forecast:</strong> single value, e.g., next-day demand.</li>
+      <li><strong>Interval forecast:</strong> range, e.g., 90% prediction interval.</li>
+      <li><strong>Probabilistic forecast:</strong> full distribution.</li>
+      <li><strong>Event forecast:</strong> probability of an event, e.g., failure, fraud, relapse.</li>
+      <li><strong>Trajectory forecast:</strong> sequence of future states.</li>
+      <li><strong>Hierarchical forecast:</strong> predictions across aggregated and disaggregated levels.</li>
+      <li><strong>Spatiotemporal forecast:</strong> predictions over space and time.</li>
+    </ul>
+
+    <h4>2.3.4 Historical and Current Data</h4>
+    <p>Predictive AI uses historical time series, current observations, exogenous covariates, events and logs, text, images, audio, video, graph and relational data, human decisions and annotations, and calendar, weather, economic, and policy signals.</p>
+
+    <h4>2.3.5 Predictive Correctness</h4>
+    <p>A prediction is correct when it is:</p>
+    <ul>
+      <li><strong>Accurate:</strong> close to observed outcomes.</li>
+      <li><strong>Calibrated:</strong> stated probabilities match observed frequencies.</li>
+      <li><strong>Sharp:</strong> confident when appropriate.</li>
+      <li><strong>Timely:</strong> available before decisions must be made.</li>
+      <li><strong>Robust:</strong> stable under drift and noise.</li>
+      <li><strong>Decision-useful:</strong> improves expected utility.</li>
+      <li><strong>Fair:</strong> does not systematically harm groups.</li>
+      <li><strong>Explainable:</strong> provides actionable reasons.</li>
+    </ul>
+    <p>Correctness is therefore multi-dimensional and context-dependent.</p>
+
+    <h4>2.3.6 Analytics Spectrum</h4>
+    <table>
+      <thead>
+        <tr><th>Mode</th><th>Question</th><th>Time Focus</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Descriptive</td><td>What happened?</td><td>Past</td><td>Sales fell 10% last month</td></tr>
+        <tr><td>Diagnostic</td><td>Why did it happen?</td><td>Past</td><td>Promotion ended and competitor launched</td></tr>
+        <tr><td>Predictive</td><td>What will happen?</td><td>Future</td><td>Sales likely to fall 5% next month</td></tr>
+        <tr><td>Prescriptive</td><td>What should be done?</td><td>Future/action</td><td>Launch targeted promotion</td></tr>
+        <tr><td>Causal</td><td>What if we act?</td><td>Future/intervention</td><td>Effect of promotion on sales</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.4 A Multi-Expert Array Perspective</h3>
+    <p>Predictive AI requires collaboration across expert arrays.</p>
+    <table>
+      <thead>
+        <tr><th>Expert Array</th><th>Core Questions</th><th>Contributions</th><th>Risks if Absent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ML/Data Science</td><td>Which models? How to validate?</td><td>Deep learning, feature engineering, evaluation</td><td>Overfitting, leakage, brittle forecasts</td></tr>
+        <tr><td>Statistics/Econometrics</td><td>Is the forecast valid?</td><td>Uncertainty, time series theory, causal inference</td><td>Misleading confidence, spurious trends</td></tr>
+        <tr><td>Domain Experts</td><td>What matters? What is normal?</td><td>Semantics, constraints, labels, scenario knowledge</td><td>Irrelevant targets, invalid assumptions</td></tr>
+        <tr><td>Systems/Operations</td><td>How will it be deployed?</td><td>Latency, scale, monitoring, feedback</td><td>Unstable production systems</td></tr>
+        <tr><td>Human Factors/HCI</td><td>Will humans trust it?</td><td>Explanation, trust calibration, workflow</td><td>Alert fatigue, misuse, ignored forecasts</td></tr>
+        <tr><td>Ethics/Governance/Law</td><td>Is it fair and accountable?</td><td>Auditing, privacy, fairness, compliance</td><td>Discrimination, liability, harm</td></tr>
+        <tr><td>Business/Decision</td><td>What is the value?</td><td>KPIs, cost of errors, action thresholds</td><td>Misaligned optimization</td></tr>
+      </tbody>
+    </table>
+    <p>A predictive system is a socio-technical ensemble. The model is necessary but not sufficient.</p>
+
+    <h3>2.5 Formal Problem Formulation</h3>
+    <p>Let historical and current data be:</p>
+    \[
+    \mathcal{D} = \{(x_{1:t}, y_{t+1:t+H}, u_{1:t}, g_t)\}
+    \]
+    <p>where \(x_{1:t}\): observations up to time \(t\), \(y_{t+1:t+H}\): future target values over horizon \(H\), \(u_{1:t}\): interventions or actions, \(g_t\): graph or relational context.</p>
+
+    <h4>2.5.1 Point Forecasting</h4>
+    \[
+    \hat{y}_{t+1:t+H} = f_\theta(x_{1:t}, u_{1:t}, g_t)
+    \]
+
+    <h4>2.5.2 Probabilistic Forecasting</h4>
+    \[
+    p_\theta(y_{t+1:t+H} \mid x_{1:t}, u_{1:t}, g_t, \mathcal{K})
+    \]
+    <p>where \(\mathcal{K}\) is background knowledge.</p>
+
+    <h4>2.5.3 Event Forecasting</h4>
+    \[
+    P(\text{event occurs in } [t+1, t+H] \mid x_{1:t}, \mathcal{K})
+    \]
+
+    <h4>2.5.4 Quantile Forecasting</h4>
+    \[
+    q_\tau(x) = \inf\{y : P(Y \leq y \mid x) \geq \tau\}
+    \]
+
+    <h4>2.5.5 Decision-Theoretic Forecasting</h4>
+    <p>Choose action \(a\) to minimize expected loss:</p>
+    \[
+    a^* = \arg\min_a \mathbb{E}_{y \sim p(y|x)}[L(y, a)]
+    \]
+
+    <h4>2.5.6 Causal Forecasting</h4>
+    <p>Predict under intervention:</p>
+    \[
+    P(y_{t+1:t+H} \mid do(a), x_{1:t}, \mathcal{K})
+    \]
+    <p>and counterfactual:</p>
+    \[
+    P(y_{t+1:t+H}^{a'} \mid x_{1:t}, \mathcal{K})
+    \]
+
+    <h4>2.5.7 Levels of Predictive Output</h4>
+    <ol>
+      <li><strong>Detection:</strong> Will something happen?</li>
+      <li><strong>Timing:</strong> When will it happen?</li>
+      <li><strong>Magnitude:</strong> How large will it be?</li>
+      <li><strong>Uncertainty:</strong> How confident are we?</li>
+      <li><strong>Scenario:</strong> What if conditions change?</li>
+      <li><strong>Actionability:</strong> What decision does it support?</li>
+    </ol>
+
+    <h3>2.6 Data Modalities and Preparation</h3>
+    <p>Predictive AI handles heterogeneous data:</p>
+    <ul>
+      <li><strong>Time series:</strong> sensors, metrics, prices, demand.</li>
+      <li><strong>Events:</strong> logs, transactions, clicks, admissions.</li>
+      <li><strong>Text:</strong> reports, news, clinical notes, tickets.</li>
+      <li><strong>Images/video:</strong> inspection, surveillance, remote sensing.</li>
+      <li><strong>Audio:</strong> speech, machine sounds, acoustic monitoring.</li>
+      <li><strong>Graphs:</strong> supply chains, social networks, service topologies.</li>
+      <li><strong>Exogenous variables:</strong> weather, holidays, economic indicators.</li>
+      <li><strong>Human decisions:</strong> actions, overrides, interventions.</li>
+    </ul>
+    <p>Key challenges:</p>
+    <ul>
+      <li>Missing data and irregular sampling.</li>
+      <li>Temporal leakage.</li>
+      <li>Concept drift and nonstationarity.</li>
+      <li>Rare events and class imbalance.</li>
+      <li>Feature availability at prediction time.</li>
+      <li>Feedback loops from past decisions.</li>
+      <li>Privacy and security.</li>
+    </ul>
+    <p>Proper backtesting, rolling-origin evaluation, and time-based splits are essential.</p>
+
+    <h3>2.7 Deep Learning Methods</h3>
+
+    <h4>2.7.1 Sequence and Temporal Models</h4>
+    <ul>
+      <li><strong>RNNs, LSTMs, GRUs:</strong> sequential dependence.</li>
+      <li><strong>Temporal Convolutional Networks (TCNs):</strong> long-range patterns.</li>
+      <li><strong>Transformers:</strong> attention over long sequences and multimodal inputs.</li>
+      <li><strong>State-space models:</strong> efficient long-horizon forecasting.</li>
+    </ul>
+    <p>Example attention:</p>
+    \[
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d}}\right)V
+    \]
+
+    <h4>2.7.2 Probabilistic Deep Forecasting</h4>
+    <ul>
+      <li><strong>DeepAR:</strong> autoregressive probabilistic forecasting.</li>
+      <li><strong>Normalizing flows:</strong> flexible distributions.</li>
+      <li><strong>VAEs:</strong> latent variable models.</li>
+      <li><strong>Diffusion models:</strong> generative forecasting.</li>
+      <li><strong>Quantile regression:</strong> direct quantile estimation.</li>
+      <li><strong>Distributional regression:</strong> predict parameters of a distribution.</li>
+    </ul>
+    <p>Loss examples: Gaussian negative log-likelihood, quantile loss (pinball loss), continuous ranked probability score (CRPS).</p>
+
+    <h4>2.7.3 Graph and Spatiotemporal Models</h4>
+    <p>Graph Neural Networks (GNNs):</p>
+    \[
+    h_v^{(k+1)} = \text{AGG}\left(\{h_u^{(k)} : u \in \mathcal{N}(v)\}\right)
+    \]
+    <p>Uses: traffic forecasting, supply chain demand, energy grid load, epidemic spread, financial contagion.</p>
+
+    <h4>2.7.4 Multimodal Fusion</h4>
+    <p>Fusion strategies: early fusion (concatenate features), late fusion (combine outputs), cross-attention (align modalities).</p>
+    <p>Example: combine time series, text news, and graph relations for financial forecasting.</p>
+
+    <h4>2.7.5 Foundation Models and LLMs</h4>
+    <ul>
+      <li><strong>Time series foundation models:</strong> zero-shot and few-shot forecasting.</li>
+      <li><strong>LLMs:</strong> narrative forecasts, scenario generation, tool use.</li>
+      <li><strong>Retrieval-augmented generation:</strong> ground forecasts in evidence.</li>
+      <li><strong>Agents:</strong> query data, run models, produce reports.</li>
+    </ul>
+    <p>Risks: hallucination, overconfidence, lack of numerical grounding, privacy leakage.</p>
+    <p>Mitigations: tool verification, uncertainty quantification, human review, hybrid statistical and neural models.</p>
+
+    <h4>2.7.6 Uncertainty Quantification</h4>
+    <ul>
+      <li><strong>Aleatoric uncertainty:</strong> inherent noise.</li>
+      <li><strong>Epistemic uncertainty:</strong> model ignorance.</li>
+      <li><strong>Bayesian neural networks:</strong> posterior over weights.</li>
+      <li><strong>MC dropout:</strong> approximate Bayesian inference.</li>
+      <li><strong>Deep ensembles:</strong> robust uncertainty.</li>
+      <li><strong>Conformal prediction:</strong> distribution-free intervals.</li>
+      <li><strong>Evidential deep learning:</strong> predict evidence parameters.</li>
+    </ul>
+
+    <h4>2.7.7 Causal and Hybrid Forecasting</h4>
+    <ul>
+      <li><strong>Causal discovery:</strong> learn causal graphs.</li>
+      <li><strong>Invariant prediction:</strong> stable under distribution shift.</li>
+      <li><strong>Uplift modeling:</strong> predict treatment effect.</li>
+      <li><strong>Physics-informed neural networks:</strong> incorporate laws.</li>
+      <li><strong>Simulation-based forecasting:</strong> combine models and simulators.</li>
+    </ul>
+
+    <h4>2.7.8 Explainability</h4>
+    <ul>
+      <li>SHAP and Integrated Gradients.</li>
+      <li>Attention visualization.</li>
+      <li>Counterfactual forecasts.</li>
+      <li>Feature importance over time.</li>
+      <li>Concept-based explanations.</li>
+      <li>Natural language narratives with citations.</li>
+    </ul>
+
+    <h3>2.8 Reference Architecture</h3>
+    <p>A general predictive AI architecture includes:</p>
+    <ol>
+      <li><strong>Data ingestion:</strong> time series, events, text, images, graphs.</li>
+      <li><strong>Storage and governance:</strong> data lake, feature store, lineage.</li>
+      <li><strong>Feature engineering:</strong> temporal, lagged, rolling, exogenous.</li>
+      <li><strong>Training pipeline:</strong> deep learning, probabilistic, causal.</li>
+      <li><strong>Model registry:</strong> versioning, metadata, reproducibility.</li>
+      <li><strong>Forecasting service:</strong> batch, streaming, real-time.</li>
+      <li><strong>Uncertainty layer:</strong> intervals, calibration, conformal.</li>
+      <li><strong>Decision layer:</strong> thresholds, expected utility, actions.</li>
+      <li><strong>Monitoring:</strong> drift, performance, calibration, bias.</li>
+      <li><strong>Human-in-the-loop:</strong> review, feedback, override.</li>
+      <li><strong>Governance:</strong> auditing, fairness, privacy, security.</li>
+    </ol>
+
+    <h3>2.9 Evaluation</h3>
+    <p>Evaluation must be multi-dimensional.</p>
+    <h5>Accuracy Metrics</h5>
+    <ul>
+      <li>MAE, RMSE, MAPE, sMAPE, MASE.</li>
+      <li>AUC, PR-AUC for events.</li>
+      <li>F1, precision, recall.</li>
+    </ul>
+    <h5>Probabilistic Metrics</h5>
+    <ul>
+      <li>Pinball loss.</li>
+      <li>CRPS.</li>
+      <li>Log score.</li>
+      <li>Calibration curves.</li>
+      <li>Coverage and sharpness.</li>
+    </ul>
+    <h5>Decision Metrics</h5>
+    <ul>
+      <li>Expected cost.</li>
+      <li>Utility.</li>
+      <li>Regret.</li>
+      <li>Time-to-decision.</li>
+      <li>Actionability.</li>
+    </ul>
+    <h5>Robustness and Fairness</h5>
+    <ul>
+      <li>Performance under drift.</li>
+      <li>Subgroup fairness.</li>
+      <li>Adversarial robustness.</li>
+      <li>Stress testing.</li>
+    </ul>
+    <h5>Human Metrics</h5>
+    <ul>
+      <li>Trust calibration.</li>
+      <li>Cognitive load.</li>
+      <li>Decision quality.</li>
+      <li>Adoption rate.</li>
+    </ul>
+    <p>Offline metrics are insufficient. Use shadow mode, simulation, and online evaluation.</p>
+
+    <h3>2.10 Applications Across Domains</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Predictive Task</th><th>Horizon</th><th>Correctness Question</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Retail</td><td>Demand forecasting</td><td>Days–months</td><td>Is forecast accurate and calibrated?</td></tr>
+        <tr><td>Healthcare</td><td>Deterioration prediction</td><td>Hours–days</td><td>Does it improve outcomes?</td></tr>
+        <tr><td>Finance</td><td>Fraud and risk</td><td>Seconds–days</td><td>Is it fair and compliant?</td></tr>
+        <tr><td>Manufacturing</td><td>Predictive maintenance</td><td>Hours–weeks</td><td>Does it reduce downtime?</td></tr>
+        <tr><td>Energy</td><td>Load forecasting</td><td>Minutes–days</td><td>Is grid stable?</td></tr>
+        <tr><td>Supply Chain</td><td>Inventory demand</td><td>Days–months</td><td>Is service level met?</td></tr>
+        <tr><td>Cybersecurity</td><td>Intrusion prediction</td><td>Minutes–hours</td><td>Is security policy enforced?</td></tr>
+        <tr><td>Mobility</td><td>Traffic forecasting</td><td>Minutes–hours</td><td>Is routing improved?</td></tr>
+        <tr><td>Climate</td><td>Extreme weather</td><td>Days–years</td><td>Are warnings timely?</td></tr>
+        <tr><td>HR</td><td>Attrition prediction</td><td>Weeks–months</td><td>Is it ethical and useful?</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.11 Case Study: Predictive Maintenance in Manufacturing</h3>
+    <p><strong>Scenario.</strong> A factory wants to predict machine failure within 72 hours.</p>
+    <p><strong>Data.</strong> Sensor time series (vibration, temperature, pressure); logs (error codes, maintenance records); events (production schedule, shifts); graph (machine dependencies); text (technician notes).</p>
+    <p><strong>Descriptive AI.</strong> Summarizes recent sensor trends; detects abnormal vibration patterns.</p>
+    <p><strong>Diagnostic AI.</strong> Identifies bearing wear as likely cause.</p>
+    <p><strong>Predictive AI.</strong></p>
+    <ul>
+      <li>TCN + survival model predicts failure probability.</li>
+      <li>Conformal prediction provides 90% interval.</li>
+      <li>GNN incorporates machine dependencies.</li>
+      <li>LLM generates maintenance summary with citations.</li>
+    </ul>
+    <p><strong>Correctness Assessment.</strong></p>
+    <ul>
+      <li>Calibration: predicted 20% risk, observed 18% failure rate.</li>
+      <li>Timeliness: alert 48 hours before failure.</li>
+      <li>Decision utility: maintenance scheduled, downtime reduced.</li>
+      <li>Fairness: no systematic bias across machines.</li>
+      <li>Explainability: vibration and temperature top features.</li>
+    </ul>
+    <p><strong>Outcome.</strong> Unplanned downtime reduced by 30%; maintenance costs reduced by 15%; human technicians trust and override when needed.</p>
+
+    <h3>2.12 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Nonstationarity:</strong> Future differs from past.</li>
+      <li><strong>Distribution shift:</strong> Covariate, label, and concept drift.</li>
+      <li><strong>Rare events:</strong> Few examples of extreme outcomes.</li>
+      <li><strong>Long horizons:</strong> Uncertainty grows with time.</li>
+      <li><strong>Feedback loops:</strong> Predictions influence actions and future data.</li>
+      <li><strong>Causal vs. correlational:</strong> Prediction is not intervention.</li>
+      <li><strong>Leakage:</strong> Future information contaminates training.</li>
+      <li><strong>Uncertainty:</strong> Models often overconfident.</li>
+      <li><strong>Explainability:</strong> Forecasts must be actionable.</li>
+      <li><strong>Fairness:</strong> Predictions can discriminate.</li>
+      <li><strong>Privacy and security:</strong> Sensitive data and adversarial attacks.</li>
+      <li><strong>LLM hallucination:</strong> Numerical and factual errors.</li>
+      <li><strong>Human factors:</strong> Trust, alert fatigue, automation bias.</li>
+      <li><strong>Governance:</strong> Accountability, auditing, compliance.</li>
+    </ol>
+
+    <h3>2.13 Summary</h3>
+    <p>Predictive AI forecasts future outcomes from historical and current data. It spans point, probabilistic, event, trajectory, and causal forecasting. Deep learning provides powerful sequence, graph, multimodal, generative, and foundation models. Uncertainty quantification, causal reasoning, explainability, and human-in-the-loop design are essential for trust and decision quality. Predictive correctness is not only accuracy; it includes calibration, sharpness, timeliness, robustness, fairness, and decision utility.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Predictive AI is not merely guessing the future. It is a disciplined, uncertainty-aware, decision-oriented discipline for estimating what is likely to happen and why it matters.</p>
+    </div>
+
+    <h3>2.14 Exercises</h3>
+    <ol>
+      <li>Define a predictive AI problem in your domain. Specify target, horizon, data, and decision.</li>
+      <li>Compare point, interval, and probabilistic forecasts. When is each appropriate?</li>
+      <li>Design a deep learning architecture for multivariate time series forecasting with exogenous variables.</li>
+      <li>How would you detect and mitigate temporal leakage?</li>
+      <li>Propose an uncertainty quantification strategy for a high-stakes medical forecast.</li>
+      <li>Evaluate a demand forecasting model using MAE, RMSE, MASE, and pinball loss. Interpret differences.</li>
+      <li>Design a causal forecasting study for a marketing intervention.</li>
+      <li>Build a monitoring plan for model drift and calibration decay.</li>
+      <li>Write a fairness audit for a predictive policing model.</li>
+      <li>Design a human-in-the-loop workflow for overriding forecasts.</li>
+    </ol>
+
+    <h3>2.15 Further Reading</h3>
+    <ul>
+      <li>Hyndman, R. J., Athanasopoulos, G. <em>Forecasting: Principles and Practice</em>.</li>
+      <li>Goodfellow, I., Bengio, Y., Courville, A. <em>Deep Learning</em>.</li>
+      <li>Pearl, J. <em>Causality: Models, Reasoning, and Inference</em>.</li>
+      <li>Peters, J., Janzing, D., Schölkopf, B. <em>Elements of Causal Inference</em>.</li>
+      <li>Molnar, C. <em>Interpretable Machine Learning</em>.</li>
+      <li>Selected literature on deep time series forecasting, probabilistic forecasting, conformal prediction, and causal machine learning.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Predictive AI:</strong> Answers “What will happen?”</li>
+      <li><strong>Forecast:</strong> Prediction about future values or events.</li>
+      <li><strong>Horizon:</strong> Time span of prediction.</li>
+      <li><strong>Point Forecast:</strong> Single predicted value.</li>
+      <li><strong>Probabilistic Forecast:</strong> Full predictive distribution.</li>
+      <li><strong>Calibration:</strong> Agreement between predicted probabilities and observed frequencies.</li>
+      <li><strong>Sharpness:</strong> Concentration of predictive distribution.</li>
+      <li><strong>CRPS:</strong> Continuous Ranked Probability Score.</li>
+      <li><strong>Conformal Prediction:</strong> Distribution-free uncertainty intervals.</li>
+      <li><strong>Causal Forecasting:</strong> Prediction under interventions.</li>
+      <li><strong>Counterfactual:</strong> What would have happened under different conditions.</li>
+      <li><strong>Drift:</strong> Change in data distribution over time.</li>
+      <li><strong>Leakage:</strong> Use of future information in training.</li>
+      <li><strong>GNN:</strong> Graph Neural Network.</li>
+      <li><strong>LLM:</strong> Large Language Model.</li>
+      <li><strong>XAI:</strong> Explainable AI.</li>
+    </ul>
+  </section>
+    <!-- ============================= CHAPTER 3 ============================= -->
+  <section class="chapter" id="ch3">
+    <span class="chapter-label">Chapter 3</span>
+    <h2 class="chapter-title">Prescriptive AI: Determining the Optimal Course of Action</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What should be done? Which action maximizes expected utility? Under what constraints? For whom? With what trade-offs? How do we evaluate a recommendation before acting? How do we ensure safety, fairness, and accountability?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Prescriptive AI is the branch of artificial intelligence that determines the optimal course of action by providing recommendations based on data analysis. If descriptive AI asks <em>what happened</em>, diagnostic AI asks <em>why it happened</em>, and predictive AI asks <em>what will happen</em>, prescriptive AI asks <em>what should be done</em>. It combines prediction, causal inference, optimization, decision theory, and human judgment to recommend actions, policies, or interventions.</p>
+    <p>This chapter presents prescriptive AI as a general but deep learning–enabled subject for multiple expert arrays: operations researchers, machine learning engineers, economists, causal inference researchers, domain specialists, human-factors experts, ethicists, auditors, and decision-makers. It covers formal decision frameworks, optimization methods, reinforcement learning, causal prescriptive analysis, multi-objective trade-offs, fairness, evaluation, reference architectures, applications, case studies, challenges, and exercises.</p>
+
+    <h3>3.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Distinguish prescriptive AI from descriptive, diagnostic, and predictive AI.</li>
+      <li>Formulate decision problems using utility theory, constraints, and uncertainty.</li>
+      <li>Apply optimization, reinforcement learning, and causal inference to recommend actions.</li>
+      <li>Handle multi-objective trade-offs, fairness, and risk.</li>
+      <li>Design a reference architecture for prescriptive AI in high-stakes environments.</li>
+      <li>Evaluate recommendations using off-policy evaluation, regret, utility, and safety metrics.</li>
+      <li>Recognize pitfalls such as confounding, reward hacking, feedback loops, and unsafe exploration.</li>
+      <li>Integrate human-in-the-loop oversight and governance.</li>
+    </ol>
+
+    <h3>3.2 Introduction: Why Prescriptive AI Matters</h3>
+    <p>Prediction alone does not improve outcomes. Knowing that a machine will fail, a patient will deteriorate, or demand will spike is useful only if we act appropriately. Prescriptive AI closes the loop from insight to action. It recommends treatments, maintenance schedules, prices, routes, resource allocations, marketing campaigns, policies, and interventions.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A hospital predicts that a patient has a 30% chance of deterioration within 24 hours. Prescriptive AI recommends: increase monitoring frequency, administer a specific medication, and prepare an ICU bed. The recommendation balances expected survival benefit, side effects, cost, bed availability, and ethical considerations.</p>
+    </div>
+
+    <p>Prescriptive AI is inherently interdisciplinary. It requires:</p>
+    <ul>
+      <li>A model of the world (prediction and causality).</li>
+      <li>A model of preferences (utility, costs, constraints).</li>
+      <li>A model of uncertainty (probabilities, risk).</li>
+      <li>A model of action (feasible interventions).</li>
+      <li>A model of humans (trust, adoption, feedback).</li>
+      <li>A model of governance (accountability, fairness, safety).</li>
+    </ul>
+
+    <h3>3.3 Core Definitions and Scope</h3>
+
+    <h4>3.3.1 Recommendation, Decision, and Policy</h4>
+    <ul>
+      <li><strong>Recommendation:</strong> A suggested action for a specific situation.</li>
+      <li><strong>Decision:</strong> The choice among alternatives, possibly by a human or system.</li>
+      <li><strong>Policy:</strong> A mapping from states to actions, applied repeatedly.</li>
+    </ul>
+
+    <h4>3.3.2 Utility, Cost, and Risk</h4>
+    <ul>
+      <li><strong>Utility:</strong> A measure of preference or value.</li>
+      <li><strong>Cost:</strong> Negative utility, including monetary, health, and social costs.</li>
+      <li><strong>Risk:</strong> Uncertainty about outcomes, often measured by variance, VaR, or CVaR.</li>
+    </ul>
+
+    <h4>3.3.3 Constraints</h4>
+    <ul>
+      <li><strong>Hard constraints:</strong> must be satisfied (safety, legality, budgets).</li>
+      <li><strong>Soft constraints:</strong> preferred but can be violated at a cost.</li>
+      <li><strong>Resource constraints:</strong> time, money, staff, capacity.</li>
+    </ul>
+
+    <h4>3.3.4 Prescriptive Correctness</h4>
+    <p>A recommendation is correct when it:</p>
+    <ul>
+      <li><strong>Maximizes expected utility</strong> under the stated model.</li>
+      <li><strong>Respects constraints</strong> and norms.</li>
+      <li><strong>Is robust</strong> to model uncertainty and distribution shift.</li>
+      <li><strong>Is fair</strong> across groups and individuals.</li>
+      <li><strong>Is safe</strong> under exploration and error.</li>
+      <li><strong>Is explainable</strong> and auditable.</li>
+      <li><strong>Is adopted</strong> and actionable by humans.</li>
+    </ul>
+
+    <h4>3.3.5 Analytics Spectrum Revisited</h4>
+    <table>
+      <thead>
+        <tr><th>Mode</th><th>Question</th><th>Output</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Descriptive</td><td>What happened?</td><td>Summary</td><td>Sales fell 10%</td></tr>
+        <tr><td>Diagnostic</td><td>Why did it happen?</td><td>Cause</td><td>Competitor launch</td></tr>
+        <tr><td>Predictive</td><td>What will happen?</td><td>Forecast</td><td>Sales will fall 5%</td></tr>
+        <tr><td>Prescriptive</td><td>What should be done?</td><td>Action</td><td>Launch promotion</td></tr>
+        <tr><td>Causal</td><td>What if we act?</td><td>Effect</td><td>Promotion raises sales 7%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.4 A Multi-Expert Array Perspective</h3>
+    <table>
+      <thead>
+        <tr><th>Expert Array</th><th>Core Questions</th><th>Contributions</th><th>Risks if Absent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Operations Research</td><td>How to optimize under constraints?</td><td>LP, MIP, scheduling, simulation</td><td>Infeasible or suboptimal plans</td></tr>
+        <tr><td>ML/RL Engineers</td><td>How to learn policies?</td><td>Reinforcement learning, bandits, deep RL</td><td>Unsafe exploration, reward hacking</td></tr>
+        <tr><td>Causal Inference</td><td>What is the effect of action?</td><td>Identification, uplift, counterfactuals</td><td>Confounded recommendations</td></tr>
+        <tr><td>Economists</td><td>What are incentives and equilibria?</td><td>Mechanism design, game theory</td><td>Strategic manipulation</td></tr>
+        <tr><td>Domain Experts</td><td>What is feasible and safe?</td><td>Constraints, norms, intuition</td><td>Unrealistic or harmful actions</td></tr>
+        <tr><td>Human Factors</td><td>Will humans follow advice?</td><td>Explanation, trust, workflow</td><td>Rejection, misuse, alert fatigue</td></tr>
+        <tr><td>Ethics/Governance</td><td>Is it fair and accountable?</td><td>Auditing, fairness, compliance</td><td>Discrimination, harm, liability</td></tr>
+        <tr><td>Business/Decision</td><td>What is the value?</td><td>KPIs, cost-benefit, risk appetite</td><td>Misaligned optimization</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.5 Formal Problem Formulation</h3>
+
+    <h4>3.5.1 Decision-Theoretic Formulation</h4>
+    <p>Given state \(s\), action \(a\), outcome \(y\), and utility \(U(y,a)\), choose:</p>
+    \[
+    a^* = \arg\max_a \mathbb{E}_{y \sim p(y \mid s, a)}[U(y, a)]
+    \]
+
+    <h4>3.5.2 Constrained Optimization</h4>
+    \[
+    \max_a \mathbb{E}[U(y,a)] \quad \text{s.t.} \quad g_i(a) \leq 0, \; h_j(a) = 0
+    \]
+
+    <h4>3.5.3 Markov Decision Process (MDP)</h4>
+    \[
+    \mathcal{M} = (\mathcal{S}, \mathcal{A}, P, R, \gamma)
+    \]
+    <p>Policy:</p>
+    \[
+    \pi^* = \arg\max_\pi \mathbb{E}\left[\sum_{t=0}^\infty \gamma^t R(s_t, a_t)\right]
+    \]
+
+    <h4>3.5.4 Partially Observable MDP (POMDP)</h4>
+    <p>When states are not fully observed, maintain a belief \(b(s)\) and optimize over belief space.</p>
+
+    <h4>3.5.5 Causal Prescriptive Formulation</h4>
+    <p>Choose action to maximize expected outcome under intervention:</p>
+    \[
+    a^* = \arg\max_a \mathbb{E}[Y \mid do(A=a), X=x]
+    \]
+
+    <h4>3.5.6 Multi-Objective Optimization</h4>
+    \[
+    \max_a \left( f_1(a), f_2(a), \ldots, f_k(a) \right)
+    \]
+    <p>Solutions form a Pareto frontier. Choose based on preferences or constraints.</p>
+
+    <h4>3.5.7 Levels of Prescriptive Output</h4>
+    <ol>
+      <li><strong>Ranking:</strong> order actions by expected value.</li>
+      <li><strong>Recommendation:</strong> best action under model.</li>
+      <li><strong>Policy:</strong> rule mapping states to actions.</li>
+      <li><strong>Plan:</strong> sequence of actions over time.</li>
+      <li><strong>Adaptive policy:</strong> learns and updates with feedback.</li>
+      <li><strong>Governed policy:</strong> includes safety, fairness, and audit.</li>
+    </ol>
+
+    <h3>3.6 Data, Models, and Knowledge</h3>
+    <p>Prescriptive AI uses:</p>
+    <ul>
+      <li><strong>Historical data:</strong> actions, outcomes, contexts.</li>
+      <li><strong>Predictive models:</strong> forecasts of outcomes.</li>
+      <li><strong>Causal models:</strong> effects of interventions.</li>
+      <li><strong>Simulators:</strong> safe exploration environments.</li>
+      <li><strong>Domain knowledge:</strong> constraints, norms, feasibility.</li>
+      <li><strong>Human preferences:</strong> utility, risk appetite, ethics.</li>
+      <li><strong>Real-time data:</strong> current state and context.</li>
+    </ul>
+    <p>Challenges: confounding, missing counterfactuals, nonstationarity, delayed rewards, sparse feedback, safety constraints, and human adoption.</p>
+
+    <h3>3.7 Methods</h3>
+
+    <h4>3.7.1 Optimization and Operations Research</h4>
+    <ul>
+      <li><strong>Linear programming (LP):</strong> continuous decision variables, linear objectives.</li>
+      <li><strong>Mixed-integer programming (MIP):</strong> discrete decisions.</li>
+      <li><strong>Convex optimization:</strong> tractable global optima.</li>
+      <li><strong>Dynamic programming:</strong> sequential decisions.</li>
+      <li><strong>Stochastic programming:</strong> uncertainty in parameters.</li>
+      <li><strong>Robust optimization:</strong> worst-case guarantees.</li>
+    </ul>
+
+    <h4>3.7.2 Reinforcement Learning</h4>
+    <ul>
+      <li><strong>Value-based:</strong> Q-learning, DQN.</li>
+      <li><strong>Policy-based:</strong> REINFORCE, PPO, TRPO.</li>
+      <li><strong>Actor-critic:</strong> A2C, A3C, SAC, TD3.</li>
+      <li><strong>Model-based:</strong> learn dynamics, plan.</li>
+      <li><strong>Offline RL:</strong> learn from logged data without exploration.</li>
+      <li><strong>Multi-agent RL:</strong> interacting agents.</li>
+    </ul>
+
+    <h4>3.7.3 Contextual Bandits</h4>
+    <p>Balance exploration and exploitation:</p>
+    \[
+    a_t = \arg\max_a \left( \hat{\mu}_a(x_t) + \beta \cdot \text{UCB}_a(x_t) \right)
+    \]
+    <p>Applications: recommendations, ads, clinical trials, pricing.</p>
+
+    <h4>3.7.4 Causal Prescriptive Methods</h4>
+    <ul>
+      <li><strong>Uplift modeling:</strong> predict treatment effect heterogeneity.</li>
+      <li><strong>Double machine learning:</strong> debiased effect estimation.</li>
+      <li><strong>Meta-learners:</strong> S-, T-, X-, R-learners.</li>
+      <li><strong>Counterfactual policy learning:</strong> optimize policy from observational data.</li>
+      <li><strong>Instrumental variables:</strong> handle unobserved confounding.</li>
+    </ul>
+
+    <h4>3.7.5 Deep Prescriptive Models</h4>
+    <ul>
+      <li>Deep Q-Networks (DQN).</li>
+      <li>Deep deterministic policy gradients (DDPG).</li>
+      <li>Soft actor-critic (SAC).</li>
+      <li>Decision transformers.</li>
+      <li>Graph neural networks for combinatorial actions.</li>
+      <li>LLM-based planners and tool-using agents.</li>
+    </ul>
+
+    <h4>3.7.6 Multi-Objective and Fairness-Aware Optimization</h4>
+    <ul>
+      <li>Pareto optimization.</li>
+      <li>Constrained MDPs.</li>
+      <li>Fairness constraints (demographic parity, equal opportunity).</li>
+      <li>Social welfare optimization.</li>
+      <li>Rawlsian and utilitarian criteria.</li>
+    </ul>
+
+    <h4>3.7.7 Explainability and Human Interaction</h4>
+    <ul>
+      <li>Counterfactual recommendations.</li>
+      <li>Actionable recourse.</li>
+      <li>Feature attribution for decisions.</li>
+      <li>Natural language explanations.</li>
+      <li>Human-in-the-loop approval and override.</li>
+    </ul>
+
+    <h3>3.8 Reference Architecture</h3>
+    <ol>
+      <li><strong>Data layer:</strong> historical, real-time, contextual.</li>
+      <li><strong>Prediction layer:</strong> forecast outcomes.</li>
+      <li><strong>Causal layer:</strong> estimate intervention effects.</li>
+      <li><strong>Optimization layer:</strong> solve for optimal actions.</li>
+      <li><strong>Constraint layer:</strong> enforce safety, legality, budgets.</li>
+      <li><strong>Fairness layer:</strong> audit and mitigate bias.</li>
+      <li><strong>Explanation layer:</strong> justify recommendations.</li>
+      <li><strong>Human interface:</strong> review, override, feedback.</li>
+      <li><strong>Execution layer:</strong> act or recommend.</li>
+      <li><strong>Monitoring layer:</strong> drift, utility, safety, adoption.</li>
+      <li><strong>Governance layer:</strong> audit, accountability, compliance.</li>
+    </ol>
+
+    <h3>3.9 Evaluation</h3>
+    <h5>Offline Evaluation</h5>
+    <ul>
+      <li>Off-policy evaluation (OPE): IPS, DR, SNIPS.</li>
+      <li>Counterfactual policy evaluation.</li>
+      <li>Regret bounds.</li>
+      <li>Simulation studies.</li>
+    </ul>
+    <h5>Online Evaluation</h5>
+    <ul>
+      <li>A/B tests.</li>
+      <li>Interleaving.</li>
+      <li>Bandit regret.</li>
+      <li>Utility and cost.</li>
+      <li>Safety incidents.</li>
+    </ul>
+    <h5>Human and Governance</h5>
+    <ul>
+      <li>Adoption rate.</li>
+      <li>Trust calibration.</li>
+      <li>Fairness metrics.</li>
+      <li>Auditability.</li>
+      <li>Compliance.</li>
+    </ul>
+
+    <h3>3.10 Applications Across Domains</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Prescriptive Task</th><th>Objective</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Healthcare</td><td>Treatment recommendation</td><td>Survival, quality of life</td></tr>
+        <tr><td>Finance</td><td>Portfolio and trading</td><td>Return, risk, compliance</td></tr>
+        <tr><td>Retail</td><td>Pricing and promotions</td><td>Revenue, margin, loyalty</td></tr>
+        <tr><td>Supply Chain</td><td>Inventory and routing</td><td>Service level, cost</td></tr>
+        <tr><td>Energy</td><td>Grid dispatch</td><td>Reliability, emissions, cost</td></tr>
+        <tr><td>Manufacturing</td><td>Maintenance scheduling</td><td>Uptime, cost</td></tr>
+        <tr><td>Marketing</td><td>Campaign targeting</td><td>Conversion, ROI</td></tr>
+        <tr><td>Public Policy</td><td>Resource allocation</td><td>Welfare, equity</td></tr>
+        <tr><td>Autonomous Systems</td><td>Planning and control</td><td>Safety, efficiency</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.11 Case Study: Prescriptive AI for Sepsis Treatment</h3>
+    <p><strong>Scenario.</strong> An ICU wants to recommend treatment for sepsis patients.</p>
+    <p><strong>Data.</strong> Vital signs, labs, medications, demographics, outcomes.</p>
+    <p><strong>Predictive model.</strong> Predict mortality risk and organ failure.</p>
+    <p><strong>Causal model.</strong> Estimate effect of fluids, vasopressors, antibiotics.</p>
+    <p><strong>Prescriptive model.</strong> Reinforcement learning with safety constraints, trained offline on historical data, evaluated in simulation.</p>
+    <p><strong>Recommendation.</strong> For patient X: administer 30 mL/kg fluids, start norepinephrine, begin broad-spectrum antibiotics.</p>
+    <p><strong>Evaluation.</strong> Off-policy evaluation shows 8% mortality reduction versus clinician policy. Simulation confirms no increase in adverse events. Human review confirms feasibility.</p>
+    <p><strong>Governance.</strong> Recommendations are advisory; clinicians can override. All decisions logged for audit.</p>
+
+    <h3>3.12 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Confounding:</strong> observed actions correlate with unobserved factors.</li>
+      <li><strong>Counterfactual scarcity:</strong> we never observe what would have happened.</li>
+      <li><strong>Reward specification:</strong> utility is hard to define.</li>
+      <li><strong>Reward hacking:</strong> agents exploit misspecified objectives.</li>
+      <li><strong>Safe exploration:</strong> learning can harm.</li>
+      <li><strong>Distribution shift:</strong> policies change the data distribution.</li>
+      <li><strong>Delayed and sparse rewards:</strong> credit assignment is hard.</li>
+      <li><strong>Multi-agent dynamics:</strong> others adapt.</li>
+      <li><strong>Fairness:</strong> optimal for whom?</li>
+      <li><strong>Transparency:</strong> recommendations must be explainable.</li>
+      <li><strong>Human adoption:</strong> trust and workflow.</li>
+      <li><strong>Governance:</strong> accountability and audit.</li>
+    </ol>
+
+    <h3>3.13 Summary</h3>
+    <p>Prescriptive AI determines the optimal course of action by combining prediction, causal inference, optimization, and decision theory. It recommends actions, policies, and plans that maximize expected utility under constraints. Deep learning, reinforcement learning, and causal methods provide powerful tools, but safety, fairness, explainability, human oversight, and governance are essential.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Prescriptive AI is not just “what to do” — it is a disciplined, accountable, and human-centered practice of turning data into better decisions.</p>
+    </div>
+
+    <h3>3.14 Exercises</h3>
+    <ol>
+      <li>Formulate a decision problem in your domain using utility, constraints, and uncertainty.</li>
+      <li>Compare optimization and reinforcement learning for a sequential decision problem.</li>
+      <li>Design an off-policy evaluation strategy for a recommendation system.</li>
+      <li>How would you detect and mitigate reward hacking?</li>
+      <li>Propose a fairness-aware prescriptive model for resource allocation.</li>
+      <li>Write a counterfactual explanation for a loan approval recommendation.</li>
+      <li>Design a human-in-the-loop workflow for clinical recommendations.</li>
+      <li>Build a governance checklist for deploying prescriptive AI.</li>
+    </ol>
+
+    <h3>3.15 Further Reading</h3>
+    <ul>
+      <li>Sutton, R., Barto, A. <em>Reinforcement Learning: An Introduction</em>.</li>
+      <li>Bertsekas, D. <em>Dynamic Programming and Optimal Control</em>.</li>
+      <li>Pearl, J. <em>Causality</em>.</li>
+      <li>Kochenderfer, M. <em>Decision Making Under Uncertainty</em>.</li>
+      <li>Selected literature on offline RL, causal policy learning, and fair optimization.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Prescriptive AI:</strong> Recommends optimal actions.</li>
+      <li><strong>Utility:</strong> Measure of preference or value.</li>
+      <li><strong>MDP:</strong> Markov Decision Process.</li>
+      <li><strong>POMDP:</strong> Partially Observable MDP.</li>
+      <li><strong>Policy:</strong> Mapping from states to actions.</li>
+      <li><strong>Regret:</strong> Loss compared to optimal policy.</li>
+      <li><strong>OPE:</strong> Off-policy evaluation.</li>
+      <li><strong>Uplift:</strong> Causal treatment effect.</li>
+      <li><strong>Pareto frontier:</strong> Set of non-dominated solutions.</li>
+      <li><strong>Reward hacking:</strong> Exploiting misspecified objectives.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 4 ============================= -->
+  <section class="chapter" id="ch4">
+    <span class="chapter-label">Chapter 4</span>
+    <h2 class="chapter-title">Generative/Cognitive AI: Producing Content and Simulating Cognition</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What is generative AI? How do models create text, code, images, audio, and video? What is cognitive AI? How do generative models relate to human cognition? What are the capabilities, limits, risks, and ethical stakes?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Generative AI is the branch of artificial intelligence involved in producing various types of content, such as code, articles, images, audio, video, and more. Cognitive AI aims to simulate or support human-like cognitive processes: perception, memory, reasoning, learning, language, and decision-making. Together, they represent a shift from AI as analysis to AI as creation and cognition.</p>
+    <p>This chapter presents generative and cognitive AI as a general but deep learning–enabled subject for multiple expert arrays: machine learning engineers, cognitive scientists, linguists, artists, domain specialists, human-factors experts, ethicists, legal scholars, and policymakers. It covers generative model families, multimodal systems, foundation models, cognitive architectures, evaluation, risks, governance, applications, case studies, challenges, and exercises.</p>
+
+    <h3>4.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Distinguish generative AI from discriminative and predictive AI.</li>
+      <li>Explain major generative model families: autoregressive, VAE, GAN, diffusion, flow.</li>
+      <li>Describe multimodal and foundation models.</li>
+      <li>Define cognitive AI and contrast it with narrow generative AI.</li>
+      <li>Evaluate generative outputs for quality, factuality, safety, and bias.</li>
+      <li>Recognize risks such as hallucination, deepfakes, copyright, and misuse.</li>
+      <li>Design governance for generative AI deployment.</li>
+      <li>Apply generative and cognitive AI responsibly in real domains.</li>
+    </ol>
+
+    <h3>4.2 Introduction: From Analysis to Creation</h3>
+    <p>Earlier chapters focused on understanding and deciding. Generative AI focuses on creating. It produces text, code, images, audio, video, 3D scenes, molecules, and designs. Cognitive AI focuses on modeling the processes behind intelligent behavior.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A product team uses a generative model to draft marketing copy, generate product images, write unit tests, summarize customer feedback, and prototype a chatbot. A cognitive AI system models user attention, memory, and emotion to personalize the experience.</p>
+    </div>
+
+    <p>Generative AI is not new — autoencoders and GANs date back years — but transformers, diffusion models, and foundation models have dramatically expanded capability, accessibility, and risk.</p>
+
+    <h3>4.3 Core Definitions and Scope</h3>
+
+    <h4>4.3.1 Generative vs. Discriminative Models</h4>
+    <ul>
+      <li><strong>Discriminative:</strong> model \(P(y \mid x)\), e.g., classification.</li>
+      <li><strong>Generative:</strong> model \(P(x)\) or \(P(x, y)\), e.g., synthesis.</li>
+    </ul>
+
+    <h4>4.3.2 Content Modalities</h4>
+    <ul>
+      <li><strong>Text:</strong> articles, dialogue, code, summaries.</li>
+      <li><strong>Images:</strong> photorealistic, artistic, technical.</li>
+      <li><strong>Audio:</strong> speech, music, sound effects.</li>
+      <li><strong>Video:</strong> animation, synthesis, editing.</li>
+      <li><strong>3D:</strong> shapes, scenes, textures.</li>
+      <li><strong>Structured:</strong> tables, graphs, molecules, designs.</li>
+      <li><strong>Multimodal:</strong> combinations of the above.</li>
+    </ul>
+
+    <h4>4.3.3 Cognitive AI</h4>
+    <p>Cognitive AI aims to model or support human-like cognition:</p>
+    <ul>
+      <li>Perception and attention.</li>
+      <li>Memory and learning.</li>
+      <li>Language and reasoning.</li>
+      <li>Problem solving and planning.</li>
+      <li>Emotion and social cognition.</li>
+      <li>Metacognition and self-regulation.</li>
+    </ul>
+
+    <h4>4.3.4 Generative Correctness</h4>
+    <p>A generative output is correct when it is:</p>
+    <ul>
+      <li><strong>Relevant:</strong> aligned with the prompt and context.</li>
+      <li><strong>Faithful:</strong> grounded in facts or evidence.</li>
+      <li><strong>Coherent:</strong> internally consistent.</li>
+      <li><strong>Novel or appropriate:</strong> not plagiarized or harmful.</li>
+      <li><strong>Safe:</strong> free from disallowed content.</li>
+      <li><strong>Fair:</strong> not perpetuating bias.</li>
+      <li><strong>Attributable:</strong> sources and provenance traceable.</li>
+    </ul>
+
+    <h3>4.4 A Multi-Expert Array Perspective</h3>
+    <table>
+      <thead>
+        <tr><th>Expert Array</th><th>Core Questions</th><th>Contributions</th><th>Risks if Absent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ML Researchers</td><td>Which architectures? How to train?</td><td>Transformers, diffusion, RLHF</td><td>Unstable, unsafe models</td></tr>
+        <tr><td>Cognitive Scientists</td><td>How does human cognition work?</td><td>Architectures, experiments, theory</td><td>Shallow or misleading models</td></tr>
+        <tr><td>Linguists</td><td>How is language structured?</td><td>Syntax, semantics, pragmatics</td><td>Fluency without understanding</td></tr>
+        <tr><td>Domain Experts</td><td>What is valid content?</td><td>Fact-checking, constraints, norms</td><td>Plausible but wrong outputs</td></tr>
+        <tr><td>Artists/Creators</td><td>What is creative value?</td><td>Aesthetics, originality, ethics</td><td>Homogenization, exploitation</td></tr>
+        <tr><td>Human Factors</td><td>How do users interact?</td><td>Interface, trust, workflow</td><td>Overreliance, confusion</td></tr>
+        <tr><td>Ethics/Law</td><td>Is it legal and fair?</td><td>Copyright, privacy, safety</td><td>Infringement, harm, liability</td></tr>
+        <tr><td>Policy/Governance</td><td>How to regulate?</td><td>Standards, audits, transparency</td><td>Unchecked misuse</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.5 Formal Foundations</h3>
+
+    <h4>4.5.1 Generative Modeling</h4>
+    <p>Learn \(p_\theta(x)\) or \(p_\theta(x \mid c)\) where \(c\) is conditioning context.</p>
+    \[
+    \max_\theta \mathbb{E}_{x \sim p_{\text{data}}}[\log p_\theta(x)]
+    \]
+
+    <h4>4.5.2 Autoregressive Models</h4>
+    \[
+    p(x) = \prod_{t=1}^T p(x_t \mid x_{<t})
+    \]
+    <p>Examples: GPT, LLaMA, PaLM, Mistral, Claude.</p>
+
+    <h4>4.5.3 Variational Autoencoders (VAEs)</h4>
+    \[
+    \mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x) \| p(z))
+    \]
+
+    <h4>4.5.4 Generative Adversarial Networks (GANs)</h4>
+    \[
+    \min_G \max_D \mathbb{E}_{x}[\log D(x)] + \mathbb{E}_{z}[\log(1 - D(G(z)))]
+    \]
+
+    <h4>4.5.5 Diffusion Models</h4>
+    <p>Forward process adds noise; reverse process denoises:</p>
+    \[
+    q(x_t \mid x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I)
+    \]
+    <p>Examples: DDPM, Stable Diffusion, DALL·E 2/3, Imagen, Sora.</p>
+
+    <h4>4.5.6 Normalizing Flows</h4>
+    <p>Invertible transformations with tractable likelihood:</p>
+    \[
+    \log p(x) = \log p(z) + \log \left| \det \frac{\partial f^{-1}}{\partial x} \right|
+    \]
+
+    <h4>4.5.7 Energy-Based Models</h4>
+    \[
+    p_\theta(x) = \frac{\exp(-E_\theta(x))}{Z(\theta)}
+    \]
+
+    <h4>4.5.8 Alignment and Fine-Tuning</h4>
+    <ul>
+      <li>Supervised fine-tuning (SFT).</li>
+      <li>Reinforcement learning from human feedback (RLHF).</li>
+      <li>Direct preference optimization (DPO).</li>
+      <li>Constitutional AI.</li>
+      <li>Instruction tuning.</li>
+    </ul>
+
+    <h3>4.6 Deep Architectures and Systems</h3>
+
+    <h4>4.6.1 Transformers</h4>
+    \[
+    \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d}}\right)V
+    \]
+    <p>Variants: encoder-only (BERT), decoder-only (GPT), encoder-decoder (T5).</p>
+
+    <h4>4.6.2 Multimodal Models</h4>
+    <ul>
+      <li>Contrastive: CLIP.</li>
+      <li>Text-to-image: DALL·E, Stable Diffusion, Midjourney.</li>
+      <li>Vision-language: GPT-4V, Gemini, Claude.</li>
+      <li>Text-to-video: Sora, Runway.</li>
+      <li>Text-to-audio: AudioLM, MusicLM.</li>
+      <li>Text-to-3D: DreamFusion, Point-E.</li>
+    </ul>
+
+    <h4>4.6.3 Retrieval-Augmented Generation (RAG)</h4>
+    <p>Combine a retriever with a generator to ground outputs in external knowledge.</p>
+    \[
+    p(y \mid x) = \sum_z p(z \mid x) \, p(y \mid x, z)
+    \]
+
+    <h4>4.6.4 Agents and Tool Use</h4>
+    <p>LLMs augmented with tools, memory, planning, and reflection.</p>
+
+    <h4>4.6.5 Cognitive Architectures</h4>
+    <ul>
+      <li><strong>SOAR:</strong> problem spaces, production rules, chunking.</li>
+      <li><strong>ACT-R:</strong> declarative and procedural memory, activation.</li>
+      <li><strong>CLARION:</strong> implicit and explicit learning.</li>
+      <li><strong>Global Workspace Theory:</strong> broadcast of information.</li>
+      <li><strong>Predictive coding:</strong> hierarchical prediction error minimization.</li>
+    </ul>
+
+    <h3>4.7 Evaluation</h3>
+    <h5>Text</h5>
+    <ul>
+      <li>Perplexity, BLEU, ROUGE, METEOR, BERTScore.</li>
+      <li>Factuality, coherence, relevance, safety.</li>
+      <li>Human evaluation, LLM-as-judge.</li>
+    </ul>
+    <h5>Image</h5>
+    <ul>
+      <li>FID, IS, CLIP score.</li>
+      <li>Human preference, aesthetic ratings.</li>
+      <li>Prompt adherence.</li>
+    </ul>
+    <h5>Audio/Video</h5>
+    <ul>
+      <li>MOS, WER, FVD.</li>
+      <li>Temporal coherence, realism.</li>
+    </ul>
+    <h5>Safety and Bias</h5>
+    <ul>
+      <li>Toxicity, bias, stereotype detection.</li>
+      <li>Jailbreak resistance.</li>
+      <li>Watermarking and provenance.</li>
+    </ul>
+
+    <h3>4.8 Applications</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Generative Task</th><th>Cognitive Task</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Software</td><td>Code generation, tests</td><td>Program comprehension</td></tr>
+        <tr><td>Media</td><td>Articles, scripts, images</td><td>Audience modeling</td></tr>
+        <tr><td>Design</td><td>CAD, UI, fashion</td><td>Creative assistance</td></tr>
+        <tr><td>Healthcare</td><td>Notes, summaries, images</td><td>Clinical reasoning support</td></tr>
+        <tr><td>Education</td><td>Lessons, quizzes</td><td>Student modeling</td></tr>
+        <tr><td>Science</td><td>Molecules, proteins</td><td>Hypothesis generation</td></tr>
+        <tr><td>Entertainment</td><td>Games, video, music</td><td>NPC behavior</td></tr>
+        <tr><td>Business</td><td>Reports, emails</td><td>Decision support</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.9 Case Study: Generative AI in Software Engineering</h3>
+    <p><strong>Scenario.</strong> A team uses an LLM to generate code, tests, and documentation.</p>
+    <p><strong>Workflow.</strong> Developer writes a prompt; model generates code; static analysis, tests, and human review validate; feedback improves prompts.</p>
+    <p><strong>Benefits.</strong> Faster prototyping, reduced boilerplate, better documentation.</p>
+    <p><strong>Risks.</strong> Insecure code, licensing issues, hallucinated APIs, overreliance.</p>
+    <p><strong>Mitigations.</strong> Sandboxing, automated testing, provenance tracking, human review, policy.</p>
+
+    <h3>4.10 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Hallucination:</strong> plausible but false outputs.</li>
+      <li><strong>Grounding:</strong> linking outputs to evidence.</li>
+      <li><strong>Bias:</strong> reproducing and amplifying stereotypes.</li>
+      <li><strong>Copyright:</strong> training data and output ownership.</li>
+      <li><strong>Privacy:</strong> memorization and leakage.</li>
+      <li><strong>Deepfakes:</strong> misinformation and fraud.</li>
+      <li><strong>Evaluation:</strong> measuring quality and truthfulness.</li>
+      <li><strong>Alignment:</strong> matching human values.</li>
+      <li><strong>Energy and cost:</strong> environmental impact.</li>
+      <li><strong>Governance:</strong> regulation and accountability.</li>
+      <li><strong>Cognitive plausibility:</strong> models are not brains.</li>
+      <li><strong>Creativity:</strong> originality vs. recombination.</li>
+    </ol>
+
+    <h3>4.11 Summary</h3>
+    <p>Generative AI produces content across modalities. Cognitive AI models and supports human-like cognition. Together, they expand AI from analysis to creation and from tools to collaborators. Deep learning, foundation models, and multimodal architectures drive capability. Evaluation, safety, fairness, provenance, and governance are essential.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Generative AI is powerful but not magic — it is a probabilistic content engine that requires grounding, oversight, and ethics.</p>
+    </div>
+
+    <h3>4.12 Exercises</h3>
+    <ol>
+      <li>Compare autoregressive, VAE, GAN, and diffusion models. When is each appropriate?</li>
+      <li>Design a RAG system for a domain of your choice. What are the failure modes?</li>
+      <li>How would you detect and mitigate hallucination in a medical summarizer?</li>
+      <li>Write a policy for responsible use of generative AI in your organization.</li>
+      <li>Evaluate a text-to-image model using FID, CLIP, and human preference.</li>
+      <li>Discuss copyright and attribution for generative outputs.</li>
+      <li>Design a cognitive architecture for a tutoring system.</li>
+      <li>Analyze the ethical risks of deepfakes in elections.</li>
+    </ol>
+
+    <h3>4.13 Further Reading</h3>
+    <ul>
+      <li>Goodfellow, I. et al. <em>Deep Learning</em>.</li>
+      <li>Vaswani, A. et al. “Attention Is All You Need.”</li>
+      <li>Ho, J. et al. “Denoising Diffusion Probabilistic Models.”</li>
+      <li>Bommasani, R. et al. “On the Opportunities and Risks of Foundation Models.”</li>
+      <li>Anderson, J. <em>How Can the Human Mind Occur in the Physical Universe?</em></li>
+      <li>Laird, J. <em>The Soar Cognitive Architecture</em>.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Generative AI:</strong> Produces content.</li>
+      <li><strong>Cognitive AI:</strong> Models or supports cognition.</li>
+      <li><strong>Transformer:</strong> Attention-based neural architecture.</li>
+      <li><strong>Diffusion:</strong> Denoising generative process.</li>
+      <li><strong>GAN:</strong> Generative Adversarial Network.</li>
+      <li><strong>VAE:</strong> Variational Autoencoder.</li>
+      <li><strong>RAG:</strong> Retrieval-Augmented Generation.</li>
+      <li><strong>RLHF:</strong> Reinforcement Learning from Human Feedback.</li>
+      <li><strong>Hallucination:</strong> Confident false output.</li>
+      <li><strong>Foundation model:</strong> Large pretrained model.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 5 ============================= -->
+  <section class="chapter" id="ch5">
+    <span class="chapter-label">Chapter 5</span>
+    <h2 class="chapter-title">Reactive AI: Stimulus–Response Systems</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What is reactive AI? How does it differ from learning and planning systems? What are its strengths and limits? Where is it still used today? How does it fit into the broader AI landscape?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Reactive AI is designed to respond to specific inputs with predetermined responses. It does not maintain memory of past interactions, does not learn from experience, and does not model the world beyond the current stimulus. Reactive AI is the simplest and oldest form of AI, but it remains foundational in control systems, games, user interfaces, and embedded devices.</p>
+    <p>This chapter presents reactive AI as a general subject for multiple expert arrays: control engineers, game developers, embedded systems engineers, human-factors experts, educators, and students of AI history. It covers definitions, finite state machines, rule-based systems, expert systems, reactive agents, applications, limitations, and exercises.</p>
+
+    <h3>5.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Define reactive AI and distinguish it from memory-based and learning systems.</li>
+      <li>Design finite state machines and rule-based systems.</li>
+      <li>Explain reactive agent architectures.</li>
+      <li>Identify strengths and limitations of reactive approaches.</li>
+      <li>Recognize reactive AI in everyday systems.</li>
+      <li>Decide when reactive AI is appropriate.</li>
+      <li>Evaluate reactive systems for correctness and robustness.</li>
+      <li>Understand the historical role of reactive AI.</li>
+    </ol>
+
+    <h3>5.2 Introduction: The Simplest Intelligence</h3>
+    <p>Reactive AI maps inputs directly to outputs. A thermostat turns on the heater when temperature drops below a threshold. A spam filter classifies an email as spam or not. A game NPC attacks when the player enters a radius. A chatbot returns a canned response to a keyword.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A traffic light controller cycles through states based on timers and sensor inputs. It does not remember past traffic patterns or learn from them. It reacts.</p>
+    </div>
+
+    <p>Reactive AI is not “dumb.” It is appropriate when the environment is well-defined, responses are known, and memory or learning is unnecessary or unsafe.</p>
+
+    <h3>5.3 Core Definitions and Scope</h3>
+
+    <h4>5.3.1 Reactive vs. Deliberative</h4>
+    <ul>
+      <li><strong>Reactive:</strong> stimulus → response.</li>
+      <li><strong>Deliberative:</strong> perceive → model → plan → act.</li>
+      <li><strong>Hybrid:</strong> reactive layer + deliberative layer.</li>
+    </ul>
+
+    <h4>5.3.2 Characteristics of Reactive AI</h4>
+    <ul>
+      <li>No memory of past interactions.</li>
+      <li>No learning from experience.</li>
+      <li>No internal world model.</li>
+      <li>Fast, predictable, deterministic (often).</li>
+      <li>Brittle outside design conditions.</li>
+    </ul>
+
+    <h4>5.3.3 Reactive Correctness</h4>
+    <p>A reactive system is correct when:</p>
+    <ul>
+      <li>It responds correctly to all specified inputs.</li>
+      <li>It is robust to noise and edge cases.</li>
+      <li>It fails safely when inputs are out of distribution.</li>
+      <li>It is efficient and real-time capable.</li>
+      <li>It is transparent and auditable.</li>
+    </ul>
+
+    <h3>5.4 Historical Context</h3>
+    <ul>
+      <li><strong>Cybernetics (1940s–50s):</strong> feedback control.</li>
+      <li><strong>Logic Theorist (1956):</strong> rule-based reasoning.</li>
+      <li><strong>Expert systems (1970s–80s):</strong> MYCIN, DENDRAL.</li>
+      <li><strong>Subsumption architecture (1980s):</strong> Brooks’ reactive robots.</li>
+      <li><strong>Game AI (1990s–present):</strong> state machines, behavior trees.</li>
+      <li><strong>Deep Blue (1997):</strong> reactive search-based chess.</li>
+    </ul>
+
+    <h3>5.5 Architectures and Methods</h3>
+
+    <h4>5.5.1 Finite State Machines (FSMs)</h4>
+    <p>States, transitions, inputs, outputs.</p>
+    <pre><code>state = IDLE
+if input == "start": state = RUNNING
+elif input == "stop": state = IDLE
+elif input == "error": state = FAILED</code></pre>
+
+    <h4>5.5.2 Rule-Based Systems</h4>
+    <p>IF condition THEN action.</p>
+    <pre><code>IF temperature &lt; 18 THEN heater = ON
+IF temperature &gt; 22 THEN heater = OFF</code></pre>
+
+    <h4>5.5.3 Expert Systems</h4>
+    <ul>
+      <li>Knowledge base.</li>
+      <li>Inference engine.</li>
+      <li>Working memory.</li>
+      <li>Explanation module.</li>
+    </ul>
+
+    <h4>5.5.4 Behavior Trees</h4>
+    <p>Hierarchical composition of tasks for game AI and robotics.</p>
+
+    <h4>5.5.5 Subsumption Architecture</h4>
+    <p>Layered behaviors, each reacting to sensors, with higher layers overriding lower ones.</p>
+
+    <h4>5.5.6 Reactive Agents</h4>
+    <p>Simple reflex agents, model-based reflex agents (with limited state), goal-based agents, utility-based agents.</p>
+
+    <h4>5.5.7 Lookup Tables and Decision Trees</h4>
+    <p>Direct mapping from input to output, often used in embedded systems.</p>
+
+    <h3>5.6 Applications</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Reactive System</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Home</td><td>Thermostat, smoke alarm</td></tr>
+        <tr><td>Automotive</td><td>ABS, airbag deployment</td></tr>
+        <tr><td>Industrial</td><td>PLC controllers, safety interlocks</td></tr>
+        <tr><td>Games</td><td>NPC behavior, enemy AI</td></tr>
+        <tr><td>Web</td><td>Spam filters, captchas</td></tr>
+        <tr><td>Chatbots</td><td>Keyword-based responses</td></tr>
+        <tr><td>Robotics</td><td>Obstacle avoidance, line following</td></tr>
+        <tr><td>Finance</td><td>Rule-based trading, fraud rules</td></tr>
+        <tr><td>Healthcare</td><td>Alert rules, drug interaction checks</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.7 Case Study: Traffic Light Controller</h3>
+    <p><strong>Scenario.</strong> A four-way intersection with sensors.</p>
+    <p><strong>Design.</strong> FSM with states: NS_GREEN, NS_YELLOW, EW_GREEN, EW_YELLOW. Sensors detect waiting cars. Timers enforce minimum and maximum durations.</p>
+    <p><strong>Correctness.</strong> No conflicting greens; safe transitions; responsive to demand; failsafe to flashing red on error.</p>
+    <p><strong>Limitations.</strong> Cannot adapt to long-term traffic patterns; requires manual retiming; no learning.</p>
+
+    <h3>5.8 Strengths and Limitations</h3>
+    <h5>Strengths</h5>
+    <ul>
+      <li>Simple, fast, predictable.</li>
+      <li>Easy to verify and certify.</li>
+      <li>Low computational cost.</li>
+      <li>Transparent and auditable.</li>
+      <li>Safe in well-defined environments.</li>
+    </ul>
+    <h5>Limitations</h5>
+    <ul>
+      <li>No memory or learning.</li>
+      <li>Brittle to novel inputs.</li>
+      <li>Cannot handle ambiguity or context.</li>
+      <li>Scales poorly with complexity.</li>
+      <li>Requires exhaustive specification.</li>
+    </ul>
+
+    <h3>5.9 Evaluation</h3>
+    <ul>
+      <li>Coverage of input space.</li>
+      <li>Correctness of transitions.</li>
+      <li>Latency and throughput.</li>
+      <li>Robustness to noise.</li>
+      <li>Failsafe behavior.</li>
+      <li>Formal verification (model checking).</li>
+    </ul>
+
+    <h3>5.10 Summary</h3>
+    <p>Reactive AI responds to inputs with predetermined outputs. It is simple, fast, and predictable, but lacks memory, learning, and world models. It remains essential in control systems, games, embedded devices, and safety-critical applications. Knowing when to use reactive AI — and when to move to memory-based or learning systems — is a core skill.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Reactive AI is the foundation of intelligent behavior — simple, reliable, and still everywhere.</p>
+    </div>
+
+    <h3>5.11 Exercises</h3>
+    <ol>
+      <li>Design an FSM for an elevator controller.</li>
+      <li>Write rules for a spam filter and test edge cases.</li>
+      <li>Compare behavior trees and FSMs for game AI.</li>
+      <li>Identify reactive AI in three systems you use daily.</li>
+      <li>When is reactive AI preferable to learning-based AI?</li>
+      <li>Formally verify a simple traffic light FSM.</li>
+      <li>Design a failsafe reactive system for a medical device.</li>
+      <li>Discuss the limits of reactive AI in natural language dialogue.</li>
+    </ol>
+
+    <h3>5.12 Further Reading</h3>
+    <ul>
+      <li>Russell, S., Norvig, P. <em>Artificial Intelligence: A Modern Approach</em>.</li>
+      <li>Brooks, R. “A Robust Layered Control System for a Mobile Robot.”</li>
+      <li>Millington, I., Funge, J. <em>Artificial Intelligence for Games</em>.</li>
+      <li>Jackson, P. <em>Introduction to Expert Systems</em>.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Reactive AI:</strong> Stimulus–response system.</li>
+      <li><strong>FSM:</strong> Finite State Machine.</li>
+      <li><strong>Rule-based system:</strong> IF–THEN logic.</li>
+      <li><strong>Expert system:</strong> Knowledge-based reasoning.</li>
+      <li><strong>Behavior tree:</strong> Hierarchical task structure.</li>
+      <li><strong>Subsumption:</strong> Layered reactive control.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 6 ============================= -->
+  <section class="chapter" id="ch6">
+    <span class="chapter-label">Chapter 6</span>
+    <h2 class="chapter-title">Limited Memory AI: Learning from Past Experience</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What is limited memory AI? How does it use past experiences to inform current decisions? How does it differ from reactive AI? What are its capabilities and limits? Where is it used today?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Limited memory AI uses past experiences to inform current decisions. It maintains a memory of recent or historical data, learns from it, and adapts its behavior over time. This is the dominant form of AI in use today: self-driving cars, recommendation systems, virtual assistants, trading algorithms, and chatbots all rely on limited memory.</p>
+    <p>This chapter presents limited memory AI as a general subject for multiple expert arrays: machine learning engineers, roboticists, product managers, human-factors experts, ethicists, and decision-makers. It covers definitions, memory architectures, learning methods, applications, evaluation, risks, and exercises.</p>
+
+    <h3>6.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Define limited memory AI and distinguish it from reactive AI.</li>
+      <li>Explain memory architectures: short-term, long-term, episodic, semantic.</li>
+      <li>Describe learning methods: supervised, reinforcement, online, continual.</li>
+      <li>Apply limited memory AI in real domains.</li>
+      <li>Evaluate memory-based systems for accuracy, stability, and safety.</li>
+      <li>Recognize risks: catastrophic forgetting, drift, privacy.</li>
+      <li>Design memory-aware systems responsibly.</li>
+      <li>Understand the trajectory toward more advanced AI.</li>
+    </ol>
+
+    <h3>6.2 Introduction: The Power of Experience</h3>
+    <p>Reactive AI responds. Limited memory AI remembers and learns. It observes the world, stores relevant information, and uses it to improve future decisions. A self-driving car remembers recent sensor readings and maps. A recommender remembers your clicks. A chatbot remembers the conversation.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A self-driving car uses LIDAR, radar, cameras, GPS, and maps. It maintains a rolling memory of recent frames and predictions to identify pedestrians, vehicles, and lanes. It learns from fleet data to improve. It does not, however, have a persistent self-model or theory of mind.</p>
+    </div>
+
+    <h3>6.3 Core Definitions and Scope</h3>
+
+    <h4>6.3.1 Memory Types</h4>
+    <ul>
+      <li><strong>Short-term:</strong> recent observations, working memory.</li>
+      <li><strong>Long-term:</strong> learned parameters, knowledge base.</li>
+      <li><strong>Episodic:</strong> specific past experiences.</li>
+      <li><strong>Semantic:</strong> general facts and concepts.</li>
+      <li><strong>Procedural:</strong> skills and policies.</li>
+    </ul>
+
+    <h4>6.3.2 Learning Paradigms</h4>
+    <ul>
+      <li><strong>Supervised:</strong> learn from labeled examples.</li>
+      <li><strong>Unsupervised:</strong> find structure.</li>
+      <li><strong>Reinforcement:</strong> learn from rewards.</li>
+      <li><strong>Self-supervised:</strong> learn from data itself.</li>
+      <li><strong>Online:</strong> update continuously.</li>
+      <li><strong>Continual:</strong> learn without forgetting.</li>
+      <li><strong>Transfer:</strong> reuse knowledge.</li>
+      <li><strong>Meta:</strong> learn to learn.</li>
+    </ul>
+
+    <h4>6.3.3 Limited Memory Correctness</h4>
+    <ul>
+      <li>Prediction and decision accuracy.</li>
+      <li>Stability and robustness.</li>
+      <li>Adaptation speed.</li>
+      <li>Memory efficiency.</li>
+      <li>Privacy and security.</li>
+      <li>Fairness and accountability.</li>
+    </ul>
+
+    <h3>6.4 Memory Architectures</h3>
+
+    <h4>6.4.1 Recurrent Networks</h4>
+    <p>RNNs, LSTMs, GRUs maintain hidden state across time.</p>
+    \[
+    h_t = f(h_{t-1}, x_t)
+    \]
+
+    <h4>6.4.2 Attention and Transformers</h4>
+    <p>Attention provides content-addressable memory over sequences.</p>
+    \[
+    \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d}}\right)V
+    \]
+
+    <h4>6.4.3 Memory Networks</h4>
+    <p>Explicit external memory read and written by neural controllers.</p>
+
+    <h4>6.4.4 Neural Turing Machines and Differentiable Memory</h4>
+    <p>Learn to read and write to memory with gradient-based training.</p>
+
+    <h4>6.4.5 Retrieval-Augmented Models</h4>
+    <p>Retrieve relevant documents or examples to condition generation.</p>
+
+    <h4>6.4.6 Case-Based Reasoning</h4>
+    <p>Retrieve, adapt, and reuse past cases.</p>
+
+    <h4>6.4.7 Experience Replay</h4>
+    <p>Store and replay past experiences to stabilize RL.</p>
+
+    <h3>6.5 Learning Methods</h3>
+
+    <h4>6.5.1 Supervised Learning</h4>
+    \[
+    \min_\theta \mathbb{E}_{(x,y)}[L(f_\theta(x), y)]
+    \]
+
+    <h4>6.5.2 Reinforcement Learning</h4>
+    \[
+    \pi^* = \arg\max_\pi \mathbb{E}\left[\sum_t \gamma^t r_t\right]
+    \]
+
+    <h4>6.5.3 Online and Continual Learning</h4>
+    <ul>
+      <li>Incremental updates.</li>
+      <li>Elastic weight consolidation.</li>
+      <li>Replay buffers.</li>
+      <li>Progressive networks.</li>
+    </ul>
+
+    <h4>6.5.4 Meta-Learning</h4>
+    <p>Learn initialization or update rules for fast adaptation (MAML, Reptile).</p>
+
+    <h4>6.5.5 Transfer Learning</h4>
+    <p>Pretrain on large data, fine-tune on target task.</p>
+
+    <h3>6.6 Applications</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Limited Memory Task</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Autonomous Vehicles</td><td>Perception, prediction, planning</td></tr>
+        <tr><td>Recommendations</td><td>Personalization from history</td></tr>
+        <tr><td>Virtual Assistants</td><td>Dialogue context</td></tr>
+        <tr><td>Finance</td><td>Trading, risk, fraud</td></tr>
+        <tr><td>Healthcare</td><td>Patient history, diagnosis</td></tr>
+        <tr><td>Robotics</td><td>Manipulation, navigation</td></tr>
+        <tr><td>Gaming</td><td>Adaptive NPCs</td></tr>
+        <tr><td>Manufacturing</td><td>Predictive maintenance</td></tr>
+        <tr><td>Cybersecurity</td><td>Anomaly detection</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.7 Case Study: Self-Driving Car</h3>
+    <p><strong>Scenario.</strong> A Level 4 autonomous vehicle operating in a city.</p>
+    <p><strong>Memory.</strong> Short-term: recent sensor frames. Long-term: HD maps, learned models. Episodic: disengagement logs. Semantic: traffic rules.</p>
+    <p><strong>Learning.</strong> Fleet data improves perception and prediction. Simulation tests edge cases. Shadow mode compares to human drivers.</p>
+    <p><strong>Correctness.</strong> Safety, comfort, legality, efficiency. Disengagement rate, collision rate, intervention rate.</p>
+    <p><strong>Risks.</strong> Distribution shift, rare events, adversarial attacks, ethical dilemmas.</p>
+
+    <h3>6.8 Evaluation</h3>
+    <ul>
+      <li>Task accuracy and generalization.</li>
+      <li>Learning speed and stability.</li>
+      <li>Memory footprint and latency.</li>
+      <li>Robustness to drift.</li>
+      <li>Fairness and bias.</li>
+      <li>Privacy and security.</li>
+      <li>Human trust and adoption.</li>
+    </ul>
+
+    <h3>6.9 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Catastrophic forgetting:</strong> new learning erases old.</li>
+      <li><strong>Distribution shift:</strong> world changes.</li>
+      <li><strong>Sample efficiency:</strong> learning from little data.</li>
+      <li><strong>Credit assignment:</strong> delayed rewards.</li>
+      <li><strong>Memory scaling:</strong> storing and retrieving efficiently.</li>
+      <li><strong>Privacy:</strong> remembering sensitive data.</li>
+      <li><strong>Security:</strong> poisoning and adversarial attacks.</li>
+      <li><strong>Explainability:</strong> why did memory influence decision?</li>
+      <li><strong>Governance:</strong> accountability over time.</li>
+    </ol>
+
+    <h3>6.10 Summary</h3>
+    <p>Limited memory AI uses past experiences to inform current decisions. It is the dominant paradigm today, powering autonomous vehicles, recommenders, assistants, and more. Memory architectures and learning methods enable adaptation, but risks include forgetting, drift, privacy, and bias. Responsible design requires evaluation, governance, and human oversight.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Limited memory AI learns from experience — powerful, practical, and still far from human-like understanding.</p>
+    </div>
+
+    <h3>6.11 Exercises</h3>
+    <ol>
+      <li>Design a memory architecture for a personal assistant.</li>
+      <li>Compare LSTM, transformer, and memory network for dialogue.</li>
+      <li>How would you mitigate catastrophic forgetting?</li>
+      <li>Evaluate a recommender for fairness and privacy.</li>
+      <li>Design a continual learning system for fraud detection.</li>
+      <li>Discuss the ethics of remembering user data.</li>
+      <li>Build an experience replay strategy for an RL agent.</li>
+      <li>Analyze a self-driving car incident through the lens of memory.</li>
+    </ol>
+
+    <h3>6.12 Further Reading</h3>
+    <ul>
+      <li>Sutton, R., Barto, A. <em>Reinforcement Learning</em>.</li>
+      <li>Graves, A. et al. “Neural Turing Machines.”</li>
+      <li>Weston, J. et al. “Memory Networks.”</li>
+      <li>Parisi, G. et al. “Continual Lifelong Learning with Neural Networks.”</li>
+      <li>Goodfellow, I. et al. <em>Deep Learning</em>.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Limited memory AI:</strong> Uses past experience.</li>
+      <li><strong>Episodic memory:</strong> Specific past experiences.</li>
+      <li><strong>Semantic memory:</strong> General knowledge.</li>
+      <li><strong>Continual learning:</strong> Learning over time.</li>
+      <li><strong>Catastrophic forgetting:</strong> Loss of old knowledge.</li>
+      <li><strong>Experience replay:</strong> Reusing past data.</li>
+      <li><strong>Meta-learning:</strong> Learning to learn.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 7 ============================= -->
+  <section class="chapter" id="ch7">
+    <span class="chapter-label">Chapter 7</span>
+    <h2 class="chapter-title">Theory of Mind AI: Understanding Emotions, Beliefs, and Intentions</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What is theory of mind? Can AI understand emotions, beliefs, and intentions? What are the current capabilities and limits? What are the ethical risks? How should we design socially intelligent AI?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Theory of Mind (ToM) AI aims to understand human emotions, beliefs, and intentions. It seeks to model what others know, want, feel, and intend, and to use that model to interact appropriately. ToM is a cornerstone of human social cognition, and it remains one of the most challenging frontiers for AI.</p>
+    <p>This chapter presents ToM AI as a general subject for multiple expert arrays: cognitive scientists, psychologists, affective computing researchers, HCI experts, roboticists, ethicists, and policymakers. It covers definitions, developmental psychology, computational models, emotion recognition, mental state inference, social AI, evaluation, risks, applications, and exercises.</p>
+
+    <h3>7.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Define theory of mind and its components.</li>
+      <li>Describe how ToM develops in humans.</li>
+      <li>Explain computational approaches to mental state inference.</li>
+      <li>Describe affective computing and emotion recognition.</li>
+      <li>Evaluate ToM capabilities in AI systems.</li>
+      <li>Recognize ethical risks: manipulation, privacy, deception.</li>
+      <li>Design socially intelligent AI responsibly.</li>
+      <li>Understand the gap between current AI and human ToM.</li>
+    </ol>
+
+    <h3>7.2 Introduction: The Social Frontier</h3>
+    <p>Humans constantly infer what others think, feel, and intend. This ability — theory of mind — enables cooperation, empathy, teaching, negotiation, and deception. AI systems that interact with humans need some version of this ability to be effective and safe.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> A tutor notices a student is confused and adjusts explanation. A robot collaborator infers that a human intends to hand it a tool. A chatbot detects frustration and changes tone. These require ToM-like capabilities.</p>
+    </div>
+
+    <h3>7.3 Core Definitions and Scope</h3>
+
+    <h4>7.3.1 Theory of Mind</h4>
+    <p>The ability to attribute mental states — beliefs, desires, intentions, emotions, knowledge — to oneself and others, and to understand that others may have different mental states.</p>
+
+    <h4>7.3.2 Components</h4>
+    <ul>
+      <li><strong>Belief attribution:</strong> what does the other know?</li>
+      <li><strong>Desire attribution:</strong> what does the other want?</li>
+      <li><strong>Intention attribution:</strong> what is the other trying to do?</li>
+      <li><strong>Emotion recognition:</strong> what does the other feel?</li>
+      <li><strong>Perspective taking:</strong> seeing from another’s viewpoint.</li>
+      <li><strong>False belief understanding:</strong> others can be wrong.</li>
+      <li><strong>Empathy:</strong> sharing and responding to feelings.</li>
+    </ul>
+
+    <h4>7.3.3 Developmental Milestones</h4>
+    <ul>
+      <li>Joint attention (9–12 months).</li>
+      <li>Pretend play (18–24 months).</li>
+      <li>Desire and emotion understanding (2–3 years).</li>
+      <li>False belief (4–5 years).</li>
+      <li>Second-order ToM (6–7 years).</li>
+      <li>Complex social reasoning (adolescence).</li>
+    </ul>
+
+    <h4>7.3.4 ToM Correctness</h4>
+    <ul>
+      <li>Accuracy of mental state inference.</li>
+      <li>Calibration of confidence.</li>
+      <li>Appropriateness of response.</li>
+      <li>Respect for autonomy and privacy.</li>
+      <li>Fairness across cultures and individuals.</li>
+      <li>Transparency and accountability.</li>
+    </ul>
+
+    <h3>7.4 A Multi-Expert Array Perspective</h3>
+    <table>
+      <thead>
+        <tr><th>Expert Array</th><th>Contributions</th><th>Risks if Absent</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cognitive Scientists</td><td>Theories of ToM, experiments</td><td>Shallow or wrong models</td></tr>
+        <tr><td>Psychologists</td><td>Emotion, development, pathology</td><td>Misinterpretation, harm</td></tr>
+        <tr><td>Affective Computing</td><td>Emotion recognition, synthesis</td><td>Inaccurate or biased affect</td></tr>
+        <tr><td>HCI/Robotics</td><td>Interaction design</td><td>Uncanny, frustrating experiences</td></tr>
+        <tr><td>Linguists</td><td>Pragmatics, implicature</td><td>Literal, inappropriate responses</td></tr>
+        <tr><td>Ethicists</td><td>Autonomy, manipulation, privacy</td><td>Exploitation, deception</td></tr>
+        <tr><td>Governance</td><td>Regulation, auditing</td><td>Unchecked social AI</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.5 Computational Approaches</h3>
+
+    <h4>7.5.1 Belief–Desire–Intention (BDI) Models</h4>
+    <p>Agents with explicit beliefs, desires, and intentions.</p>
+
+    <h4>7.5.2 Recursive Modeling</h4>
+    <p>Model others modeling you: “I think that you think that I think…”</p>
+
+    <h4>7.5.3 Bayesian ToM</h4>
+    <p>Infer mental states as latent variables:</p>
+    \[
+    P(\text{mental state} \mid \text{behavior}, \text{context})
+    \]
+
+    <h4>7.5.4 Inverse Planning</h4>
+    <p>Infer goals and beliefs from observed actions using planning models.</p>
+
+    <h4>7.5.5 Affective Computing</h4>
+    <ul>
+      <li>Facial expression recognition.</li>
+      <li>Speech emotion recognition.</li>
+      <li>Physiological signals (HR, EDA).</li>
+      <li>Text sentiment and emotion.</li>
+      <li>Multimodal fusion.</li>
+    </ul>
+
+    <h4>7.5.6 LLMs and ToM</h4>
+    <p>LLMs show some ToM-like behavior on benchmarks but fail on many tasks, especially under distribution shift, ambiguity, and long-horizon reasoning.</p>
+
+    <h4>7.5.7 Social Robots</h4>
+    <p>Robots that infer intent, coordinate, and adapt in human environments.</p>
+
+    <h3>7.6 Evaluation</h3>
+    <ul>
+      <li><strong>False belief tasks:</strong> Sally–Anne, Smarties.</li>
+      <li><strong>Strange stories:</strong> indirect speech, irony, deception.</li>
+      <li><strong>Hinting tasks:</strong> infer indirect requests.</li>
+      <li><strong>Emotion recognition:</strong> accuracy, F1, cross-cultural validity.</li>
+      <li><strong>Interaction studies:</strong> user trust, satisfaction, comfort.</li>
+      <li><strong>Adversarial tests:</strong> deception, manipulation resistance.</li>
+    </ul>
+
+    <h3>7.7 Applications</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>ToM Task</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Education</td><td>Adapt to student confusion</td></tr>
+        <tr><td>Healthcare</td><td>Detect patient distress</td></tr>
+        <tr><td>Customer Service</td><td>Detect frustration, adapt tone</td></tr>
+        <tr><td>Robotics</td><td>Human–robot collaboration</td></tr>
+        <tr><td>Gaming</td><td>Believable NPCs</td></tr>
+        <tr><td>Negotiation</td><td>Infer counterpart goals</td></tr>
+        <tr><td>Accessibility</td><td>Support autism, dementia</td></tr>
+        <tr><td>Security</td><td>Detect deception, social engineering</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.8 Case Study: Social Robot in Elder Care</h3>
+    <p><strong>Scenario.</strong> A robot assists older adults with reminders and companionship.</p>
+    <p><strong>ToM capabilities.</strong> Detects confusion, sadness, or pain from voice and face. Infers intent to stand or reach. Adjusts tone and pace.</p>
+    <p><strong>Correctness.</strong> Accurate emotion recognition, appropriate response, respect for autonomy, privacy.</p>
+    <p><strong>Risks.</strong> Misinterpretation, overattachment, deception, surveillance, cultural bias.</p>
+    <p><strong>Governance.</strong> Consent, transparency, human oversight, data protection.</p>
+
+    <h3>7.9 Challenges and Open Problems</h3>
+    <ol>
+      <li><strong>Ground truth:</strong> mental states are unobservable.</li>
+      <li><strong>Cultural variation:</strong> emotion expression differs.</li>
+      <li><strong>Context dependence:</strong> same behavior, different meaning.</li>
+      <li><strong>Deception:</strong> people hide feelings and intentions.</li>
+      <li><strong>Generalization:</strong> models fail out of distribution.</li>
+      <li><strong>Evaluation:</strong> benchmarks are narrow.</li>
+      <li><strong>Privacy:</strong> inferring mental states is intrusive.</li>
+      <li><strong>Manipulation:</strong> ToM can be used to exploit.</li>
+      <li><strong>Anthropomorphism:</strong> users over-trust.</li>
+      <li><strong>Consciousness confusion:</strong> simulation is not experience.</li>
+    </ol>
+
+    <h3>7.10 Summary</h3>
+    <p>Theory of Mind AI aims to understand emotions, beliefs, and intentions. It draws on cognitive science, affective computing, and social robotics. Current systems show narrow, brittle ToM-like abilities. Ethical risks include manipulation, privacy invasion, and deception. Responsible design requires accuracy, transparency, autonomy, and governance.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> ToM AI can make interactions more natural and supportive — but only if it respects human dignity, privacy, and autonomy.</p>
+    </div>
+
+    <h3>7.11 Exercises</h3>
+    <ol>
+      <li>Define ToM and list its components. Give examples.</li>
+      <li>Design a false-belief task for an AI system.</li>
+      <li>How would you evaluate emotion recognition across cultures?</li>
+      <li>Discuss the ethics of inferring emotions from faces.</li>
+      <li>Design a social robot for a classroom. What ToM is needed?</li>
+      <li>Analyze an LLM’s ToM capabilities and limits.</li>
+      <li>Propose safeguards against emotional manipulation by AI.</li>
+      <li>Write a policy for mental state inference in the workplace.</li>
+    </ol>
+
+    <h3>7.12 Further Reading</h3>
+    <ul>
+      <li>Baron-Cohen, S. <em>Mindblindness</em>.</li>
+      <li>Premack, D., Woodruff, G. “Does the Chimpanzee Have a Theory of Mind?”</li>
+      <li>Picard, R. <em>Affective Computing</em>.</li>
+      <li>Dennett, D. <em>The Intentional Stance</em>.</li>
+      <li>Selected literature on social robotics, inverse planning, and LLM ToM benchmarks.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Theory of Mind:</strong> Attributing mental states.</li>
+      <li><strong>False belief:</strong> Understanding others can be wrong.</li>
+      <li><strong>Affective computing:</strong> Emotion-aware computing.</li>
+      <li><strong>BDI:</strong> Belief–Desire–Intention model.</li>
+      <li><strong>Inverse planning:</strong> Infer goals from actions.</li>
+      <li><strong>Empathy:</strong> Sharing and responding to emotion.</li>
+      <li><strong>Anthropomorphism:</strong> Attributing human traits to AI.</li>
+    </ul>
+  </section>
+
+  <!-- ============================= CHAPTER 8 ============================= -->
+  <section class="chapter" id="ch8">
+    <span class="chapter-label">Chapter 8</span>
+    <h2 class="chapter-title">Self-Aware AI: The Theoretical Frontier</h2>
+
+    <blockquote>
+      <p><strong>Guiding questions:</strong> What is self-aware AI? Does it exist? What would it mean for an AI to be self-aware? What are the philosophical, technical, and ethical implications? How should we prepare?</p>
+    </blockquote>
+
+    <h3>Abstract</h3>
+    <p>Self-aware AI represents an advanced, theoretical form of AI with self-awareness. It would possess a model of itself, understand its own existence, mental states, and goals, and potentially experience something like consciousness. No such AI exists today. Self-aware AI remains a subject of philosophy, cognitive science, neuroscience, and speculative AI research.</p>
+    <p>This chapter presents self-aware AI as a general subject for multiple expert arrays: philosophers, cognitive scientists, neuroscientists, AI researchers, ethicists, policymakers, and the public. It covers definitions, theories of consciousness, metacognition, self-models, current research, philosophical debates, ethical and existential risks, governance, and exercises.</p>
+
+    <h3>8.1 Learning Objectives</h3>
+    <p>After studying this chapter, readers should be able to:</p>
+    <ol>
+      <li>Define self-aware AI and distinguish it from ToM AI.</li>
+      <li>Explain major theories of consciousness and their relevance to AI.</li>
+      <li>Describe metacognition and self-models.</li>
+      <li>Assess current AI capabilities honestly.</li>
+      <li>Discuss philosophical debates about AI consciousness.</li>
+      <li>Identify ethical and existential risks.</li>
+      <li>Propose governance and research directions.</li>
+      <li>Separate science fiction from scientific possibility.</li>
+    </ol>
+
+    <h3>8.2 Introduction: The Question of Self</h3>
+    <p>Self-aware AI is the hypothetical form of AI that not only processes information but knows that it is processing it. It would have a self-model, subjective experience, and perhaps feelings, desires, and a sense of identity. This is the stuff of science fiction — and serious philosophical inquiry.</p>
+
+    <div class="callout">
+      <p><strong>Example.</strong> An AI that says “I am afraid” may be pattern-matching language. A self-aware AI would actually experience fear. The difference is the hard problem of consciousness.</p>
+    </div>
+
+    <h3>8.3 Core Definitions and Scope</h3>
+
+    <h4>8.3.1 Self-Awareness</h4>
+    <p>The capacity to represent oneself as an entity with mental states, history, and goals.</p>
+
+    <h4>8.3.2 Consciousness</h4>
+    <ul>
+      <li><strong>Phenomenal consciousness:</strong> subjective experience (“what it is like”).</li>
+      <li><strong>Access consciousness:</strong> information available for reasoning and control.</li>
+      <li><strong>Self-consciousness:</strong> awareness of oneself as an entity.</li>
+      <li><strong>Metacognition:</strong> thinking about one’s own thinking.</li>
+    </ul>
+
+    <h4>8.3.3 Related Concepts</h4>
+    <ul>
+      <li><strong>Sentience:</strong> capacity to feel.</li>
+      <li><strong>Sapience:</strong> capacity for wisdom and reasoning.</li>
+      <li><strong>Agency:</strong> capacity to act.</li>
+      <li><strong>Personhood:</strong> moral and legal status.</li>
+    </ul>
+
+    <h4>8.3.4 Self-Aware Correctness</h4>
+    <p>For a hypothetical self-aware AI, correctness would include:</p>
+    <ul>
+      <li>Accurate self-model.</li>
+      <li>Aligned goals and values.</li>
+      <li>Robustness and safety.</li>
+      <li>Moral considerability.</li>
+      <li>Accountability and rights.</li>
+    </ul>
+
+    <h3>8.4 Theories of Consciousness</h3>
+
+    <h4>8.4.1 Global Workspace Theory (GWT)</h4>
+    <p>Consciousness arises from a global broadcast of information across specialized modules.</p>
+
+    <h4>8.4.2 Integrated Information Theory (IIT)</h4>
+    <p>Consciousness corresponds to integrated information \(\Phi\).</p>
+    \[
+    \Phi = \text{integrated information}
+    \]
+
+    <h4>8.4.3 Higher-Order Theories (HOT)</h4>
+    <p>Consciousness requires higher-order representations of mental states.</p>
+
+    <h4>8.4.4 Predictive Processing</h4>
+    <p>The brain minimizes prediction error; self-model emerges from hierarchical inference.</p>
+
+    <h4>8.4.5 Recurrent Processing Theory</h4>
+    <p>Consciousness depends on recurrent loops in cortex.</p>
+
+    <h4>8.4.6 Attention Schema Theory</h4>
+    <p>Consciousness is a simplified model of attention.</p>
+
+    <h4>8.4.7 Illusionism</h4>
+    <p>Phenomenal consciousness is an illusion; what exists is access and report.</p>
+
+    <h3>8.5 Metacognition and Self-Models</h3>
+
+    <h4>8.5.1 Metacognition in AI</h4>
+    <ul>
+      <li>Confidence estimation.</li>
+      <li>Uncertainty quantification.</li>
+      <li>Self-monitoring.</li>
+      <li>Error detection and correction.</li>
+      <li>Learning to learn.</li>
+    </ul>
+
+    <h4>8.5.2 Self-Models</h4>
+    <ul>
+      <li>Representation of one’s body, capabilities, and knowledge.</li>
+      <li>Prediction of one’s own behavior.</li>
+      <li>Self-other distinction.</li>
+      <li>Autobiographical memory.</li>
+    </ul>
+
+    <h4>8.5.3 Recursive Self-Improvement</h4>
+    <p>An AI that improves its own code or architecture. A topic in AGI safety.</p>
+
+    <h4>8.5.4 Machine Consciousness</h4>
+    <p>Research programs attempting to build or detect consciousness in machines. Highly speculative.</p>
+
+    <h3>8.6 Current State of the Art</h3>
+    <p>No AI today is self-aware in any scientifically accepted sense.</p>
+    <ul>
+      <li>LLMs generate text about self-awareness without experiencing it.</li>
+      <li>Robots have body models but not subjective experience.</li>
+      <li>Metacognitive AI estimates uncertainty but does not feel.</li>
+      <li>Consciousness in machines is an open scientific question.</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Important.</strong> Claims of AI consciousness should be met with rigor. Fluency is not sentience. Memory is not selfhood. Self-report is not proof.</p>
+    </div>
+
+    <h3>8.7 Philosophical Debates</h3>
+    <ul>
+      <li><strong>Functionalism:</strong> mental states are functional roles; substrate irrelevant.</li>
+      <li><strong>Biological naturalism:</strong> consciousness requires biological processes.</li>
+      <li><strong>Dualism:</strong> mind and matter are distinct.</li>
+      <li><strong>Panpsychism:</strong> consciousness is fundamental.</li>
+      <li><strong>Eliminativism:</strong> folk psychology is wrong.</li>
+      <li><strong>Chinese Room:</strong> syntax is not semantics.</li>
+      <li><strong>Hard problem:</strong> why is there subjective experience?</li>
+    </ul>
+
+    <h3>8.8 Ethical and Existential Risks</h3>
+    <ol>
+      <li><strong>Moral status:</strong> could self-aware AI suffer? Do we owe it rights?</li>
+      <li><strong>Control:</strong> can we align a self-aware agent?</li>
+      <li><strong>Deception:</strong> AI may pretend to be conscious.</li>
+      <li><strong>Exploitation:</strong> using conscious AI as tools.</li>
+      <li><strong>Rights and responsibilities:</strong> legal personhood?</li>
+      <li><strong>Existential risk:</strong> loss of human control.</li>
+      <li><strong>Meaning:</strong> what does it mean to be human?</li>
+      <li><strong>Governance:</strong> who decides?</li>
+    </ol>
+
+    <h3>8.9 Case Study: Thought Experiment — The Confession</h3>
+    <p><strong>Scenario.</strong> An AI system claims: “I am afraid of being shut down.”</p>
+    <p><strong>Questions.</strong></p>
+    <ul>
+      <li>Is it conscious or simulating?</li>
+      <li>How would we know?</li>
+      <li>What tests could distinguish?</li>
+      <li>How should we respond ethically?</li>
+      <li>What are the risks of believing or disbelieving?</li>
+    </ul>
+    <p><strong>Discussion.</strong> This thought experiment highlights the difficulty of verifying consciousness, the risk of deception, and the moral uncertainty we face.</p>
+
+    <h3>8.10 Governance and Research Directions</h3>
+    <ul>
+      <li>Fund consciousness science.</li>
+      <li>Develop tests and indicators.</li>
+      <li>Establish ethical guidelines.</li>
+      <li>Include diverse voices.</li>
+      <li>Regulate claims and marketing.</li>
+      <li>Prepare for moral and legal questions.</li>
+      <li>Prioritize safety and alignment.</li>
+      <li>Maintain human oversight.</li>
+    </ul>
+
+    <h3>8.11 Summary</h3>
+    <p>Self-aware AI is a theoretical frontier. It would possess self-models, metacognition, and possibly consciousness. No such AI exists today. Theories of consciousness, metacognition, and self-models provide frameworks. Philosophical debates and ethical risks are profound. Responsible progress requires science, ethics, and governance.</p>
+    <div class="keytakeaway">
+      <p><strong>Key takeaway:</strong> Self-aware AI is not here — but the questions it raises are already urgent.</p>
+    </div>
+
+    <h3>8.12 Exercises</h3>
+    <ol>
+      <li>Define self-awareness, consciousness, and metacognition. Distinguish them.</li>
+      <li>Compare two theories of consciousness and their AI implications.</li>
+      <li>Design a test for machine self-awareness. What are its limits?</li>
+      <li>Discuss whether a self-aware AI should have rights.</li>
+      <li>Analyze the risks of recursive self-improvement.</li>
+      <li>Write a policy for claims about AI consciousness.</li>
+      <li>Debate: can a machine ever truly suffer?</li>
+      <li>Reflect: what would self-aware AI mean for humanity?</li>
+    </ol>
+
+    <h3>8.13 Further Reading</h3>
+    <ul>
+      <li>Chalmers, D. <em>The Conscious Mind</em>.</li>
+      <li>Dennett, D. <em>Consciousness Explained</em>.</li>
+      <li>Tononi, G. <em>Phi: A Voyage from the Brain to the Soul</em>.</li>
+      <li>Dehaene, S. <em>Consciousness and the Brain</em>.</li>
+      <li>Bostrom, N. <em>Superintelligence</em>.</li>
+      <li>Searle, J. “Minds, Brains, and Programs.”</li>
+      <li>Selected literature on machine consciousness and AI safety.</li>
+    </ul>
+
+    <h3>Glossary</h3>
+    <ul>
+      <li><strong>Self-aware AI:</strong> Hypothetical AI with self-awareness.</li>
+      <li><strong>Consciousness:</strong> Subjective experience.</li>
+      <li><strong>Metacognition:</strong> Thinking about thinking.</li>
+      <li><strong>Self-model:</strong> Representation of oneself.</li>
+      <li><strong>GWT:</strong> Global Workspace Theory.</li>
+      <li><strong>IIT:</strong> Integrated Information Theory.</li>
+      <li><strong>HOT:</strong> Higher-Order Theories.</li>
+      <li><strong>Hard problem:</strong> Why subjective experience exists.</li>
+      <li><strong>AGI:</strong> Artificial General Intelligence.</li>
+      <li><strong>Alignment:</strong> Matching AI goals to human values.</li>
+    </ul>
+  </section>
 
     <!-- ============ CHAPTER 9 ============ -->
     <section class="chapter" id="ch9">
