@@ -136,35 +136,28 @@
   .search-results{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
 
   /* ---------- HERO ---------- */
-  .hero{
-    padding:70px 0 40px;text-align:center;position:relative;overflow:hidden;
-    border-bottom:1px solid var(--border);
-  }
-  .hero::before{
-    content:"";position:absolute;inset:0;
-    background:
-      radial-gradient(circle at 20% 30%, var(--accent-soft), transparent 40%),
-      radial-gradient(circle at 80% 70%, var(--accent2-soft), transparent 40%);
-    opacity:.6;z-index:-1;
-  }
-  .hero .eyebrow{
-    display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:14px;
-  }
-  .hero h1{
-    font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.15;margin:0 auto 18px;
-    max-width:900px;letter-spacing:-.02em;
-  }
-  .hero h1 .grad{
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p.lead{font-size:1.08rem;color:var(--muted);max-width:720px;margin:0 auto 22px}
-  .hero .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
-  .hero .stats{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:10px}
-  .hero .stat{text-align:center}
-  .hero .stat b{display:block;font-size:1.5rem;color:var(--accent);line-height:1}
-  .hero .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  <section class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">Multi-Expert AI Course · 11 Chapters</span>
+    <h1>From Thermostats to <span class="grad">Self-Awareness</span></h1>
+    <p class="lead">
+      A complete, interactive guide to modern AI — from reactive systems to generative models. 
+      Built for students, professionals, and the curious.
+    </p>
+    <div class="cta">
+      <a class="tool-btn primary" href="#ch1" style="padding:12px 24px;font-size:1rem;">📖 Start the Course</a>
+      <a class="tool-btn" href="#tools" style="padding:12px 24px;font-size:1rem;">🧰 Browse AI Tools</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>11</b><span>Chapters</span></div>
+      <div class="stat"><b>7</b><span>Expert Arrays</span></div>
+      <div class="stat"><b>60+</b><span>Tools Compared</span></div>
+      <div class="stat"><b>4</b><span>Languages</span></div>
+    </div>
+  <div class="scroll-cue">↓ Scroll to explore</div>
+  </div>
+</section>
+ 
 
   /* ---------- CHAPTERS ---------- */
   main{padding:40px 0 100px;min-width:0}
@@ -4251,6 +4244,18 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   }
   .toc-toggle-btn:hover { color: var(--accent); }
   .toc-toggle-btn.open { transform: rotate(90deg); }
+  /* ---------- SCROLL CUE ---------- */
+  .scroll-cue {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--muted);
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
 </style>
 
 <button id="toTop" aria-label="Back to top">↑</button>
@@ -4480,7 +4485,56 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 });
 </script>
+<!-- ===================== LANGUAGE SWITCHER ===================== -->
+  <div id="language-switcher">
+    <span class="globe">🌐</span>
+    <select id="langSelect" aria-label="Choose language">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="pt">Português</option>
+      <option value="ar">العربية</option>
+      <option value="zh-CN">中文 (简体)</option>
+      <option value="hi">हिन्दी</option>
+      <option value="sw">Kiswahili</option>
+    </select>
+  </div>
 
+  <div id="google_translate_element" style="display:none"></div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,fr,es,pt,ar,zh-CN,hi,sw',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    document.getElementById('langSelect').addEventListener('change', function() {
+      const lang = this.value;
+      const url = window.location.href.split('#')[0];
+      if (lang === 'en') {
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname;
+        window.location.href = url;
+      } else {
+        document.cookie = 'googtrans=/en/' + lang + '; path=/;';
+        document.cookie = 'googtrans=/en/' + lang + '; path=/; domain=' + window.location.hostname;
+        window.location.reload();
+      }
+    });
+
+    window.addEventListener('load', function() {
+      const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z\-]+)/);
+      if (match) {
+        document.getElementById('langSelect').value = match[1];
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!-- ===================== END LANGUAGE SWITCHER ===================== -->
 </body>
 </html>  
 
