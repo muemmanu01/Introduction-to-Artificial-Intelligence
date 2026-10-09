@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Introduction — A Complete Interactive Course | Chapters 1–11</title>
+<title>AI MASTER CLASS — A Complete Interactive Course | Chapters 1–11</title>
 <meta name="description" content="An interactive, multi-expert AI course: diagnostic, descriptive, predictive, prescriptive, generative, reactive, limited memory, theory of mind, self-aware, and narrow AI. Includes AI tools landscape, evaluation frameworks, and academic review.">
 
 <script>
@@ -431,21 +431,20 @@
     <div class="sb-card">
       <h3>Chapters</h3>
       <ul id="tocList">
-        <li><a href="#ch1"> Diagnostic/Descriptive AI</a></li>
-        <li><a href="#ch2"> Predictive AI</a></li>
-        <li><a href="#ch3"> Prescriptive AI</a></li>
-        <li><a href="#ch4"> Generative/Cognitive AI</a></li>
-        <li><a href="#ch5"> Reactive AI</a></li>
-        <li><a href="#ch6"> Limited Memory AI</a></li>
-        <li><a href="#ch7"> Theory of Mind AI</a></li>
-        <li><a href="#ch8"> Self-Aware AI</a></li>
-        <li><a href="#ch9"> Narrow AI (Weak AI)</a></li>
-        <li><a href="#tools"> AI Tools Landscape</a></li>
-        <li><a href="#evaluation">Evaluation &amp; Efficiency</a></li>
+        <li><a href="#ch1"> 1. Diagnostic/Descriptive AI</a></li>
+        <li><a href="#ch2"> 2. Predictive AI</a></li>
+        <li><a href="#ch3"> 3. Prescriptive AI</a></li>
+        <li><a href="#ch4"> 4. Generative/Cognitive AI</a></li>
+        <li><a href="#ch5"> 5. Reactive AI</a></li>
+        <li><a href="#ch6"> 6. Limited Memory AI</a></li>
+        <li><a href="#ch7"> 7. Theory of Mind AI</a></li>
+        <li><a href="#ch8"> 8. Self-Aware AI</a></li>
+        <li><a href="#ch9"> 9. Narrow AI (Weak AI)</a></li>
+        <li><a href="#tools"> 10 AI Tools Landscape</a></li>
+        <li><a href="#evaluation"> 11. Evaluation &amp; Efficiency</a></li>
         <li><a href="#review">🎓 Academic Review</a></li>
         <li><a href="#practical">🧭 Practical Guide</a></li>
       </ul>
-    </div>
     </div>
   
     <div class="sb-card">
@@ -4407,19 +4406,6 @@ document.querySelectorAll('pre').forEach(function(pre){
   pre.appendChild(btn);
 });
 
-/* ---------- SMOOTH ANCHOR OFFSET ---------- */
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click', function(e){
-    const id = a.getAttribute('href');
-    if(id === '#') return;
-    const el = document.querySelector(id);
-    if(el){
-      e.preventDefault();
-      window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
-    }
-  });
-});
-
 /* ---------- DYNAMIC SIDEBAR SUB-SECTIONS ---------- */
 document.addEventListener('DOMContentLoaded', function() {
   const tocList = document.getElementById('tocList');
@@ -4481,8 +4467,20 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="toTop" aria-label="Back to top">↑</button>
 
 <script>
-   ... ALL OF THE CODE ABOVE ...
+/* ---------- SMOOTH ANCHOR OFFSET ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    const id = a.getAttribute('href');
+    if(id === '#') return;
+    const el = document.querySelector(id);
+    if(el){
+      e.preventDefault();
+      window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
+    }
+  });
+});
 </script>
 
 </body>
-</html>
+</html>  
+
