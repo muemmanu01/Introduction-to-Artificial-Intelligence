@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> AI MASTER CLASS — A Complete Interactive Course | Chapters 1–11</title>
+<title> AI MASTER CLASS — A Complete Interactive Course | Chapters 1–12</title>
 <meta name="description" content="An interactive, multi-expert AI course: diagnostic, descriptive, predictive, prescriptive, generative, reactive, limited memory, theory of mind, self-aware, and narrow AI. Includes AI tools landscape, evaluation frameworks, and academic review.">
 
 <script>
@@ -138,7 +138,7 @@
   /* ---------- HERO ---------- */
  <section class="hero" id="top">
   <div class="wrap">
-    <span class="eyebrow">✦ Multi-Expert AI Course ✦ · 11 Chapters</span>
+    <span class="eyebrow">✦ Multi-Expert AI Course ✦ · 12 Chapters</span>
     <h1>From <span class="grad-warm">Thermostats</span> to <span class="grad">Self-Awareness</span></h1>
     <p class="lead">
       A complete, interactive guide to modern AI — from <strong style="color:var(--accent)">reactive systems</strong> 
@@ -149,13 +149,14 @@
       <a class="tool-btn primary" href="#ch1" style="padding:12px 24px;font-size:1rem;">📖 Start the Course</a>
       <a class="tool-btn" href="#tools" style="padding:12px 24px;font-size:1rem;">🧰 Browse AI Tools</a>
     </div>
-    <div class="stats">
-      <div class="stat"><b>11</b><span>Chapters</span></div>
+     <div class="stats">
+      <div class="stat"><b>12</b><span>Chapters</span></div>
       <div class="stat"><b>7</b><span>Expert Arrays</span></div>
       <div class="stat"><b>60+</b><span>Tools Compared</span></div>
       <div class="stat"><b>8</b><span>Languages</span></div>
     </div>
     <div class="scroll-cue">↓ Scroll to explore</div>
+  
   /* ---------- HERO COLOUR ENHANCEMENTS ---------- */
   .hero {
     background:
@@ -470,21 +471,22 @@
 
     <div class="sb-card">
       <h3>Chapters</h3>
-      <ul id="tocList">
-        <li><a href="#ch1"> 1. Diagnostic/Descriptive AI</a></li>
-        <li><a href="#ch2"> 2. Predictive AI</a></li>
-        <li><a href="#ch3"> 3. Prescriptive AI</a></li>
-        <li><a href="#ch4"> 4. Generative/Cognitive AI</a></li>
-        <li><a href="#ch5"> 5. Reactive AI</a></li>
-        <li><a href="#ch6"> 6. Limited Memory AI</a></li>
-        <li><a href="#ch7"> 7. Theory of Mind AI</a></li>
-        <li><a href="#ch8"> 8. Self-Aware AI</a></li>
-        <li><a href="#ch9"> 9. Narrow AI (Weak AI)</a></li>
-        <li><a href="#tools"> 10 AI Tools Landscape</a></li>
-        <li><a href="#evaluation"> 11. Evaluation &amp; Efficiency</a></li>
-        <li><a href="#review">🎓 Academic Review</a></li>
-        <li><a href="#practical">🧭 Practical Guide</a></li>
-      </ul>
+     <ul id="tocList">
+  <li><a href="#ch1"> 1.Diagnostic/Descriptive AI</a></li>
+  <li><a href="#ch2"> 2.Predictive AI</a></li>
+  <li><a href="#ch3"> 3.Prescriptive AI</a></li>
+  <li><a href="#ch4"> 4.Generative/Cognitive AI</a></li>
+  <li><a href="#ch5"> 5.Machine Learning Training</a></li>
+  <li><a href="#ch6"> 6.Reactive AI</a></li>
+  <li><a href="#ch7"> 7.Limited Memory AI</a></li>
+  <li><a href="#ch8"> 8.Theory of Mind AI</a></li>
+  <li><a href="#ch9"> 9.Self-Aware AI</a></li>
+  <li><a href="#ch10"> 10.Narrow AI (Weak AI)</a></li>
+  <li><a href="#tools"> 11.AI Tools Landscape</a></li>
+  <li><a href="#evaluation"> 12.Evaluation &amp; Efficiency</a></li>
+  <li><a href="#review">🎓 Academic Review</a></li>
+  <li><a href="#practical">🧭 Practical Guide</a></li>
+</ul>
     </div>
   
     <div class="sb-card">
@@ -2003,9 +2005,307 @@
     </ul>
   </section>
 
-  <!-- ============================= CHAPTER 5 ============================= -->
+    <!-- ============ CHAPTER 5 MACHINE LEARNING TRAINING ============ -->
   <section class="chapter" id="ch5">
-    <span class="chapter-label">Chapter 5</span>
+    <div class="chapter-head">
+      <span class="chapter-label">Chapter 5</span>
+      <h2 class="chapter-title">Machine Learning Training: How AI Actually Learns</h2>
+      <blockquote>
+        <p><strong>Guiding questions:</strong> Where do AI models come from? How do they learn from data? What is the difference between training and fine-tuning? Why does data quality dominate performance? What are the pitfalls that cause models to fail in the real world?</p>
+      </blockquote>
+    </div>
+
+    <h3>Abstract</h3>
+    <p>Machine learning training is the process by which a model learns patterns from data. It is the technical engine that powers every AI capability discussed in this course — descriptive analytics, forecasting, prescriptive decisions, generative content, and everything in between. This chapter presents training as a general, deep-learning–enabled discipline for multiple expert arrays: ML engineers, data scientists, domain specialists, MLOps practitioners, ethicists, and decision-makers. It covers the end-to-end pipeline, learning paradigms, data foundations, model architectures, training mechanics, modern paradigms (fine-tuning, RLHF, LoRA), efficiency, pitfalls, evaluation, tools, and a full case study.</p>
+
+    <h3>5.1 Learning Objectives</h3>
+    <ol>
+      <li>Describe the end-to-end machine learning training pipeline.</li>
+      <li>Distinguish supervised, unsupervised, self-supervised, and reinforcement learning.</li>
+      <li>Explain why data quality, labeling, and diversity dominate model performance.</li>
+      <li>Compare major model families: linear, tree-based, neural, transformer, graph, diffusion.</li>
+      <li>Understand loss functions, optimization, regularization, and learning rate schedules.</li>
+      <li>Differentiate pretraining, fine-tuning, RLHF, DPO, LoRA, distillation, and quantization.</li>
+      <li>Recognize common pitfalls: overfitting, leakage, imbalance, forgetting, reward hacking.</li>
+      <li>Evaluate training runs using learning curves, error analysis, and ablations.</li>
+      <li>Select appropriate tools and frameworks for a given task.</li>
+    </ol>
+
+    <h3>5.2 Introduction: From Data to Intelligence</h3>
+    <p>Every AI system you have ever used was trained. A recommender learned from billions of clicks. A translation model learned from parallel text. A medical imaging model learned from labeled scans. A large language model learned from trillions of tokens. The behavior you observe at inference time is the product of decisions made during training: which data, which architecture, which loss, which optimizer, which regularization, which stopping criterion.</p>
+    <p>Understanding training is what separates AI <em>users</em> from AI <em>practitioners</em>. It explains why models fail on edge cases, why they inherit bias from data, why fine-tuning is different from pretraining, and why compute costs dominate modern AI budgets.</p>
+
+    <div class="callout info">
+      <strong>Key insight.</strong> In modern machine learning, <em>data quality and quantity</em> often matter more than model architecture. A well-curated dataset with a simple model frequently outperforms a state-of-the-art architecture trained on noisy data.
+    </div>
+
+    <h3>5.3 The End-to-End Training Pipeline</h3>
+    <div class="flow">
+      <div class="node">Problem Definition</div><span class="arrow">→</span>
+      <div class="node">Data Collection</div><span class="arrow">→</span>
+      <div class="node">Cleaning &amp; Labeling</div><span class="arrow">→</span>
+      <div class="node">Feature Engineering</div><span class="arrow">→</span>
+      <div class="node">Train / Val / Test Split</div><span class="arrow">→</span>
+      <div class="node">Model Selection</div><span class="arrow">→</span>
+      <div class="node">Training Loop</div><span class="arrow">→</span>
+      <div class="node">Evaluation</div><span class="arrow">→</span>
+      <div class="node">Deployment</div>
+    </div>
+
+    <h4>5.3.1 Problem Definition</h4>
+    <p>Define the task, the target, the success metric, and the constraints. A vague problem produces a vague model.</p>
+
+    <h4>5.3.2 Data Collection</h4>
+    <p>Sources: internal logs, public datasets, web scraping, sensors, human annotation, synthetic generation. Consider legality, consent, and privacy from the start.</p>
+
+    <h4>5.3.3 Cleaning and Labeling</h4>
+    <p>Remove duplicates, fix errors, standardize formats. Label manually, weakly, actively, or synthetically. Labeling quality dominates downstream performance.</p>
+
+    <h4>5.3.4 Feature Engineering</h4>
+    <p>Derive informative features: lags, rolling statistics, categorical encodings, embeddings, domain-specific transformations.</p>
+
+    <h4>5.3.5 Train / Validation / Test Split</h4>
+    <p>Time-based splits for temporal data. Stratified splits for imbalanced classes. Never let future information leak into training.</p>
+
+    <h4>5.3.6 Model Selection</h4>
+    <p>Match architecture to data type, size, and task. Simpler models first; add complexity only when justified.</p>
+
+    <h4>5.3.7 Training Loop</h4>
+    <p>Forward pass → loss → backward pass → parameter update. Repeat until validation performance plateaus.</p>
+
+    <h4>5.3.8 Evaluation</h4>
+    <p>Report on held-out data. Check calibration, fairness, robustness. Compute confidence intervals.</p>
+
+    <h4>5.3.9 Deployment</h4>
+    <p>Package, serve, monitor. Track drift and retrain as needed. Always maintain a rollback plan.</p>
+
+    <h3>5.4 Learning Paradigms</h3>
+
+    <h4>5.4.1 Supervised Learning</h4>
+    <p>Learn from labeled pairs \((x, y)\).</p>
+    \[
+    \min_\theta \mathbb{E}_{(x,y)}[L(f_\theta(x), y)]
+    \]
+    <p>Applications: classification, regression, detection.</p>
+
+    <h4>5.4.2 Unsupervised Learning</h4>
+    <p>Find structure without labels: clustering, dimensionality reduction, density estimation.</p>
+
+    <h4>5.4.3 Self-Supervised Learning</h4>
+    <p>Create labels from data itself: masked prediction, contrastive learning, next-token prediction. Powers modern foundation models.</p>
+
+    <h4>5.4.4 Semi-Supervised Learning</h4>
+    <p>Combine a small labeled set with a large unlabeled set. Pseudo-labeling, consistency regularization.</p>
+
+    <h4>5.4.5 Reinforcement Learning</h4>
+    <p>Learn from reward signals via interaction. MDPs, policies, value functions, exploration–exploitation.</p>
+
+    <h4>5.4.6 Transfer Learning</h4>
+    <p>Pretrain on large data, fine-tune on target. The dominant paradigm in modern AI.</p>
+
+    <h4>5.4.7 Multi-Task Learning</h4>
+    <p>One model, multiple objectives. Shared representations, task-specific heads.</p>
+
+    <h4>5.4.8 Meta-Learning</h4>
+    <p>Learn to learn: MAML, Reptile. Fast adaptation to new tasks with few examples.</p>
+
+    <h4>5.4.9 Continual Learning</h4>
+    <p>Learn over time without forgetting. Replay, regularization, architecture expansion.</p>
+
+    <h3>5.5 Data: The Foundation</h3>
+
+    <h4>5.5.1 Data Types</h4>
+    <ul>
+      <li>Structured: tables, time series, events.</li>
+      <li>Unstructured: text, images, audio, video.</li>
+      <li>Multimodal: combinations.</li>
+      <li>Graph: relational structures.</li>
+    </ul>
+
+    <h4>5.5.2 Quality Dimensions</h4>
+    <ul>
+      <li>Accuracy, completeness, consistency.</li>
+      <li>Timeliness, relevance, diversity.</li>
+      <li>Representativeness across populations.</li>
+    </ul>
+
+    <h4>5.5.3 Labeling Strategies</h4>
+    <ul>
+      <li>Manual: high quality, expensive.</li>
+      <li>Weak: heuristic or distant supervision.</li>
+      <li>Active: query the most informative examples.</li>
+      <li>Synthetic: generate with models or simulators.</li>
+      <li>Crowdsourced: scalable, requires quality control.</li>
+    </ul>
+
+    <h4>5.5.4 Data Augmentation</h4>
+    <p>Image flips, crops, rotations. Text paraphrasing, back-translation. Time series jittering, window warping.</p>
+
+    <h4>5.5.5 Data-Centric AI</h4>
+    <p>Systematically improve data rather than only models. Tools: error analysis, slice discovery, active learning.</p>
+
+    <h4>5.5.6 Bias in Data</h4>
+    <p>Historical bias, sampling bias, labeling bias, measurement bias. Detect early; mitigate with curation and reweighting.</p>
+
+    <h3>5.6 Model Architectures Overview</h3>
+    <table>
+      <thead><tr><th>Family</th><th>Strengths</th><th>Typical Use</th></tr></thead>
+      <tbody>
+        <tr><td>Linear / Logistic</td><td>Interpretable, fast</td><td>Baselines, tabular</td></tr>
+        <tr><td>Tree Ensembles (XGBoost, LightGBM)</td><td>Strong on tabular, robust</td><td>Tabular, ranking</td></tr>
+        <tr><td>CNNs</td><td>Local patterns in grids</td><td>Images, audio</td></tr>
+        <tr><td>RNNs / LSTMs</td><td>Sequences with memory</td><td>Time series, speech</td></tr>
+        <tr><td>Transformers</td><td>Long-range attention</td><td>Text, multimodal</td></tr>
+        <tr><td>GNNs</td><td>Relational structure</td><td>Graphs, molecules</td></tr>
+        <tr><td>Diffusion</td><td>Generative quality</td><td>Images, video, audio</td></tr>
+        <tr><td>State-Space Models</td><td>Efficient long context</td><td>Long sequences</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.7 Training Mechanics</h3>
+
+    <h4>5.7.1 Loss Functions</h4>
+    <ul>
+      <li>Cross-entropy for classification.</li>
+      <li>MSE / MAE for regression.</li>
+      <li>Triplet / contrastive for embeddings.</li>
+      <li>Custom losses for structured outputs.</li>
+    </ul>
+
+    <h4>5.7.2 Optimization</h4>
+    <p>SGD, Momentum, Adam, AdamW, Lion. Learning rate is the single most important hyperparameter.</p>
+    \[
+    \theta_{t+1} = \theta_t - \eta \nabla_\theta L(\theta_t)
+    \]
+
+    <h4>5.7.3 Regularization</h4>
+    <ul>
+      <li>Dropout, weight decay.</li>
+      <li>Early stopping.</li>
+      <li>Data augmentation.</li>
+      <li>Label smoothing.</li>
+    </ul>
+
+    <h4>5.7.4 Normalization</h4>
+    <p>Batch, Layer, Group, RMSNorm. Stabilizes and accelerates training.</p>
+
+    <h4>5.7.5 Learning Rate Schedules</h4>
+    <p>Warmup, cosine decay, step decay, one-cycle. Critical for transformer training.</p>
+
+    <h3>5.8 Modern Training Paradigms</h3>
+
+    <h4>5.8.1 Pretraining + Fine-Tuning</h4>
+    <p>Learn general representations on large unlabeled corpora, then adapt to specific tasks.</p>
+
+    <h4>5.8.2 Instruction Tuning</h4>
+    <p>Fine-tune on instruction–response pairs to align behavior with human intent.</p>
+
+    <h4>5.8.3 RLHF and DPO</h4>
+    <p>Align models with human preferences via reward models (RLHF) or direct preference optimization (DPO).</p>
+
+    <h4>5.8.4 Parameter-Efficient Fine-Tuning (PEFT)</h4>
+    <p>LoRA, prefix tuning, adapters, IA³. Update a tiny fraction of parameters.</p>
+
+    <h4>5.8.5 Distillation</h4>
+    <p>Train a smaller student to mimic a larger teacher.</p>
+
+    <h4>5.8.6 Quantization</h4>
+    <p>Reduce precision to 8-bit or 4-bit. Trade small accuracy loss for large efficiency gain.</p>
+
+    <h4>5.8.7 Federated Learning</h4>
+    <p>Train across devices without centralizing raw data. Preserves privacy.</p>
+
+    <h3>5.9 Efficiency and Compute</h3>
+    <ul>
+      <li><strong>Hardware:</strong> GPUs, TPUs, accelerators.</li>
+      <li><strong>Scaling laws:</strong> performance as a function of data, model, compute.</li>
+      <li><strong>Distributed training:</strong> data parallel, model parallel, pipeline parallel.</li>
+      <li><strong>Mixed precision:</strong> FP16 / BF16 / FP8.</li>
+      <li><strong>Green AI:</strong> measure and reduce carbon footprint.</li>
+    </ul>
+
+    <h3>5.10 Common Pitfalls</h3>
+    <ol>
+      <li><strong>Overfitting:</strong> great on training, poor on test.</li>
+      <li><strong>Underfitting:</strong> poor on both.</li>
+      <li><strong>Data leakage:</strong> future or label information in features.</li>
+      <li><strong>Class imbalance:</strong> rare classes ignored.</li>
+      <li><strong>Vanishing / exploding gradients:</strong> unstable training.</li>
+      <li><strong>Catastrophic forgetting:</strong> new learning erases old.</li>
+      <li><strong>Reward hacking:</strong> exploiting misspecified objectives.</li>
+      <li><strong>Spurious correlations:</strong> learning shortcuts.</li>
+      <li><strong>Distribution shift:</strong> deployment differs from training.</li>
+      <li><strong>Evaluation leakage:</strong> tuning on the test set.</li>
+    </ol>
+
+    <h3>5.11 Evaluating Training</h3>
+    <ul>
+      <li><strong>Learning curves:</strong> training vs. validation loss over time.</li>
+      <li><strong>Error analysis:</strong> categorize mistakes manually.</li>
+      <li><strong>Ablation studies:</strong> remove components to test their effect.</li>
+      <li><strong>Slice analysis:</strong> evaluate on subgroups.</li>
+      <li><strong>Calibration:</strong> reliability diagrams and ECE.</li>
+      <li><strong>Robustness:</strong> OOD and adversarial tests.</li>
+    </ul>
+
+    <h3>5.12 Tools and Frameworks</h3>
+    <table>
+      <thead><tr><th>Layer</th><th>Tools</th></tr></thead>
+      <tbody>
+        <tr><td>Deep learning</td><td>PyTorch, TensorFlow, JAX</td></tr>
+        <tr><td>High-level</td><td>PyTorch Lightning, Keras, FastAI</td></tr>
+        <tr><td>Transformers</td><td>Hugging Face Transformers, PEFT, TRL</td></tr>
+        <tr><td>Experiment tracking</td><td>Weights &amp; Biases, MLflow, Neptune</td></tr>
+        <tr><td>Data versioning</td><td>DVC, LakeFS, Delta Lake</td></tr>
+        <tr><td>Orchestration</td><td>Airflow, Prefect, Kubeflow, Dagster</td></tr>
+        <tr><td>Serving</td><td>TorchServe, Triton, vLLM, Ray Serve</td></tr>
+        <tr><td>Cloud</td><td>AWS SageMaker, GCP Vertex, Azure ML</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.13 Case Study: Fine-Tuning a Transformer for Domain Q&amp;A</h3>
+    <p><strong>Scenario.</strong> A legal firm wants a Q&amp;A assistant over internal case documents.</p>
+    <p><strong>Data.</strong> 50k question–answer pairs derived from case files, reviewed by paralegals.</p>
+    <p><strong>Approach.</strong> Base model: open-weight 7B transformer. Fine-tune with LoRA on 4 GPUs. Instruction-format pairs. Cross-entropy loss on response tokens only. Cosine schedule with warmup. Early stopping on validation loss.</p>
+    <p><strong>Evaluation.</strong> Held-out Q&amp;A set. Metrics: exact match, F1, factual consistency (via retrieval check), and human preference. Calibration via ECE. Slice analysis by case type.</p>
+    <p><strong>Deployment.</strong> Quantized to 4-bit for inference. Served behind retrieval-augmented generation (RAG) to ground answers in source documents. Human review for all high-stakes queries.</p>
+    <p><strong>Pitfalls avoided.</strong> Train/test split by case ID (no leakage). Stratified by case type. Red-team tested for adversarial prompts. Monitoring for drift.</p>
+
+    <h3>5.14 Summary</h3>
+    <p>Machine learning training is the engine that turns data into intelligence. It spans the full pipeline from problem definition to deployment, with rich paradigms (supervised, self-supervised, reinforcement, transfer) and modern techniques (fine-tuning, RLHF, LoRA, distillation). Data quality dominates performance. Pitfalls are numerous but manageable. Evaluation is systematic and continuous.</p>
+    <div class="keytakeaway">
+      <strong>Key takeaway.</strong> To reason about AI, you must understand how it learns. Training is not a black box — it is a discipline of data, algorithms, and discipline itself.
+    </div>
+
+    <h3>5.15 Exercises</h3>
+    <ol>
+      <li>Map the end-to-end training pipeline for a task in your domain.</li>
+      <li>Compare supervised, self-supervised, and reinforcement learning with examples.</li>
+      <li>Design a labeling strategy for a rare-event classification problem.</li>
+      <li>Explain why data leakage is catastrophic and how to detect it.</li>
+      <li>Choose between full fine-tuning and LoRA for a specific task. Justify.</li>
+      <li>Sketch a learning curve showing overfitting. How would you fix it?</li>
+      <li>Estimate compute cost for training a small transformer on 1M samples.</li>
+      <li>Design an ablation study for a multi-component training pipeline.</li>
+    </ol>
+
+    <h3>5.16 Glossary</h3>
+    <ul>
+      <li><strong>Epoch:</strong> One pass through the training data.</li>
+      <li><strong>Batch:</strong> A subset of examples processed together.</li>
+      <li><strong>Loss:</strong> The objective being minimized.</li>
+      <li><strong>Optimizer:</strong> The algorithm updating parameters.</li>
+      <li><strong>Regularization:</strong> Techniques to prevent overfitting.</li>
+      <li><strong>Fine-tuning:</strong> Adapting a pretrained model to a task.</li>
+      <li><strong>LoRA:</strong> Low-Rank Adaptation, a PEFT method.</li>
+      <li><strong>RLHF:</strong> Reinforcement Learning from Human Feedback.</li>
+      <li><strong>Distillation:</strong> Training a small model from a large one.</li>
+      <li><strong>Quantization:</strong> Reducing numerical precision.</li>
+    </ul>
+  </section>
+  <!-- ============================= CHAPTER 6 ============================= -->
+  <section class="chapter" id="ch6">
+    <span class="chapter-label">Chapter 6</span>
     <h2 class="chapter-title">Reactive AI: Stimulus–Response Systems</h2>
 
     <blockquote>
@@ -2199,9 +2499,9 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
     </ul>
   </section>
 
-  <!-- ============================= CHAPTER 6 ============================= -->
-  <section class="chapter" id="ch6">
-    <span class="chapter-label">Chapter 6</span>
+  <!-- ============================= CHAPTER 7 ============================= -->
+  <section class="chapter" id="ch7">
+    <span class="chapter-label">Chapter 7</span>
     <h2 class="chapter-title">Limited Memory AI: Learning from Past Experience</h2>
 
     <blockquote>
@@ -2408,8 +2708,8 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
     </ul>
   </section>
 
-  <!-- ============================= CHAPTER 7 ============================= -->
-  <section class="chapter" id="ch7">
+  <!-- ============================= CHAPTER 8 ============================= -->
+  <section class="chapter" id="ch8">
     <span class="chapter-label">Chapter 7</span>
     <h2 class="chapter-title">Theory of Mind AI: Understanding Emotions, Beliefs, and Intentions</h2>
 
@@ -2612,9 +2912,9 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
     </ul>
   </section>
 
-  <!-- ============================= CHAPTER 8 ============================= -->
+  <!-- ============================= CHAPTER 9 ============================= -->
   <section class="chapter" id="ch8">
-    <span class="chapter-label">Chapter 8</span>
+    <span class="chapter-label">Chapter 9</span>
     <h2 class="chapter-title">Self-Aware AI: The Theoretical Frontier</h2>
 
     <blockquote>
@@ -2831,10 +3131,10 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
     </ul>
   </section>
 
-    <!-- ============ CHAPTER 9 ============ -->
+    <!-- ============ CHAPTER 10 ============ -->
     <section class="chapter" id="ch9">
       <div class="chapter-head">
-        <span class="chapter-label">Chapter 9</span>
+        <span class="chapter-label">Chapter 10</span>
         <h2 class="chapter-title">Narrow AI (Weak AI): Designed to Perform Specific Tasks</h2>
         <blockquote>
           <p><strong>Guiding questions:</strong> What is narrow AI? How does it differ from general AI? Why is all deployed AI today narrow? What are its strengths, limits, and risks? How do we design, evaluate, and govern narrow AI systems responsibly?</p>
@@ -3051,10 +3351,10 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
       </ul>
     </section>
 
-    <!-- ============ CHAPTER 10 ============ -->
+    <!-- ============ CHAPTER 11 ============ -->
     <section class="chapter" id="tools">
       <div class="chapter-head">
-        <span class="chapter-label">Chapter 10</span>
+        <span class="chapter-label">Chapter 11</span>
         <h2 class="chapter-title">The Current AI Tools Landscape: Capability Differentiation Across Functional Areas</h2>
         <blockquote>
           <p><strong>Guiding questions:</strong> What AI tools exist today? How do they differ across functional areas? Which tool for which task? What are the trade-offs in capability, cost, privacy, and integration? How do professionals choose wisely?</p>
@@ -3306,10 +3606,10 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
       </ol>
     </section>
 
-    <!-- ============ CHAPTER 11 ============ -->
+    <!-- ============ CHAPTER 12 ============ -->
     <section class="chapter" id="evaluation">
       <div class="chapter-head">
-        <span class="chapter-label">Chapter 11</span>
+        <span class="chapter-label">Chapter 12</span>
         <h2 class="chapter-title">AI Tools Evaluation and Efficiency Analysis</h2>
         <blockquote>
           <p><strong>Guiding questions:</strong> How do I know if an AI tool is any good? How do I compare tools fairly? How do I measure efficiency and ROI? What frameworks build confidence? What pitfalls should I avoid?</p>
@@ -3665,7 +3965,7 @@ IF temperature &gt; 22 THEN heater = OFF</code></pre>
       </ul>
 
       <h3>R.6 Ethical Coverage</h3>
-      <p>Ethics is integrated, not appended. Chapters 7–9 (ToM, self-aware, narrow AI) discuss manipulation, privacy, consciousness, and governance. Chapter 11 covers bias, safety, and auditing. This is a strength.</p>
+      <p>Ethics is integrated, not appended. Chapters 8–10 (ToM, self-aware, narrow AI) discuss manipulation, privacy, consciousness, and governance. Chapter 12 covers bias, safety, and auditing. This is a strength.</p>
 
       <h3>R.7 Practical Additions for Readers</h3>
       <p>To maximize value, readers should supplement the chapters with:</p>
