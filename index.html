@@ -4668,6 +4668,319 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- ===================== END LANGUAGE SWITCHER ===================== -->
-</body>
+<!-- ===================== MOBILE / TABLET FRAMEWORK ===================== -->
+<style>
+  /* ---------- GLOBAL MOBILE BASELINE ---------- */
+  @media (max-width: 1000px) {
+
+    /* 1. Layout: stack sidebar above main content */
+    .layout {
+      display: block !important;
+      padding: 0 16px !important;
+    }
+
+    /* 2. Sidebar: hidden by default, slide-in overlay on mobile */
+    aside.sidebar {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      width: 290px;
+      max-width: 85vw;
+      height: 100vh;
+      max-height: 100vh;
+      background: var(--bg-elev);
+      border-right: 1px solid var(--border);
+      padding: 20px 18px 60px;
+      overflow-y: auto;
+      z-index: 900;
+      transform: translateX(-105%);
+      transition: transform 0.32s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 4px 0 24px rgba(0,0,0,.15);
+    }
+    aside.sidebar.open {
+      transform: translateX(0);
+    }
+
+    /* 3. Backdrop overlay when sidebar is open */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 890;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .sidebar-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* 4. Close button inside sidebar */
+    .sidebar-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 5. Hamburger button in header */
+    .mobile-menu-btn {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      width: 38px;
+      height: 34px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 18px;
+      padding: 0;
+    }
+
+    /* 6. Main content spacing */
+    main {
+      padding: 24px 0 80px !important;
+    }
+
+    /* 7. Hero adjustments */
+    .hero {
+      padding: 40px 0 28px !important;
+      text-align: left !important;
+    }
+    .hero h1 {
+      font-size: clamp(1.6rem, 6vw, 2.1rem) !important;
+      line-height: 1.2;
+    }
+    .hero .lead {
+      font-size: 1rem !important;
+    }
+    .hero .cta {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .hero .cta a {
+      width: 100%;
+      text-align: center;
+      padding: 14px 20px !important;
+    }
+    .hero .stats {
+      gap: 16px !important;
+      justify-content: flex-start;
+      margin-top: 22px;
+    }
+    .hero .stat b { font-size: 1.3rem !important; }
+    .hero .stat span { font-size: 11px !important; }
+
+    /* 8. Section & chapter spacing */
+    section.chapter {
+      padding: 28px 0 20px !important;
+    }
+    h2.chapter-title {
+      font-size: clamp(1.25rem, 5.5vw, 1.6rem) !important;
+    }
+    h3 { font-size: 1.1rem !important; margin-top: 26px; }
+    h4 { font-size: 1rem !important; }
+
+    /* 9. Tables: horizontal scroll with a subtle hint */
+    table {
+      font-size: 0.85rem !important;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+      position: relative;
+      border-radius: 10px;
+    }
+    table::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, var(--bg-alt));
+      pointer-events: none;
+    }
+    th, td {
+      padding: 8px 10px !important;
+      white-space: normal;
+      min-width: 90px;
+    }
+
+    /* 10. Code blocks */
+    pre {
+      font-size: 0.78rem !important;
+      padding: 12px 14px !important;
+    }
+    code { font-size: 0.85em !important; }
+
+    /* 11. Flow diagrams */
+    .flow {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .flow .arrow {
+      transform: rotate(90deg);
+    }
+
+    /* 12. Tabs: horizontal scroll */
+    .tab-nav {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .tab-nav button {
+      padding: 10px 14px !important;
+      font-size: 13px;
+    }
+
+    /* 13. Accordions */
+    .acc-head {
+      padding: 12px 14px !important;
+      font-size: 0.95rem;
+    }
+
+    /* 14. Callouts */
+    .callout, .keytakeaway {
+      padding: 12px 16px !important;
+      font-size: 0.95rem;
+    }
+
+    /* 15. Back to top button repositioned */
+    #toTop {
+      right: 14px !important;
+      bottom: 14px !important;
+      width: 44px !important;
+      height: 44px !important;
+    }
+
+    /* 16. Footer */
+    footer.site .inner {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      text-align: left;
+    }
+    .footer-bottom {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 12px !important;
+    }
+  }
+
+  /* ---------- EXTRA SMALL (phones < 480px) ---------- */
+  @media (max-width: 480px) {
+    .wrap, .layout { padding: 0 14px !important; }
+    body { font-size: 15.5px; }
+    .hero h1 { font-size: 1.55rem !important; }
+    .hero .eyebrow { font-size: 11px; }
+    header.site .inner { padding: 8px 12px !important; gap: 6px; }
+    .brand { font-size: 14px; }
+    .brand span.sub { display: none; }
+    .header-tools { gap: 4px; }
+    .tool-btn { padding: 6px 8px; font-size: 12px; }
+    #language-switcher select { max-width: 70px; font-size: 12px; }
+    section.chapter { padding: 22px 0 16px !important; }
+    h3 { font-size: 1.05rem !important; }
+  }
+
+  /* ---------- DESKTOP: hide mobile-only elements ---------- */
+  @media (min-width: 1001px) {
+    .mobile-menu-btn { display: none !important; }
+    .sidebar-close { display: none !important; }
+    .sidebar-backdrop { display: none !important; }
+  }
+
+  /* ---------- TABLET (601px – 1000px) ---------- */
+  @media (min-width: 601px) and (max-width: 1000px) {
+    aside.sidebar { width: 320px; }
+    .hero h1 { font-size: 1.9rem !important; }
+  }
+</style>
+
+<script>
+/* ===================== MOBILE SIDEBAR TOGGLE ===================== */
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+
+    // 1. Create the hamburger button
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'mobile-menu-btn';
+    menuBtn.innerHTML = '☰';
+    menuBtn.setAttribute('aria-label', 'Open navigation menu');
+
+    // 2. Create the backdrop overlay
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+
+    // 3. Create the close button inside sidebar
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'sidebar-close';
+    closeBtn.innerHTML = '×';
+    closeBtn.setAttribute('aria-label', 'Close menu');
+    sidebar.insertBefore(closeBtn, sidebar.firstChild);
+
+    // 4. Inject hamburger into the header (before language switcher / print)
+    const tools = document.querySelector('.header-tools');
+    if (tools) {
+      tools.insertBefore(menuBtn, tools.firstChild);
+    }
+
+    // 5. Add backdrop to body
+    document.body.appendChild(backdrop);
+
+    // 6. Toggle functions
+    function openSidebar() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+
+    // 7. Auto-close sidebar when a chapter link is tapped
+    sidebar.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 1000) {
+          setTimeout(closeSidebar, 150);
+        }
+      });
+    });
+
+    // 8. Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // 9. Close if window is resized back to desktop
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1000) closeSidebar();
+    });
+  });
+})();
+</script>
+<!-- ===================== END MOBILE FRAMEWORK ===================== -->
+  </body>
 </html>  
 
